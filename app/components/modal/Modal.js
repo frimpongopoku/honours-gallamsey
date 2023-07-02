@@ -38,7 +38,7 @@ const GModal = ({show, children, style}) => {
                 <FontAwesomeIcon
                   icon={faTimesCircle}
                   size={25}
-                  color={colors.red}
+                  // color={colors.red}
                 />
               </TouchableOpacity>
             </View>
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   modalContent: {
     position: 'relative',
     backgroundColor: '#FFFFFF',
+    width: '80%',
     // padding: 16,
     borderRadius: 8,
     // alignItems: 'center',

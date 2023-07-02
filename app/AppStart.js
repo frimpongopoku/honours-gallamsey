@@ -20,6 +20,10 @@ import GBottomSheet from './bottomsheet/GBottomSheet';
 import TabView from './tabs/TabView';
 import Toolbar from './toolbar/Toolbar';
 import GModal from './components/modal/Modal';
+import WIthIconAndText from './components/modal/WIthIconAndText';
+import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
+import {colors} from './styles';
+import AsDialogBox from './components/modal/AsDialogBox';
 // import GBottomSheet from './bottomsheet/GBottomSheet';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -42,7 +46,17 @@ function App() {
       <TextBox />
       {/* <View style={{marginTop:20}}></View> */}
       <GModal>
-        <Text>You dont know whats going on</Text>
+        {/* <WIthIconAndText
+          iconOptions={{icon: faCheckCircle, color: colors.green}}
+          textOptions={{
+            text: 'This is your first positive notification. Dont think it means anything! Lmfao!',
+          }}
+        /> */}
+        <AsDialogBox
+          textOptions={{
+            text: 'This is your first question that I am going to ask you. Are you ready for it my gee?',
+          }}
+        />
       </GModal>
       {/* <TabView /> */}
 

@@ -2,7 +2,7 @@ import {View, Text, TouchableNativeFeedback, StyleSheet} from 'react-native';
 import React from 'react';
 import {colors} from '../../styles';
 
-const GButton = ({text = 'CLICK HERE', style, variant ="red"}) => {
+const GButton = ({children, style, variant = 'red', textStyle}) => {
   const themes = {
     red: {backgroundColor: colors.red},
     green: {backgroundColor: colors.green},
@@ -15,7 +15,9 @@ const GButton = ({text = 'CLICK HERE', style, variant ="red"}) => {
       // onPress={handlePress}
       background={TouchableNativeFeedback.Ripple('white')}>
       <View style={{...styles.button, ...btnTheme, ...(style || {})}}>
-        <Text style={styles.buttonText}>{text}</Text>
+        <Text style={{...styles.buttonText, ...(textStyle || {})}}>
+          {children || 'CLICK HERE'}
+        </Text>
       </View>
     </TouchableNativeFeedback>
   );
@@ -28,6 +30,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     paddingHorizontal: 20,
     paddingVertical: 13,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
 
     // borderRadius: 5,
   },
