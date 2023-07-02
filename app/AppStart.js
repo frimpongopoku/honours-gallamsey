@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -13,7 +14,11 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import TextBox from './components/textbox/TextBox';
 import GButton from './components/button/Button';
 import GDropdown from './components/dropdown/Dropdown';
-
+// import BottomSheet from 'react-native-raw-bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
+import GBottomSheet from './bottomsheet/GBottomSheet';
+import TabView from './tabs/TabView';
+// import GBottomSheet from './bottomsheet/GBottomSheet';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -27,14 +32,26 @@ function App() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{backgroundColor: 'white', height: '100%'}}>
-        <TextBox />
-        <GButton />
 
-        <GDropdown />
-      </ScrollView>
+      <TabView />
+
+      {/* <View
+        style={{
+          backgroundColor: 'white',
+          height: '100%',
+          position: 'relative',
+        }}> */}
+        {/* <ScrollView contentInsetAdjustmentBehavior="automatic"> */}
+        {/* <View>
+          <TextBox />
+          <GButton />
+          <GDropdown />
+          <GButton />
+        </View> */}
+      
+          {/* <GBottomSheet /> */}
+    
+      {/* </View> */}
     </SafeAreaView>
   );
 }
