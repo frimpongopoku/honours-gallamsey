@@ -7,6 +7,7 @@ import {
   faPaperPlane,
   faRunning,
 } from '@fortawesome/free-solid-svg-icons';
+import SlideInView from '../animated/SlideInView';
 
 const TABS = [
   {
@@ -14,7 +15,7 @@ const TABS = [
     name: 'Home',
     icon: faHome,
     component: (
-      <View style={{backgroundColor: 'green', height: "100%"}}>
+      <View style={{backgroundColor: 'green', height: '100%'}}>
         <Text>New Home page</Text>
       </View>
     ),
@@ -23,13 +24,27 @@ const TABS = [
     key: 'errands',
     name: 'Errands',
     icon: faRunning,
-    component: <Text>New Errands page</Text>,
+    // component: <Text>New Errands page</Text>,
+    component: (
+      <SlideInView key={1}>
+        <View style={{height: '100%', backgroundColor: 'yellow'}}>
+          <Text>New Errands Page</Text>
+        </View>
+      </SlideInView>
+    ),
   },
   {
     key: 'posts',
     name: 'Your Posts',
     icon: faPaperPlane,
-    component: <Text>New Running page</Text>,
+    // component: <Text>New Running page</Text>,
+    component: (
+      <SlideInView key={1}>
+        <View style={{height: '100%', backgroundColor: 'blue'}}>
+          <Text>New Posts Page</Text>
+        </View>
+      </SlideInView>
+    ),
   },
 ];
 
