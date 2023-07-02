@@ -18,6 +18,8 @@ import GDropdown from './components/dropdown/Dropdown';
 import BottomSheet from '@gorhom/bottom-sheet';
 import GBottomSheet from './bottomsheet/GBottomSheet';
 import TabView from './tabs/TabView';
+import Toolbar from './toolbar/Toolbar';
+import GModal from './components/modal/Modal';
 // import GBottomSheet from './bottomsheet/GBottomSheet';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -33,7 +35,16 @@ function App() {
         backgroundColor={backgroundStyle.backgroundColor}
       />
 
-      <TabView />
+      <Toolbar
+        title="Gallamsey"
+        onBackPress={() => console.log('We ouchere')}
+      />
+      <TextBox />
+      {/* <View style={{marginTop:20}}></View> */}
+      <GModal>
+        <Text>You dont know whats going on</Text>
+      </GModal>
+      {/* <TabView /> */}
 
       {/* <View
         style={{
@@ -41,16 +52,16 @@ function App() {
           height: '100%',
           position: 'relative',
         }}> */}
-        {/* <ScrollView contentInsetAdjustmentBehavior="automatic"> */}
-        {/* <View>
+      {/* <ScrollView contentInsetAdjustmentBehavior="automatic"> */}
+      {/* <View>
           <TextBox />
           <GButton />
           <GDropdown />
           <GButton />
         </View> */}
-      
-          {/* <GBottomSheet /> */}
-    
+
+      {/* <GBottomSheet /> */}
+
       {/* </View> */}
     </SafeAreaView>
   );
