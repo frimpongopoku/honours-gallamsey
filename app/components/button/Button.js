@@ -2,7 +2,7 @@ import {View, Text, TouchableNativeFeedback, StyleSheet} from 'react-native';
 import React from 'react';
 import {colors} from '../../styles';
 
-const GButton = ({children, style, variant = 'red', textStyle}) => {
+const GButton = ({children, style, variant = 'red', textStyle, onPress}) => {
   const themes = {
     red: {backgroundColor: colors.red},
     green: {backgroundColor: colors.green},
@@ -12,6 +12,7 @@ const GButton = ({children, style, variant = 'red', textStyle}) => {
   const btnTheme = themes[variant] || themes.red;
   return (
     <TouchableNativeFeedback
+      onPress={onPress}
       // onPress={handlePress}
       background={TouchableNativeFeedback.Ripple('white')}>
       <View style={{...styles.button, ...btnTheme, ...(style || {})}}>

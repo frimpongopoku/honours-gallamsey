@@ -9,13 +9,14 @@ import {name as appName} from './app.json';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
 import store from './app/redux/store';
+import Router from './Router';
 
 const Root = () => {
   return (
     <Provider store={store}>
-      <GestureHandlerRootView>
-        <App />
-      </GestureHandlerRootView>
+      {/* <GestureHandlerRootView> */}
+        <Router />
+      {/* </GestureHandlerRootView> */}
     </Provider>
   );
 };

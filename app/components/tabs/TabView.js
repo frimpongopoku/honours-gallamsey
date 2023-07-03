@@ -8,8 +8,9 @@ import {
   faRunning,
 } from '@fortawesome/free-solid-svg-icons';
 import SlideInView from '../../animated/SlideInView';
+import GButton from '../button/Button';
 
-const TABS = [
+const DEFAULT_TABS = [
   {
     key: 'home',
     name: 'Home',
@@ -17,6 +18,12 @@ const TABS = [
     component: (
       <View style={{backgroundColor: 'green', height: '100%'}}>
         <Text>New Home page</Text>
+        <GButton
+          onPress={() =>
+            console.log('I am not sure what you are on about oo man')
+          }>
+          LEt see meerhn
+        </GButton>
       </View>
     ),
   },
@@ -48,7 +55,7 @@ const TABS = [
   },
 ];
 
-const TabView = ({pages = TABS, activeKey = 'home'}) => {
+const TabView = ({pages = DEFAULT_TABS, activeKey = 'home'}) => {
   const [page, setPage] = useState(null);
 
   useEffect(() => {
@@ -59,15 +66,13 @@ const TabView = ({pages = TABS, activeKey = 'home'}) => {
 
   const swapTabs = tabKey => {
     const found = pages?.find(item => item.key === tabKey);
+    console.log('I believe I have been swapped', tabKey);
     if (found) setPage(found);
   };
 
   return (
     <View style={styles.container}>
-      <View style={{height: '95%', backgrounColor: 'blue'}}>
-        {page?.component}
-      </View>
-
+      <View style={{backgrounColor: 'blue'}}>{page?.component}</View>
       <Selectors selectors={pages} onChange={swapTabs} activeKey={page?.key} />
     </View>
   );
@@ -76,7 +81,7 @@ const TabView = ({pages = TABS, activeKey = 'home'}) => {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
   },
 });
 
