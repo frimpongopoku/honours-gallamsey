@@ -19,17 +19,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-const TextBox = ({textarea = false}) => {
+const TextBox = ({textarea = false, label, placeholder, generics}) => {
   return (
     <View style={{padding: 10}}>
-      <Text style={styles.label}>Email</Text>
+      <Text style={styles.label}>{label || 'Text'}</Text>
       <TextInput
         multiline={textarea}
         numberOfLines={textarea ? 6 : 1}
-        textAlignVertical={ textarea ? "top" : "auto"}
+        textAlignVertical={textarea ? 'top' : 'auto'}
         style={styles.input}
-        placeholder="Enter your text..."
+        placeholder={placeholder || 'Enter your text...'}
         placeholderTextColor={colors.black}
+        {...(generics || {})}
       />
     </View>
   );

@@ -1,8 +1,17 @@
 import {View, Text, TouchableNativeFeedback, StyleSheet} from 'react-native';
 import React from 'react';
 import {colors} from '../../styles';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const GButton = ({children, style, variant = 'red', textStyle, onPress}) => {
+const GButton = props => {
+  const {
+    children,
+    style,
+    variant = 'red',
+    textStyle,
+    onPress,
+    likeLink,
+  } = props;
   const themes = {
     red: {backgroundColor: colors.red},
     green: {backgroundColor: colors.green},
@@ -10,6 +19,8 @@ const GButton = ({children, style, variant = 'red', textStyle, onPress}) => {
   };
 
   const btnTheme = themes[variant] || themes.red;
+
+  if (likeLink) return <BtnLikeLink {...props} />;
   return (
     <TouchableNativeFeedback
       onPress={onPress}
@@ -25,6 +36,16 @@ const GButton = ({children, style, variant = 'red', textStyle, onPress}) => {
 };
 
 export default GButton;
+
+const BtnLikeLink = ({style, onPress, children}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text style={{textDecorationLine: 'underline', ...(style || {})}}>
+        {children || 'click here...'}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   button: {
