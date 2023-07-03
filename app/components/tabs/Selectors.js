@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 // import {FontAwesome} from '@expo/vector-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
-import {colors} from '../styles';
+import {colors} from '../../styles';
 // import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Selectors = ({selectors, onChange, activeKey}) => {

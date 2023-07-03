@@ -7,7 +7,7 @@ import {
   faPaperPlane,
   faRunning,
 } from '@fortawesome/free-solid-svg-icons';
-import SlideInView from '../animated/SlideInView';
+import SlideInView from '../../animated/SlideInView';
 
 const TABS = [
   {

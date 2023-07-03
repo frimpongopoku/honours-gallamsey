@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
 } from 'react-native';
-import {colors} from '../styles';
+import {colors} from '../../styles';
 
 const Toolbar = props => {
   const {title, onBackPress, options = true} = props;
@@ -23,8 +23,7 @@ const Toolbar = props => {
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-      >
+      <TouchableOpacity onPress={onBackPress}>
         <FontAwesomeIcon size={22} icon={faLongArrowLeft} color={colors.red} />
       </TouchableOpacity>
 

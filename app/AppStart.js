@@ -16,22 +16,26 @@ import GButton from './components/button/Button';
 import GDropdown from './components/dropdown/Dropdown';
 // import BottomSheet from 'react-native-raw-bottom-sheet';
 import BottomSheet from '@gorhom/bottom-sheet';
-import GBottomSheet from './bottomsheet/GBottomSheet';
-import TabView from './tabs/TabView';
-import Toolbar from './toolbar/Toolbar';
+import GBottomSheet from './components/bottomsheet/GBottomSheet';
+import TabView from './components/tabs/TabView';
+import Toolbar from './components/toolbar/Toolbar';
 import GModal from './components/modal/Modal';
 import WIthIconAndText from './components/modal/WIthIconAndText';
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import {colors} from './styles';
 import AsDialogBox from './components/modal/AsDialogBox';
+import {bindActionCreators} from 'redux';
+import {testReduxAction} from './redux/actions/actions';
+import {connect} from 'react-redux';
 // import GBottomSheet from './bottomsheet/GBottomSheet';
-function App() {
+function App({test, testValue}) {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  console.log('I did test the value', testValue);
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -41,7 +45,10 @@ function App() {
 
       <Toolbar
         title="Gallamsey"
-        onBackPress={() => console.log('We ouchere')}
+        onBackPress={() => {
+          test(500);
+      
+        }}
       />
       <TextBox />
       {/* <View style={{marginTop:20}}></View> */}
@@ -100,4 +107,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+const mapStateToProps = state => {
+  return {testValue: state.testStore};
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      test: testReduxAction,
+    },
+    dispatch,
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
