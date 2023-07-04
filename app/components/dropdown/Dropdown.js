@@ -2,29 +2,43 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colors} from '../../styles';
-const GDropdown = ({label = 'Select an option', placeholder}) => {
+const GDropdown = ({
+  label = 'Select an option',
+  placeholder,
+  data,
+  valueExtractor,
+  labelExtractor,
+}) => {
   const [selectedValue, setSelectedValue] = useState('');
 
+  const getLabel = item => {
+    if (labelExtractor) return labelExtractor(item);
+    return item?.toString() || '...';
+  };
+  const getValue = item => {
+    if (valueExtractor) return valueExtractor(item);
+    return item?.toString() || '...';
+  };
   const handleValueChange = itemValue => {
     setSelectedValue(itemValue);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label}>{getLabel(selectedValue)}</Text>
       <View style={styles.dropdown}>
         <Picker
           selectedValue={selectedValue}
           placeholder={placeholder || 'Choose an item'}
           // style={styles.dropdown}
           onValueChange={handleValueChange}>
-          {[1, 2, 3, 4].map((item, index) => {
+          {data?.map((item, index) => {
             return (
               <Picker.Item
                 // style={{fontWeight: 'bold', color: 'red'}}
                 key={index?.toString()}
-                label={item.toString()}
-                value={item.toString()}
+                label={getLabel(item)}
+                value={getValue(item)}
               />
             );
           })}
@@ -47,7 +61,7 @@ const GDropdown = ({label = 'Select an option', placeholder}) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    padding: 10,
   },
   label: {
     fontSize: 16,

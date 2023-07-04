@@ -11,6 +11,7 @@ const GButton = props => {
     textStyle,
     onPress,
     likeLink,
+    rippleColor
   } = props;
   const themes = {
     red: {backgroundColor: colors.red},
@@ -25,7 +26,7 @@ const GButton = props => {
     <TouchableNativeFeedback
       onPress={onPress}
       // onPress={handlePress}
-      background={TouchableNativeFeedback.Ripple('white')}>
+      background={TouchableNativeFeedback.Ripple(rippleColor || 'white')}>
       <View style={{...styles.button, ...btnTheme, ...(style || {})}}>
         <Text style={{...styles.buttonText, ...(textStyle || {})}}>
           {children || 'CLICK HERE'}

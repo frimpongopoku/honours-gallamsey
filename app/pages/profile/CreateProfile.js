@@ -5,6 +5,7 @@ import PageTitle from '../../components/intros/PageTitle';
 import PersonalInformation from './PersonalInformation';
 import Toolbar from '../../components/toolbar/Toolbar';
 import GButton from '../../components/button/Button';
+import Identification from './Identification';
 
 const CreateProfile = () => {
   return (
@@ -17,7 +18,8 @@ const CreateProfile = () => {
           }
         />
         <View>
-          <PersonalInformation />
+          {/* <PersonalInformation /> */}
+          <Identification />
         </View>
         <View style={{position: 'absolute', bottom: 0, width: '100%'}}>
           <GButton variant="green">CONTINUE (1/3)</GButton>
