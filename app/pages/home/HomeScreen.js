@@ -6,19 +6,19 @@ import TabView from '../../components/tabs/TabView';
 import {fetchHeights} from '../../utils';
 import RunningErrands from '../errands/RunningErrands';
 import YourErrandPosts from '../errands/YourErrandPosts';
-import ErrandFeed from './ErrandFeed';
 import {
   faHome,
   faPaperPlane,
   faRunning,
 } from '@fortawesome/free-solid-svg-icons';
+import Feed from '../authentication/feed/Feed';
 
 const TABS = [
   {
     key: 'home',
     name: 'Home',
     icon: faHome,
-    component: <ErrandFeed />,
+    component: <Feed />,
   },
   {
     key: 'errands',

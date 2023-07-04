@@ -7,13 +7,14 @@ import LoginScreen from './app/pages/authentication/login/LoginScreen';
 import RegistrationScreen from './app/pages/authentication/registration/RegistrationScreen';
 import Splash from './app/Splash';
 import CreateProfile from './app/pages/profile/CreateProfile';
+import ChangeProfilePhoto from './app/pages/profile/ChangeProfilePhoto';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="CompleteProfile">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}
@@ -38,6 +39,11 @@ const Router = () => {
           name="CompleteProfile"
           options={{headerShown: false}}
           component={CreateProfile}
+        />
+        <Stack.Screen
+          name="ChangeProfile"
+          options={{headerShown: false}}
+          component={ChangeProfilePhoto}
         />
       </Stack.Navigator>
     </NavigationContainer>
