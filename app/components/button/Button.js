@@ -11,7 +11,8 @@ const GButton = props => {
     textStyle,
     onPress,
     likeLink,
-    rippleColor
+    rippleColor,
+    floating,
   } = props;
   const themes = {
     red: {backgroundColor: colors.red},
@@ -21,6 +22,7 @@ const GButton = props => {
 
   const btnTheme = themes[variant] || themes.red;
 
+  // if (floating) return <FloatingButton {...props} />;
   if (likeLink) return <BtnLikeLink {...props} />;
   return (
     <TouchableNativeFeedback
@@ -48,7 +50,30 @@ const BtnLikeLink = ({style, onPress, children}) => {
   );
 };
 
+// const FloatingButton = ({onPress, children, style}) => {
+//   return (
+//     <TouchableOpacity
+//       style={{...styles.floatingContainer, ...(style || {})}}
+//       onPress={onPress}>
+//       {children}
+//       {/* <FontAwesomeIcon icon={faPlus} style={styles.icon} /> */}
+//     </TouchableOpacity>
+//   );
+// };
+
 const styles = StyleSheet.create({
+  floatingContainer: {
+    position: 'absolute',
+    bottom: 180,
+    right: 20,
+    backgroundColor: 'blue',
+    borderRadius: 50,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   button: {
     backgroundColor: 'red',
     paddingHorizontal: 20,

@@ -19,7 +19,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-const TextBox = ({textarea = false, label, placeholder, generics}) => {
+const TextBox = ({
+  textarea = false,
+  label,
+  placeholder,
+  generics,
+  children,
+}) => {
   return (
     <View style={{padding: 10}}>
       <Text style={styles.label}>{label || 'Text'}</Text>
@@ -32,6 +38,7 @@ const TextBox = ({textarea = false, label, placeholder, generics}) => {
         placeholderTextColor={colors.black}
         {...(generics || {})}
       />
+      {children}
     </View>
   );
 };
