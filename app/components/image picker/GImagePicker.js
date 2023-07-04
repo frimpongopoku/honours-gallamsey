@@ -27,7 +27,7 @@ const GImagePicker = ({pickerOptions, render, onImageSelected}) => {
     <View style={styles.container}>
       <Button title="Select Images" onPress={handleImagePicker} />
       <View style={styles.imageContainer}>
-        {selectedImages.map((image, index) => (
+        {selectedImages?.map((image, index) => (
           <Image key={index} source={{uri: image?.path}} style={styles.image} />
         ))}
       </View>

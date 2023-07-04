@@ -9,6 +9,7 @@ const Feed = () => {
       <ScrollView>
         <ErrandFeedItem />
         <ErrandFeedItem />
+        <ErrandFeedItem />
       </ScrollView>
     </View>
   );

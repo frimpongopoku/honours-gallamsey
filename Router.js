@@ -8,13 +8,14 @@ import RegistrationScreen from './app/pages/authentication/registration/Registra
 import Splash from './app/Splash';
 import CreateProfile from './app/pages/profile/CreateProfile';
 import ChangeProfilePhoto from './app/pages/profile/ChangeProfilePhoto';
+import CreateErrandScreen from './app/pages/create errand/CreateErrandScreen';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="CreateErrand">
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}
@@ -44,6 +45,11 @@ const Router = () => {
           name="ChangeProfile"
           options={{headerShown: false}}
           component={ChangeProfilePhoto}
+        />
+        <Stack.Screen
+          name="CreateErrand"
+          options={{headerShown: false}}
+          component={CreateErrandScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

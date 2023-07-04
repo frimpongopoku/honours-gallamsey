@@ -3,6 +3,7 @@ import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../../styles';
+import ImagePro from '../../../components/image/ImagePro';
 
 const ErrandFeedItem = () => {
   return (
@@ -15,18 +16,16 @@ const ErrandFeedItem = () => {
           paddingHorizontal: 15,
           paddingVertical: 10,
         }}>
-        <Image
-          onLoad={e => console.log('Image DON LOAD')}
-          onError={e => console.log('Something happened, error loading image')}
+        <ImagePro
           style={{
             height: 55,
             width: 55,
             borderRadius: 100,
-            borderWidth: 3,
+            borderWidth: 2,
             borderColor: colors.red,
             marginRight: 15,
           }}
-          source={{uri: 'https://i.pravatar.cc/300'}}
+          imageUrl="https://i.pravatar.cc/300"
         />
         <View>
           <Text style={{fontWeight: '600', color: 'black', fontSize: 18}}>
@@ -42,11 +41,15 @@ const ErrandFeedItem = () => {
         </View>
       </View>
       <View style={{paddingHorizontal: 15}}>
-        <Image
+        <ImagePro
+          style={{borderRadius: 10, height: 250}}
+          imageUrl="https://picsum.photos/600"
+        />
+        {/* <Image
           style={{borderRadius: 10, height: 250}}
           onLoad={e => console.log('Image DON LOAD')}
           source={{uri: 'https://i.pravatar.cc/600'}}
-        />
+        /> */}
         <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
           Delivery destination is only 3 mins walk away
         </Text>

@@ -25,7 +25,7 @@ const GDropdown = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{getLabel(selectedValue)}</Text>
+      <Text style={styles.label}>{label}</Text>
       <View style={styles.dropdown}>
         <Picker
           selectedValue={selectedValue}

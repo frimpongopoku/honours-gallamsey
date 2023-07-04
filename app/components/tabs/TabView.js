@@ -55,7 +55,11 @@ const DEFAULT_TABS = [
   },
 ];
 
-const TabView = ({pages = DEFAULT_TABS, activeKey = 'home'}) => {
+const TabView = ({
+  pages = DEFAULT_TABS,
+  activeKey = 'home',
+  notifyOnChange,
+}) => {
   const [page, setPage] = useState(null);
 
   useEffect(() => {
@@ -66,7 +70,7 @@ const TabView = ({pages = DEFAULT_TABS, activeKey = 'home'}) => {
 
   const swapTabs = tabKey => {
     const found = pages?.find(item => item.key === tabKey);
-    console.log('I believe I have been swapped', tabKey);
+    notifyOnChange && notifyOnChange(found, tabKey);
     if (found) setPage(found);
   };
 
