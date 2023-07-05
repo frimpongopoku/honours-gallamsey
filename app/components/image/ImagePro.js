@@ -57,23 +57,9 @@ const ImagePro = ({imageUrl, style, generics}) => {
   );
 };
 
-// const App = () => {
-//   const imageUrl = 'https://example.com/image.jpg';
-//   const fallbackImage = require('./fallbackImage.jpg');
 
-//   return (
-//     <View style={styles.container}>
-//       <ImageWithLoader imageUrl={imageUrl} fallbackImage={fallbackImage} />
-//     </View>
-//   );
-// };
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
   image: {
     width: 200,
     height: 200,

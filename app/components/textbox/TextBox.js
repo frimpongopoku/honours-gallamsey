@@ -25,15 +25,17 @@ const TextBox = ({
   placeholder,
   generics,
   children,
+  style,
+  containerStyle,
 }) => {
   return (
-    <View style={{padding: 10}}>
+    <View style={{padding: 10, ...(containerStyle || {})}}>
       <Text style={styles.label}>{label || 'Text'}</Text>
       <TextInput
         multiline={textarea}
-        numberOfLines={textarea ? 6 : 1}
+        numberOfLines={textarea ? 10 : 1}
         textAlignVertical={textarea ? 'top' : 'auto'}
-        style={styles.input}
+        style={{...styles.input, ...(style || {})}}
         placeholder={placeholder || 'Enter your text...'}
         placeholderTextColor={colors.black}
         {...(generics || {})}
