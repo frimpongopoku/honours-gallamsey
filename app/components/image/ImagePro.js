@@ -12,12 +12,10 @@ const ImagePro = ({imageUrl, style, generics}) => {
     setIsLoading(true);
   }, [imageUrl]);
   const handleImageLoad = () => {
-    console.log('IT has loaded');
     setIsLoading(false);
   };
 
   const handleImageError = () => {
-    console.log('Image don cast');
     setIsError(true);
     setIsLoading(false);
   };
@@ -56,8 +54,6 @@ const ImagePro = ({imageUrl, style, generics}) => {
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   image: {
