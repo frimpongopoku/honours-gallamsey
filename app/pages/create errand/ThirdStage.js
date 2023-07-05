@@ -57,7 +57,8 @@ const ThirdStage = () => {
           </Text>
         </View>
       </ScrollView>
-      <TouchableOpacity
+      <GButton iconOptions={{icon: faCheck}} floating />
+      {/* <TouchableOpacity
         style={{
           position: 'absolute',
           bottom: 100,
@@ -68,7 +69,7 @@ const ThirdStage = () => {
           elevation: 15,
         }}>
         <FontAwesomeIcon icon={faCheck} color="white" size={28} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

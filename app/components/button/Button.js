@@ -1,7 +1,15 @@
-import {View, Text, TouchableNativeFeedback, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableNativeFeedback,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import {colors} from '../../styles';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 const GButton = props => {
   const {
@@ -22,7 +30,9 @@ const GButton = props => {
 
   const btnTheme = themes[variant] || themes.red;
 
-  // if (floating) return <FloatingButton {...props} />;
+ 
+
+  if (floating) return <FloatingButton {...props} />;
   if (likeLink) return <BtnLikeLink {...props} />;
   return (
     <TouchableNativeFeedback
@@ -50,16 +60,31 @@ const BtnLikeLink = ({style, onPress, children}) => {
   );
 };
 
-// const FloatingButton = ({onPress, children, style}) => {
-//   return (
-//     <TouchableOpacity
-//       style={{...styles.floatingContainer, ...(style || {})}}
-//       onPress={onPress}>
-//       {children}
-//       {/* <FontAwesomeIcon icon={faPlus} style={styles.icon} /> */}
-//     </TouchableOpacity>
-//   );
-// };
+const FloatingButton = ({onPress, children, style, iconOptions}) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        position: 'absolute',
+        bottom: 100,
+        right: 20,
+        padding: 15,
+        borderRadius: 55,
+        backgroundColor: colors.green,
+        elevation: 15,
+        ...(style || {}),
+      }}>
+      {children}
+      {iconOptions && (
+        <FontAwesomeIcon
+          icon={iconOptions?.icon || faCheck}
+          color={iconOptions?.color || 'white'}
+          size={iconOptions?.size || 28}
+        />
+      )}
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   floatingContainer: {

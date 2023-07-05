@@ -9,13 +9,15 @@ import Splash from './app/Splash';
 import CreateProfile from './app/pages/profile/CreateProfile';
 import ChangeProfilePhoto from './app/pages/profile/ChangeProfilePhoto';
 import CreateErrandScreen from './app/pages/create errand/CreateErrandScreen';
+import ViewErrandScreen from './app/pages/view errands/ViewErrandScreen';
+import ViewErrandMedia from './app/pages/view errands/ViewErrandMedia';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="CreateErrand">
+      <Stack.Navigator initialRouteName="ViewErrand">
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}
@@ -50,6 +52,16 @@ const Router = () => {
           name="CreateErrand"
           options={{headerShown: false}}
           component={CreateErrandScreen}
+        />
+        <Stack.Screen
+          name="ViewErrand"
+          options={{headerShown: false}}
+          component={ViewErrandScreen}
+        />
+        <Stack.Screen
+          name="ViewErrandMedia"
+          options={{headerShown: false}}
+          component={ViewErrandMedia}
         />
       </Stack.Navigator>
     </NavigationContainer>
