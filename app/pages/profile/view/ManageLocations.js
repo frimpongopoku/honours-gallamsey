@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {View, Text, SafeAreaView, TouchableOpacity, Alert} from 'react-native';
 import React from 'react';
 import Toolbar from '../../../components/toolbar/Toolbar';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -8,12 +8,46 @@ import {faEllipsisH, faLocationDot} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../../styles';
 import GBottomSheet from '../../../components/bottomsheet/GBottomSheet';
 import {GetLocationComponent, SaveOrEditLocation} from './LocationStates';
+import Geolocation from '@react-native-community/geolocation';
+import {PERMISSIONS, request} from 'react-native-permissions';
 
 const ManageLocations = () => {
+  const requestLocationPermission = async () => {
+    try {
+      const result = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      if (result === 'granted') {
+        console.log('Location permission granted.');
+        calculateLocation();
+      } else {
+        console.log('Location permission denied.');
+      }
+    } catch (error) {
+      console.log('Error requesting location permission:', error);
+    }
+  };
+  const calculateLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        Alert.alert(
+          'Current Location',
+          `Latitude: ${latitude}, Longitude: ${longitude}`,
+        );
+      },
+      error => {
+        // sometimes this is fired because location is off. Find a way to figure out when location is off, and when there is an actual error
+        console.log('Error getting location:', error);
+        Alert.alert('Error', 'Failed to retrieve location.');
+      },
+    );
+  };
   return (
     <GBottomSheet
-      generics={{snapPoints: ['37%']}}
-      sheetContent={<SaveOrEditLocation />}>
+      // generics={{snapPoints: ['37%']}}
+      generics={{snapPoints: ['23%']}}
+      sheetContent={
+        <GetLocationComponent onPress={requestLocationPermission} />
+      }>
       <View>
         <Toolbar
           title="Your Locations"

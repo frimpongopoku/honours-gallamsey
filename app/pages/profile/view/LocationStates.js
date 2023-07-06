@@ -4,7 +4,7 @@ import PageTitle from '../../../components/intros/PageTitle';
 import GButton from '../../../components/button/Button';
 import TextBox from '../../../components/textbox/TextBox';
 
-export const GetLocationComponent = () => {
+export const GetLocationComponent = ({onPress}) => {
   return (
     <View>
       <PageTitle
@@ -12,7 +12,10 @@ export const GetLocationComponent = () => {
         title="Current Location"
         subtext="Calculate and save my current location"
       />
-      <GButton variant="green"> GET MY CURRENT LOCATION</GButton>
+      <GButton onPress={onPress} variant="green">
+        {' '}
+        GET MY CURRENT LOCATION
+      </GButton>
     </View>
   );
 };
