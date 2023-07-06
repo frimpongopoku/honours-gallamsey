@@ -10,6 +10,8 @@ import GBottomSheet from '../../../components/bottomsheet/GBottomSheet';
 import {GetLocationComponent, SaveOrEditLocation} from './LocationStates';
 import Geolocation from '@react-native-community/geolocation';
 import {PERMISSIONS, request} from 'react-native-permissions';
+import GContextDropdown from '../../../components/dropdown/GContextDropdown';
+import {MenuProvider} from 'react-native-popup-menu';
 
 const ManageLocations = () => {
   const requestLocationPermission = async () => {
@@ -48,26 +50,32 @@ const ManageLocations = () => {
       sheetContent={
         <GetLocationComponent onPress={requestLocationPermission} />
       }>
-      <View>
-        <Toolbar
-          title="Your Locations"
-          onBackPress={() => console.log('from locations')}
-        />
-        <ScrollView>
-          <PageTitle
-            title="Manage Locations"
-            subtext="Edit your saved locations here to make posting & finding errands easier"
-            v2
+      <MenuProvider>
+        <View>
+          <Toolbar
+            title="Your Locations"
+            onBackPress={() => console.log('from locations')}
           />
-          <View>
-            {[2, 3, 4, 5, 3, 2].map((item, index) => (
-              <View key={index?.toString()}>
-                <LocationItem />
-              </View>
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+          <ScrollView>
+            <PageTitle
+              title="Manage Locations"
+              subtext="Edit your saved locations here to make posting & finding errands easier"
+              v2
+            />
+
+            {/* <GContextDropdown>
+              <Text>Gbemi</Text>
+            </GContextDropdown> */}
+            <View>
+              {[2, 3, 4, 5, 3, 2].map((item, index) => (
+                <View key={index?.toString()}>
+                  <LocationItem />
+                </View>
+              ))}
+            </View>
+          </ScrollView>
+        </View>
+      </MenuProvider>
     </GBottomSheet>
   );
 };
@@ -79,7 +87,6 @@ const LocationItem = () => {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        // justifyContent: 'center',
         paddingHorizontal: 20,
         paddingVertical: 20,
         borderBottomWidth: 2,
@@ -110,9 +117,11 @@ const LocationItem = () => {
           </Text>
         </View>
       </View>
-      <TouchableOpacity style={{marginLeft: 'auto'}}>
-        <FontAwesomeIcon icon={faEllipsisH} size={27} color={colors.red} />
-      </TouchableOpacity>
+      <View style={{marginLeft: 'auto'}}>
+        <GContextDropdown>
+          <FontAwesomeIcon icon={faEllipsisH} size={27} color={colors.red} />
+        </GContextDropdown>
+      </View>
     </View>
   );
 };
