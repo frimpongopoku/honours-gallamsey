@@ -22,7 +22,7 @@ const PageTitle = props => {
       )}
       <Text style={styles.title}>{title || 'Page Title'}</Text>
       <Text style={styles.subtext}>
-        {subtext || 'Subtext is meant to be here...'}
+        {subtext}
       </Text>
     </View>
   );
@@ -31,7 +31,13 @@ const PageTitle = props => {
 const Version2 = ({title, subtext}) => {
   return (
     <View style={{display: 'flex', paddingVertical: 20, paddingHorizontal: 20}}>
-      <Text style={{color: colors.black, fontSize: 20, fontWeight: '700'}}>
+      <Text
+        style={{
+          color: colors.black,
+          fontSize: 20,
+          fontWeight: '700',
+          marginBottom: 6,
+        }}>
         {title || 'Page Title'}
       </Text>
       <Text style={{fontWeight: '500', color: colors.black}}>

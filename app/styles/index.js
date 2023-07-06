@@ -4,7 +4,9 @@ export const colors = {
   washedRed: '#FF5733',
   black: '#000000',
   green: '#13B623',
+  lightGrey: '#D9D9D9',
   transRed: '#FF5733',
   greyish: '#FBFBFB',
   grey: '#373737',
+  yellowish: '#EEBD10',
 };

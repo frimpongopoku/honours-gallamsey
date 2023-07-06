@@ -11,13 +11,15 @@ import ChangeProfilePhoto from './app/pages/profile/ChangeProfilePhoto';
 import CreateErrandScreen from './app/pages/create errand/CreateErrandScreen';
 import ViewErrandScreen from './app/pages/view errands/ViewErrandScreen';
 import ViewErrandMedia from './app/pages/view errands/ViewErrandMedia';
+import ViewProfileScreen from './app/pages/profile/view/ViewProfileScreen';
+import ManageLocations from './app/pages/profile/view/ManageLocations';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ViewErrand">
+      <Stack.Navigator initialRouteName="Locations">
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}
@@ -62,6 +64,16 @@ const Router = () => {
           name="ViewErrandMedia"
           options={{headerShown: false}}
           component={ViewErrandMedia}
+        />
+        <Stack.Screen
+          name="ViewProfile"
+          options={{headerShown: false}}
+          component={ViewProfileScreen}
+        />
+        <Stack.Screen
+          name="Locations"
+          options={{headerShown: false}}
+          component={ManageLocations}
         />
       </Stack.Navigator>
     </NavigationContainer>

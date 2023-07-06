@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     height: 56,
-    // backgroundColor: '#2196F3',
+    backgroundColor: 'white',
     borderBottomWidth: 2,
     borderColor: colors.red,
+    elevation: 10,
   },
   backButton: {
     color: colors.red,
