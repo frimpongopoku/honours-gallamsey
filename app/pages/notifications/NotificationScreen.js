@@ -1,0 +1,28 @@
+import {View, Text} from 'react-native';
+import React from 'react';
+import PageTitle from '../../components/intros/PageTitle';
+import Notification from './Notification';
+import {ScrollView} from 'react-native-gesture-handler';
+
+const NotificationScreen = () => {
+  return (
+    <View>
+      <PageTitle
+        v2
+        title="Notifications"
+        subtext="Manage your notifications here"
+      />
+
+      <ScrollView style={{paddingVertical: 20}}>
+        {[3, 4, 5, 3, 2, 2].map((_, index) => (
+          <View key={index?.toString()}>
+            <Notification />
+          </View>
+        ))}
+        {/* <Notification /> */}
+      </ScrollView>
+    </View>
+  );
+};
+
+export default NotificationScreen;

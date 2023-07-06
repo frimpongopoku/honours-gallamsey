@@ -19,7 +19,7 @@ const Stack = createStackNavigator();
 const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Locations">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}

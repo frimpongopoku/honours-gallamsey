@@ -13,15 +13,16 @@ import {colors} from '../../styles';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Selectors = ({selectors, onChange, activeKey}) => {
-
-
   return (
     <View
       style={{
         display: 'flex',
         flexDirection: 'row',
         backgroundColor: '#FBFBFB',
-        paddingVertical: 10,
+        width: '100%',
+        paddingVertical: 15,
+        justifyContent: 'space-evenly',
+        elevation: 10,
         position: 'absolute',
         bottom: 0,
       }}>
@@ -36,15 +37,18 @@ const Selectors = ({selectors, onChange, activeKey}) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flex: 1,
+          
+
             }}>
             <FontAwesomeIcon
               style={{flex: 1}}
               icon={tab.icon}
-              size={24}
+              size={22}
               color={theme}
             />
-            <Text style={{fontWeight: 'bold', color: theme}}>{tab.name}</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 12, color: theme}}>
+              {tab.name}
+            </Text>
           </TouchableOpacity>
         );
       })}
