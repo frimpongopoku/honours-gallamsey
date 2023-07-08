@@ -3,21 +3,28 @@ import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import GButton from './components/button/Button';
 
-const Splash = () => {
+const Splash = ({navigation}) => {
   return (
     <SafeAreaView>
-      <View style={{height: '100%', backgroundColor: 'red'}}>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <Text>This is the splash screeen</Text>
-        <GButton>Wait what is this</GButton>
+      <View
+        style={{
+          height: '100%',
+          backgroundColor: 'red',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <GButton
+          variant="green"
+          onPress={() => navigation.navigate('Home')}
+          style={{marginBottom: 10}}>
+          {' '}
+          TEST HOME PAGE
+        </GButton>
+        <GButton variant="black" onPress={() => navigation.navigate('Login')}>
+          {' '}
+          TEST AUTHENTICATION
+        </GButton>
       </View>
     </SafeAreaView>
   );

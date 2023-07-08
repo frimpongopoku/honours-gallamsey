@@ -7,14 +7,12 @@ import {ScrollView} from 'react-native-gesture-handler';
 import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({navigation}) => {
   return (
     <SafeAreaView style={{height: '100%'}}>
       <Toolbar
         title="Registration Page"
-        onBackPress={() =>
-          console.log('Tyring to go back from registration page')
-        }
+        onBackPress={() => navigation.goBack()}
       />
       <ScrollView>
         <View>
@@ -37,7 +35,11 @@ const RegistrationScreen = () => {
             generics={{secureTextEntry: true}}
           />
           <View style={{paddingHorizontal: 10, paddingVertical: 15}}>
-            <GButton variant="green">SIGN ME UP! </GButton>
+            <GButton
+              variant="green"
+              onPress={() => navigation.navigate('CompleteProfile')}>
+              SIGN ME UP!{' '}
+            </GButton>
           </View>
           <View style={{paddingVertical: 60}}></View>
         </View>

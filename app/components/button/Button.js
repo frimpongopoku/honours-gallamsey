@@ -30,8 +30,6 @@ const GButton = props => {
 
   const btnTheme = themes[variant] || themes.red;
 
- 
-
   if (floating) return <FloatingButton {...props} />;
   if (likeLink) return <BtnLikeLink {...props} />;
   return (
@@ -52,7 +50,7 @@ export default GButton;
 
 const BtnLikeLink = ({style, onPress, children}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} >
       <Text style={{textDecorationLine: 'underline', ...(style || {})}}>
         {children || 'click here...'}
       </Text>

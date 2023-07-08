@@ -40,16 +40,13 @@ const CreateErrandScreen = () => {
       <View
         style={{
           height: aboveBottomNav,
+          backgroundColor: 'white',
         }}>
-        <Toolbar
-          title={currentTab?.title || 'Create New Errand'}
-          onBackPress={() => console.log('here create errand')}
-        />
+        <Toolbar title={currentTab?.title || 'Create New Errand'} />
 
-        
         <TabView
           pages={TABS}
-          activeKey="cost"
+          activeKey="description"
           notifyOnChange={tab => setCurrentTab(tab)}
         />
       </View>

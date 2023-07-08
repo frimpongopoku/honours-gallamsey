@@ -10,11 +10,13 @@ import {
   faBell,
   faHome,
   faPaperPlane,
+  faPlus,
   faRunning,
 } from '@fortawesome/free-solid-svg-icons';
 import Feed from '../authentication/feed/Feed';
 import NotificationScreen from '../notifications/NotificationScreen';
 import {colors} from '../../styles';
+import GButton from '../../components/button/Button';
 
 const TABS = [
   {
@@ -42,7 +44,7 @@ const TABS = [
     component: <NotificationScreen />,
   },
 ];
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {aboveBottomNav} = fetchHeights();
 
   return (
@@ -52,8 +54,19 @@ const HomeScreen = () => {
           height: aboveBottomNav,
           backgroundColor: 'white',
         }}>
-        <Toolbar title="Gallamsey" />
-        <TabView pages={TABS} activeKey="notifications" />
+        <Toolbar
+          onUserPress={() => navigation.navigate('ViewProfile')}
+          title="Gallamsey"
+          v2
+        />
+
+        <TabView pages={TABS} activeKey="home" />
+        <GButton
+          onPress={() => navigation.navigate('CreateErrand')}
+          style={{bottom: 20, elevation: 30}}
+          floating
+          iconOptions={{icon: faPlus}}
+        />
       </View>
     </SafeAreaView>
   );

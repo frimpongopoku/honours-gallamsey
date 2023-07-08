@@ -11,12 +11,7 @@ const CreateProfile = () => {
   return (
     <SafeAreaView>
       <View style={{height: '100%'}}>
-        <Toolbar
-          title="Complete Your Profile"
-          onBackPress={() =>
-            console.log('Tyring to go back from createProfile page')
-          }
-        />
+        <Toolbar title="Complete Your Profile" />
         <View>
           {/* <PersonalInformation /> */}
           <Identification />

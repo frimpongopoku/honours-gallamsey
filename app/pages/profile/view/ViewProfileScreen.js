@@ -19,15 +19,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import BankCard from './BankCard';
 
-const ViewProfileScreen = () => {
+const ViewProfileScreen = ({navigation}) => {
   return (
     <SafeAreaView>
-      <Toolbar
-        title="Profile"
-        onBackPress={() =>
-          console.log('Here we go again coming back grom profile view')
-        }
-      />
+      <Toolbar title="Profile" />
       <ScrollView style={{padding: 20}}>
         <View
           style={{
@@ -47,6 +42,7 @@ const ViewProfileScreen = () => {
               }}
             />
             <TouchableOpacity
+              onPress={() => navigation.navigate('ChangeProfilePhoto')}
               style={{
                 position: 'absolute',
                 bottom: 0,
@@ -76,7 +72,11 @@ const ViewProfileScreen = () => {
         <UserEarningStats />
         <BankCard />
         <View style={{marginVertical: 20, marginBottom: 100}}>
-          <Header text="Edit your details" icon={faPencil} />
+          <Header
+            text="Edit your details"
+            icon={faPencil}
+            onPress={() => navigation.navigate('CompleteProfile')}
+          />
           <View style={{marginLeft: 20, paddingBottom: 20}}>
             <View
               style={{
@@ -117,7 +117,11 @@ const ViewProfileScreen = () => {
               </Text>
             </View>
           </View>
-          <Header text="Manage your locations" icon={faLocationPin} />
+          <Header
+            onPress={() => navigation.navigate('Locations')}
+            text="Manage your locations"
+            icon={faLocationPin}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -194,9 +198,10 @@ const UserEarningStats = () => {
     </View>
   );
 };
-const Header = ({icon, text}) => {
+const Header = ({icon, text, onPress}) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={{
         display: 'flex',
         flexDirection: 'row',

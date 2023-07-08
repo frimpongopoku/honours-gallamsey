@@ -19,12 +19,9 @@ const ViewErrandScreen = () => {
       // generics={{snapPoints: ['30%', '60%']}}
       generics={{snapPoints: ['30%']}}
       sheetContent={<AboutToPickErrand />}>
-      <Toolbar
-        title="A new pair of shoes"
-        onBackPress={() => console.log('Trying to go back from viewing errand')}
-      />
+      <Toolbar title="A new pair of shoes" />
       <ScrollView style={{marginBottom: 220, width: '100%'}}>
-        <View >
+        <View>
           <View
             style={{
               display: 'flex',
@@ -58,7 +55,7 @@ const ViewErrandScreen = () => {
           </View>
           {/* <DetailsOfErrand /> */}
 
-          <ErrandStateTracker />
+          <DetailsOfErrand />
         </View>
       </ScrollView>
       <GButton

@@ -19,7 +19,7 @@ const Stack = createStackNavigator();
 const Router = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}
@@ -46,7 +46,7 @@ const Router = () => {
           component={CreateProfile}
         />
         <Stack.Screen
-          name="ChangeProfile"
+          name="ChangeProfilePhoto"
           options={{headerShown: false}}
           component={ChangeProfilePhoto}
         />

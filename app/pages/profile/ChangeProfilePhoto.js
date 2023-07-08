@@ -16,12 +16,7 @@ const ChangeProfilePhoto = () => {
   return (
     <SafeAreaView>
       <View style={{height: '100%'}}>
-        <Toolbar
-          title="Change Profile Photo"
-          onBackPress={() =>
-            console.log('Tyring to go back from profile photo page')
-          }
-        />
+        <Toolbar title="Change Profile Photo" />
 
         <ScrollView>
           <PageTitle

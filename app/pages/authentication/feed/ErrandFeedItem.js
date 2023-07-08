@@ -4,8 +4,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../../styles';
 import ImagePro from '../../../components/image/ImagePro';
+import {useNavigation} from '@react-navigation/native';
 
-const ErrandFeedItem = () => {
+const ErrandFeedItem = ({}) => {
+  const navigation = useNavigation();
   return (
     <View style={{marginBottom: 15}}>
       <View
@@ -40,7 +42,9 @@ const ErrandFeedItem = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={{paddingHorizontal: 15}}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('ViewErrand')}
+        style={{paddingHorizontal: 15}}>
         <ImagePro
           style={{borderRadius: 10, height: 250}}
           imageUrl="https://picsum.photos/600"
@@ -91,7 +95,7 @@ const ErrandFeedItem = () => {
             </Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

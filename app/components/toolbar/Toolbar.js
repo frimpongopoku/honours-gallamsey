@@ -15,15 +15,22 @@ import {
   TouchableNativeFeedback,
 } from 'react-native';
 import {colors} from '../../styles';
+import {useNavigation} from '@react-navigation/native';
 
 const Toolbar = props => {
-  const {title, onBackPress, options = true} = props;
-  if (!onBackPress) {
-    return <ToolbarWithoutBack {...props} />;
+  const {title, onBackPress, options, v2} = props;
+  const navigation = useNavigation();
+
+  const handleBack = () => {
+    if (onBackPress) return onBackPress();
+    navigation.goBack();
+  };
+  if (v2) {
+    return <ToolbarWithoutBack {...props} onBackPress={handleBack} />;
   }
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onBackPress}>
+      <TouchableOpacity onPress={handleBack}>
         <FontAwesomeIcon size={22} icon={faLongArrowLeft} color={colors.red} />
       </TouchableOpacity>
 

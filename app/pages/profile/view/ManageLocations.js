@@ -52,10 +52,7 @@ const ManageLocations = () => {
       }>
       <MenuProvider>
         <View>
-          <Toolbar
-            title="Your Locations"
-            onBackPress={() => console.log('from locations')}
-          />
+          <Toolbar title="Your Locations" />
           <ScrollView>
             <PageTitle
               title="Manage Locations"
