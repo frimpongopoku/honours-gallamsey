@@ -11,6 +11,10 @@ import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 
+const errorStyles = {
+  label: {color: 'red'},
+  inputStyle: {borderColor: 'red', color: 'red'},
+};
 const LoginScreen = ({navigation}) => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
@@ -35,6 +39,8 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.subtext}>Help is on the way!</Text>
         <View style={{marginTop: 30, paddingHorizontal: 30}}>
           <TextBox
+            labelStyle={errors.email && errorStyles.labelStyle}
+            style={errors.email && errorStyles.inputStyle}
             name="email"
             onChange={handleInput}
             label="Email"
@@ -42,6 +48,8 @@ const LoginScreen = ({navigation}) => {
             placeholder="Enter your email..."
           />
           <TextBox
+            labelStyle={errors.password && errorStyles.labelStyle}
+            style={errors.password && errorStyles.inputStyle}
             value={form.password}
             name="password"
             onChange={handleInput}

@@ -30,13 +30,16 @@ const TextBox = ({
   onChange,
   name,
   value,
+  labelStyle,
 }) => {
   const handleChanges = text => {
     if (onChange) onChange({[name]: text});
   };
   return (
     <View style={{padding: 10, ...(containerStyle || {})}}>
-      <Text style={styles.label}>{label || 'Text'}</Text>
+      <Text style={{...styles.label, ...(labelStyle || {})}}>
+        {label || 'Text'}
+      </Text>
       <TextInput
         value={value || ''}
         onChangeText={handleChanges}
