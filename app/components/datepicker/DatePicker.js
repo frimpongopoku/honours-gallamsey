@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TextInput,
@@ -11,14 +11,19 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {colors} from '../../styles';
 import GButton from '../button/Button';
 
-const GDatePicker = ({generics}) => {
+const GDatePicker = ({generics, value, onChange, name}) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
+
+  useEffect(() => {
+    setSelectedDate(value);
+  }, [value]);
 
   const handleDateChange = (event, selected) => {
     setShowDatePicker(false);
     if (selected) {
       setSelectedDate(selected);
+      onChange && onChange({[name]: selected});
     }
   };
 

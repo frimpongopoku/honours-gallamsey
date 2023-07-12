@@ -10,11 +10,8 @@ import {colors} from '../../../styles';
 import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
+import { errorStyles } from '../../../utils';
 
-const errorStyles = {
-  label: {color: 'red'},
-  inputStyle: {borderColor: 'red', color: 'red'},
-};
 const LoginScreen = ({navigation}) => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
@@ -22,6 +19,9 @@ const LoginScreen = ({navigation}) => {
   const handleInput = changeObject => {
     setForm({...form, ...changeObject});
   };
+  const errorsForMe = (name) =>{
+    
+  }
 
   return (
     <KeyboardAvoidingView

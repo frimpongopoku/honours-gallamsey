@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import {colors} from '../../styles';
@@ -8,9 +8,15 @@ const GDropdown = ({
   data,
   valueExtractor,
   labelExtractor,
+  value,
+  name,
+  onChange,
 }) => {
   const [selectedValue, setSelectedValue] = useState('');
 
+  useEffect(() => {
+    setSelectedValue(value);
+  }, [value]);
   const getLabel = item => {
     if (labelExtractor) return labelExtractor(item);
     return item?.toString() || '...';
@@ -21,6 +27,7 @@ const GDropdown = ({
   };
   const handleValueChange = itemValue => {
     setSelectedValue(itemValue);
+    if (onChange) onChange({[name]: itemValue});
   };
 
   return (

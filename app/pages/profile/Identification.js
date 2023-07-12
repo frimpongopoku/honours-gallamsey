@@ -8,11 +8,11 @@ import GButton from '../../components/button/Button';
 import GDropdown from '../../components/dropdown/Dropdown';
 import GDatePicker from '../../components/datepicker/DatePicker';
 const idTypes = [
-  {key: 'momo', label: 'Momo'},
+  // {key: 'momo', label: 'Momo'},
   {key: 'passport', label: 'Passport'},
   {key: 'license', label: 'Drivers License'},
 ];
-const Identification = () => {
+const Identification = ({onChange, form, getError}) => {
   return (
     <View>
       <ScrollView>
@@ -23,19 +23,31 @@ const Identification = () => {
         />
         <View style={{paddingHorizontal: 20}}>
           <GDropdown
+            label="Choose an identification type"
+            value={form?.idType}
+            onChange={onChange}
+            name="idType"
             data={idTypes}
             labelExtractor={item => item.label}
             valueExtractor={item => item.key}
           />
           <TextBox
-            label="Passport Number"
-            placeholder="Enter your passport number..."
+            value={form?.idNumber}
+            onChange={onChange}
+            name="idNumber"
+            label="ID Number"
+            placeholder="Enter your ID number..."
           />
-          <TextBox
+          {/* <TextBox
+          name = "passportId"
             label="Date of expiration (passport)"
             placeholder="When will your passport expire..."
+          /> */}
+          <GDatePicker
+            value={form?.expiryDate}
+            onChange={onChange}
+            name="expiryDate"
           />
-          <GDatePicker />
           {/* <TextBox
             label="Expiration Number"
             placeholder="When will your passport expire..."

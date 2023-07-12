@@ -10,13 +10,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {colors} from '../../styles';
 import GButton from '../../components/button/Button';
 
-const ChangeProfilePhoto = () => {
+const ChangeProfilePhoto = ({toolbar = false}) => {
   const [chosenImage, setImage] = useState(null);
 
   return (
     <SafeAreaView>
       <View style={{height: '100%'}}>
-        <Toolbar title="Change Profile Photo" />
+        {toolbar && <Toolbar title="Change Profile Photo" />}
 
         <ScrollView>
           <PageTitle

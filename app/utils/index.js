@@ -1,5 +1,9 @@
 import {Dimensions, StatusBar} from 'react-native';
 
+export const errorStyles = {
+  labelStyle: {color: 'red'},
+  inputStyle: {borderColor: 'red', color: 'red'},
+};
 export const fetchHeights = () => {
   const _window = Dimensions.get('window').height;
   const screen = Dimensions.get('screen').height;
