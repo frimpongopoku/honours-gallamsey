@@ -5,13 +5,20 @@ import {
   Button,
   KeyboardAvoidingView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {colors} from '../../../styles';
 import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const LoginScreen = ({navigation}) => {
+  const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const handleInput = changeObject => {
+    setForm({...form, ...changeObject});
+  };
+
   return (
     <KeyboardAvoidingView
       style={{
@@ -27,11 +34,24 @@ const LoginScreen = ({navigation}) => {
         <Text style={styles.bigText}>Gallamsey</Text>
         <Text style={styles.subtext}>Help is on the way!</Text>
         <View style={{marginTop: 30, paddingHorizontal: 30}}>
-          <TextBox label="Email" placeholder="Enter your email..." />
-          <TextBox label="Password" placeholder="Enter your password..." />
-          <GButton likeLink style={styles.forgotten}>
+          <TextBox
+            name="email"
+            onChange={handleInput}
+            label="Email"
+            value={form.email}
+            placeholder="Enter your email..."
+          />
+          <TextBox
+            value={form.password}
+            name="password"
+            onChange={handleInput}
+            label="Password"
+            placeholder="Enter your password..."
+            generics={{secureTextEntry: true}}
+          />
+          {/* <GButton likeLink style={styles.forgotten}>
             I have forgotten my password
-          </GButton>
+          </GButton> */}
           <View style={{marginTop: 25, paddingHorizontal: 10}}>
             <GButton style={{}} variant="black">
               LOGIN

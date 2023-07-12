@@ -27,11 +27,19 @@ const TextBox = ({
   children,
   style,
   containerStyle,
+  onChange,
+  name,
+  value,
 }) => {
+  const handleChanges = text => {
+    if (onChange) onChange({[name]: text});
+  };
   return (
     <View style={{padding: 10, ...(containerStyle || {})}}>
       <Text style={styles.label}>{label || 'Text'}</Text>
       <TextInput
+        value={value || ''}
+        onChangeText={handleChanges}
         multiline={textarea}
         numberOfLines={textarea ? 10 : 1}
         textAlignVertical={textarea ? 'top' : 'auto'}
