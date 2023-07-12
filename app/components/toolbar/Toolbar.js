@@ -1,6 +1,7 @@
 import {
   faBackward,
   faBell,
+  faCog,
   faEllipsis,
   faLongArrowLeft,
   faUser,
@@ -44,14 +45,14 @@ const Toolbar = props => {
   );
 };
 
-const ToolbarWithoutBack = ({title, onNotification, onUserPress}) => {
+const ToolbarWithoutBack = ({title, onCogPress, onUserPress}) => {
   return (
     <View style={styles.container}>
       <Text style={{...styles.title, textAlign: 'left'}}>{title}</Text>
 
       <View style={{marginLeft: 'auto', display: 'flex', flexDirection: 'row'}}>
-        <TouchableOpacity onPress={onNotification} style={{marginRight: 20}}>
-          <FontAwesomeIcon icon={faBell} size={22} color={colors.red} />
+        <TouchableOpacity onPress={onCogPress} style={{marginRight: 20}}>
+          <FontAwesomeIcon icon={faCog} size={22} color={colors.red} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onUserPress} style={{marginRight: 5}}>
           <FontAwesomeIcon icon={faUser} size={22} color={colors.red} />

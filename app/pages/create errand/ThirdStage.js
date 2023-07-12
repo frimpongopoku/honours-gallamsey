@@ -7,7 +7,7 @@ import GButton from '../../components/button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
 
-const ThirdStage = () => {
+const ThirdStage = ({onChange, form, getError}) => {
   return (
     <View style={{height: '100%'}}>
       <ScrollView>
@@ -27,6 +27,9 @@ const ThirdStage = () => {
             Current Balance: GHS 880
           </Text>
           <TextBox
+            name="cost"
+            onChange={onChange}
+            value={form?.cost}
             label="Cost of errand"
             generics={{keyboardType: 'numeric'}}
             placeholder="How much will everything in the errand cost...">
@@ -37,6 +40,9 @@ const ThirdStage = () => {
             </Text>
           </TextBox>
           <TextBox
+            name="compensation"
+            onChange={onChange}
+            value={form?.compensation}
             label="Compensation Amount "
             generics={{keyboardType: 'numeric'}}
             placeholder="Amount for runner...">

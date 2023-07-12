@@ -13,6 +13,7 @@ import ViewErrandScreen from './app/pages/view errands/ViewErrandScreen';
 import ViewErrandMedia from './app/pages/view errands/ViewErrandMedia';
 import ViewProfileScreen from './app/pages/profile/view/ViewProfileScreen';
 import ManageLocations from './app/pages/profile/view/ManageLocations';
+import SettingsScreen from './app/pages/settings/SettingsScreen';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,11 @@ const Router = () => {
           name="Locations"
           options={{headerShown: false}}
           component={ManageLocations}
+        />
+        <Stack.Screen
+          name="Settings"
+          options={{headerShown: false}}
+          component={SettingsScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

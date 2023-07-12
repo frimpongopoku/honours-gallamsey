@@ -56,6 +56,7 @@ const HomeScreen = ({navigation}) => {
         }}>
         <Toolbar
           onUserPress={() => navigation.navigate('ViewProfile')}
+          onCogPress={() => navigation.navigate('Settings')}
           title="Gallamsey"
           v2
         />

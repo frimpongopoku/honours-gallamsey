@@ -33,6 +33,7 @@ const TextBox = ({
   labelStyle,
 }) => {
   const handleChanges = text => {
+    // console.log('What is typed', text);
     if (onChange) onChange({[name]: text});
   };
   return (
@@ -41,7 +42,7 @@ const TextBox = ({
         {label || 'Text'}
       </Text>
       <TextInput
-        value={value || ''}
+        // value={value || ''}
         onChangeText={handleChanges}
         multiline={textarea}
         numberOfLines={textarea ? 10 : 1}
