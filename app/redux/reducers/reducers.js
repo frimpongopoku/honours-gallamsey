@@ -12,3 +12,9 @@ if (action.type === UPDATE_ERRAND_FORM) {
   }
   return state;
 };
+export const reducerForUniversalModal = (state = {}, action = {}) => {
+if (action.type === UPDATE_ERRAND_FORM) {
+    return action.payload;
+  }
+  return state;
+};

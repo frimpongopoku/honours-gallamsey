@@ -1,8 +1,11 @@
-import {DO_NOTHING, UPDATE_ERRAND_FORM} from '../redux-constants.js';
+import {DO_NOTHING, TOGGLE_UNIVERSAL_MODAL, UPDATE_ERRAND_FORM} from '../redux-constants.js';
 
 export const testReduxAction = someValue => {
   return {type: DO_NOTHING, payload: someValue};
 };
 export const updateErrandFormAction = data => {
   return {type: UPDATE_ERRAND_FORM, payload: data};
+};
+export const toggleUniversalModal = data => {
+  return {type: TOGGLE_UNIVERSAL_MODAL, payload: data};
 };

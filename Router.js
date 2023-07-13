@@ -14,12 +14,23 @@ import ViewErrandMedia from './app/pages/view errands/ViewErrandMedia';
 import ViewProfileScreen from './app/pages/profile/view/ViewProfileScreen';
 import ManageLocations from './app/pages/profile/view/ManageLocations';
 import SettingsScreen from './app/pages/settings/SettingsScreen';
+import {Text} from 'react-native';
+import GModal from './app/components/modal/Modal';
+import AsDialogBox from './app/components/modal/AsDialogBox';
+import {bindActionCreators} from 'redux';
+import {toggleUniversalModal} from './app/redux/actions/actions';
+import {connect} from 'react-redux';
 
 const Stack = createStackNavigator();
 
-const Router = () => {
+const Router = ({modalOptions}) => {
   return (
     <NavigationContainer>
+      <GModal
+        close={() => toggleModal({...(modalOptions || {}), show: false})}
+        {...(modalOptions || {})}>
+        {modalOptions?.component}
+      </GModal>
       <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen
           name="Splash"
@@ -86,4 +97,15 @@ const Router = () => {
   );
 };
 
-export default Router;
+const mapStateToProps = state => {
+  return {modalOptions: state.modal};
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      toggleModal: toggleUniversalModal,
+    },
+    dispatch,
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(Router);

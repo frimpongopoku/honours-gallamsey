@@ -1,25 +1,30 @@
 import {faTimesCircle} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {colors} from '../../styles';
 
-const GModal = ({show, children, style}) => {
-  const [modalVisible, setModalVisible] = useState(false);
+const GModal = ({show, children, style, close}) => {
+  const [modalVisible, setModalVisible] = useState(show);
 
-  const openModal = () => {
-    setModalVisible(true);
-  };
+  // const openModal = () => {
+  //   setModalVisible(true);
+  // };
 
   const closeModal = () => {
+    close && close();
     setModalVisible(false);
   };
+  useEffect(() => {
+    setModalVisible(show);
+  }, [show]);
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={openModal} style={styles.button}>
+    // <View style={styles.container}>
+    <View>
+      {/* <TouchableOpacity onPress={openModal} style={styles.button}>
         <Text style={styles.buttonText}>Open Modal</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <View style={styles.modalContainer}>
@@ -59,6 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'blue',
   },
   button: {
     backgroundColor: '#2196F3',
