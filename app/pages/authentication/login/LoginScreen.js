@@ -10,7 +10,7 @@ import {colors} from '../../../styles';
 import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
-import { errorStyles } from '../../../utils';
+import {errorStyles} from '../../../utils';
 
 const LoginScreen = ({navigation}) => {
   const [form, setForm] = useState({});
@@ -19,9 +19,6 @@ const LoginScreen = ({navigation}) => {
   const handleInput = changeObject => {
     setForm({...form, ...changeObject});
   };
-  const errorsForMe = (name) =>{
-    
-  }
 
   return (
     <KeyboardAvoidingView
@@ -61,7 +58,7 @@ const LoginScreen = ({navigation}) => {
             I have forgotten my password
           </GButton> */}
           <View style={{marginTop: 25, paddingHorizontal: 10}}>
-            <GButton style={{}} variant="black">
+            <GButton style={{}} variant="black" loading disabled>
               LOGIN
             </GButton>
           </View>

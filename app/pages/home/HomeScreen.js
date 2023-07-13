@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Toolbar from '../../components/toolbar/Toolbar';
 import TabView from '../../components/tabs/TabView';
@@ -17,6 +17,8 @@ import Feed from '../authentication/feed/Feed';
 import NotificationScreen from '../notifications/NotificationScreen';
 import {colors} from '../../styles';
 import GButton from '../../components/button/Button';
+import {apiCall} from '../../api/messenger';
+import {ALL_ERRANDS} from '../../api/urls';
 
 const TABS = [
   {
@@ -46,6 +48,11 @@ const TABS = [
 ];
 const HomeScreen = ({navigation}) => {
   const {aboveBottomNav} = fetchHeights();
+  useEffect(() => {
+    apiCall(ALL_ERRANDS, {}, response => {
+      console.log('LE_API_RESPONSE{', response);
+    });
+  }, []);
 
   return (
     <SafeAreaView>

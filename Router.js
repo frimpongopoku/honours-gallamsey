@@ -23,7 +23,7 @@ import {connect} from 'react-redux';
 
 const Stack = createStackNavigator();
 
-const Router = ({modalOptions}) => {
+const Router = ({modalOptions, toggleModal}) => {
   return (
     <NavigationContainer>
       <GModal

@@ -4,6 +4,7 @@ import {
   TouchableNativeFeedback,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import {colors} from '../../styles';
@@ -21,6 +22,8 @@ const GButton = props => {
     likeLink,
     rippleColor,
     floating,
+    loading,
+    disabled,
   } = props;
   const themes = {
     red: {backgroundColor: colors.red},
@@ -30,14 +33,26 @@ const GButton = props => {
 
   const btnTheme = themes[variant] || themes.red;
 
+  const handlePress = () => {
+    if (loading || disabled) return;
+    onPress && onPress();
+  };
+
   if (floating) return <FloatingButton {...props} />;
   if (likeLink) return <BtnLikeLink {...props} />;
   return (
     <TouchableNativeFeedback
-      onPress={onPress}
+      onPress={handlePress}
       // onPress={handlePress}
       background={TouchableNativeFeedback.Ripple(rippleColor || 'white')}>
-      <View style={{...styles.button, ...btnTheme, ...(style || {})}}>
+      <View
+        style={{
+          ...styles.button,
+          ...btnTheme,
+          ...(style || {}),
+          ...(disabled ? styles.disabled : {}),
+        }}>
+        {loading && <ActivityIndicator style={{marginRight: 7}} />}
         <Text style={{...styles.buttonText, ...(textStyle || {})}}>
           {children || 'CLICK HERE'}
         </Text>
@@ -50,7 +65,7 @@ export default GButton;
 
 const BtnLikeLink = ({style, onPress, children}) => {
   return (
-    <TouchableOpacity onPress={onPress} >
+    <TouchableOpacity onPress={onPress}>
       <Text style={{textDecorationLine: 'underline', ...(style || {})}}>
         {children || 'click here...'}
       </Text>
@@ -102,10 +117,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 13,
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
 
     // borderRadius: 5,
+  },
+  disabled: {
+    backgroundColor: 'grey',
+    opacity: 0.6,
   },
   buttonText: {
     color: 'white',
