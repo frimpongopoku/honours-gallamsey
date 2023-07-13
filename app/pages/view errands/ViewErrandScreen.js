@@ -1,5 +1,5 @@
 import {View, Text, SafeAreaView} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Toolbar from '../../components/toolbar/Toolbar';
 import {colors} from '../../styles';
 import Paragraph from '../../components/paragraph/Paragraph';
@@ -14,13 +14,21 @@ import DetailsOfErrand from './DetailsOfErrand';
 import ErrandStateTracker from './ErrandStateTracker';
 
 const ViewErrandScreen = () => {
+  const [running, setRunning] = useState(false);
   return (
     <GBottomSheet
       // generics={{snapPoints: ['30%', '60%']}}
       generics={{snapPoints: ['30%']}}
-      sheetContent={<AboutToPickErrand />}>
+      sheetContent={
+        running ? (
+          <CanCancelRunningErrand cancel={() => setRunning(false)} />
+        ) : (
+          <AboutToPickErrand pickErrand={() => setRunning(true)} />
+        )
+      }>
       <Toolbar title="A new pair of shoes" />
-      <ScrollView style={{marginBottom: 220, width: '100%'}}>
+      <ScrollView
+        style={{marginBottom: 220, width: '100%', backgroundColor: 'white'}}>
         <View>
           <View
             style={{
@@ -55,7 +63,7 @@ const ViewErrandScreen = () => {
           </View>
           {/* <DetailsOfErrand /> */}
 
-          <DetailsOfErrand />
+          {running ? <ErrandStateTracker /> : <DetailsOfErrand />}
         </View>
       </ScrollView>
       <GButton

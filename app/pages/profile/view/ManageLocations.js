@@ -51,7 +51,7 @@ const ManageLocations = () => {
         <GetLocationComponent onPress={requestLocationPermission} />
       }>
       <MenuProvider>
-        <View>
+        <View style={{backgroundColor: 'white'}}>
           <Toolbar title="Your Locations" />
           <ScrollView>
             <PageTitle

@@ -5,7 +5,7 @@ import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const AboutToPickErrand = () => {
+const AboutToPickErrand = ({pickErrand}) => {
   return (
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
@@ -28,7 +28,9 @@ const AboutToPickErrand = () => {
           Unsatisfied users may result in you not getting payed.
         </Paragraph>
       </View>
-      <GButton variant="green">RUN THIS</GButton>
+      <GButton onPress={pickErrand} variant="green">
+        RUN THIS
+      </GButton>
     </ScrollView>
   );
 };

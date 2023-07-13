@@ -5,7 +5,7 @@ import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const CanCancelRunningErrand = () => {
+const CanCancelRunningErrand = ({cancel}) => {
   return (
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
@@ -29,7 +29,7 @@ const CanCancelRunningErrand = () => {
         </Paragraph>
       </View>
       <View style={{display: 'flex', flexDirection: 'row'}}>
-        <GButton variant="red" style={{flex: 1}}>
+        <GButton onPress={cancel} variant="red" style={{flex: 1}}>
           CANCEL
         </GButton>
         <GButton variant="green" style={{flex: 1}}>

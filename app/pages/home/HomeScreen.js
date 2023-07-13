@@ -49,9 +49,9 @@ const TABS = [
 const HomeScreen = ({navigation}) => {
   const {aboveBottomNav} = fetchHeights();
   useEffect(() => {
-    apiCall(ALL_ERRANDS, {}, response => {
-      console.log('LE_API_RESPONSE{', response);
-    });
+    // apiCall(ALL_ERRANDS, {}, response => {
+    //   console.log('LE_API_RESPONSE{', response);
+    // });
   }, []);
 
   return (
