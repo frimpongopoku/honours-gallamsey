@@ -20,10 +20,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import BankCard from './BankCard';
 import GContextDropdown from '../../../components/dropdown/GContextDropdown';
+import {bindActionCreators} from 'redux';
+import {firebaseSignOutAction} from '../../../redux/actions/actions';
+import {connect} from 'react-redux';
 
-const ViewProfileScreen = ({navigation}) => {
+const ViewProfileScreen = ({navigation, signOutFromFirebase}) => {
   const signOut = () => {
-    console.log('yes, I have just signed out maan fuck off');
+    signOutFromFirebase();
   };
   return (
     <SafeAreaView>
@@ -239,4 +242,7 @@ const Header = ({icon, text, onPress}) => {
     </TouchableOpacity>
   );
 };
-export default ViewProfileScreen;
+
+const mapStateToProps = dispatch =>
+  bindActionCreators({signOutFromFirebase: firebaseSignOutAction}, dispatch);
+export default connect(null, mapStateToProps)(ViewProfileScreen);

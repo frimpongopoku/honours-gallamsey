@@ -1,4 +1,10 @@
-import {DO_NOTHING, LOAD_FIREBASE_USER, TOGGLE_UNIVERSAL_MODAL, UPDATE_ERRAND_FORM} from '../redux-constants.js';
+import {signoutOfFirebase} from '../../firebase/utils.js';
+import {
+  DO_NOTHING,
+  LOAD_FIREBASE_USER,
+  TOGGLE_UNIVERSAL_MODAL,
+  UPDATE_ERRAND_FORM,
+} from '../redux-constants.js';
 
 export const testReduxAction = someValue => {
   return {type: DO_NOTHING, payload: someValue};
@@ -11,4 +17,8 @@ export const toggleUniversalModal = data => {
 };
 export const loadFirebaseUserAction = data => {
   return {type: LOAD_FIREBASE_USER, payload: data};
+};
+export const firebaseSignOutAction = () => dispatch => {
+  signoutOfFirebase();
+  loadFirebaseUserAction(null);
 };
