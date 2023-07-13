@@ -64,3 +64,5 @@ yarn-error.log
 
 # testing
 /coverage
+app/firebase/config.js
+android/app/google-services.json

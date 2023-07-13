@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Button,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors} from '../../../styles';
@@ -11,14 +12,21 @@ import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 import {errorStyles} from '../../../utils';
+import {useEmailAndPassword} from '../../../firebase/utils';
 
 const LoginScreen = ({navigation}) => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleInput = changeObject => {
     setForm({...form, ...changeObject});
   };
+
+  const addError = errorObj => {
+    setErrors({...errors, ...errorObj});
+  };
+
 
   return (
     <KeyboardAvoidingView

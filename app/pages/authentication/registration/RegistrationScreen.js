@@ -1,4 +1,4 @@
-import {View, Text, KeyboardAvoidingView} from 'react-native';
+import {View, Text, KeyboardAvoidingView, Alert} from 'react-native';
 import React, {useState} from 'react';
 import Toolbar from '../../../components/toolbar/Toolbar';
 import PageTitle from '../../../components/intros/PageTitle';
@@ -7,11 +7,16 @@ import {ScrollView} from 'react-native-gesture-handler';
 import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {errorStyles} from '../../../utils';
+import {useEmailAndPassword} from '../../../firebase/utils';
 
 const RegistrationScreen = ({navigation}) => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
+  const addError = errorObj => {
+    setErrors({...errors, ...errorObj});
+  };
   const handleInput = changeObject => {
     setForm({...form, ...changeObject});
   };
@@ -20,6 +25,24 @@ const RegistrationScreen = ({navigation}) => {
     const message = errors[name];
     if (!message) return {};
     return {message, labelStyle, inputStyle};
+  };
+
+  const register = () => {
+    if (!form.email) return addError({email: 'Please enter a valid email'});
+    if (!form.password)
+      return addError({password: 'Please enter a valid password'});
+    if (form.password !== form.confirmPassword)
+      return addError({
+        confirmPassword: 'Please make sure passwords match...!',
+      });
+    setErrors({});
+    setLoading(true);
+    useEmailAndPassword(form.email, form.password, (response, error) => {
+      setLoading(false);
+
+      if (error) return Alert.alert(error);
+      console.log('USER OBJECT HERE ', response.user);
+    });
   };
 
   const emailError = getError('email');
@@ -72,8 +95,12 @@ const RegistrationScreen = ({navigation}) => {
           />
           <View style={{paddingHorizontal: 10, paddingVertical: 15}}>
             <GButton
+              loading={loading}
+              disabled={loading}
+              onPress={register}
               variant="green"
-              onPress={() => navigation.navigate('CompleteProfile')}>
+              // onPress={() => navigation.navigate('CompleteProfile')}
+            >
               SIGN ME UP!{' '}
             </GButton>
           </View>

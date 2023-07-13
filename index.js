@@ -11,13 +11,17 @@ import {Provider} from 'react-redux';
 import store from './app/redux/store';
 import Router from './Router';
 
+import {firebaseConfig} from './app/firebase/config';
 const Root = () => {
   return (
-    <Provider store={store}>
-      {/* <GestureHandlerRootView> */}
-        <Router />
-      {/* </GestureHandlerRootView> */}
-    </Provider>
+    // <FirebaseAppProvider config={firebaseConfig}>
+    //   <FirebaseAuthProvider>
+    
+        <Provider store={store}>
+          <Router />
+        </Provider>
+    //   </FirebaseAuthProvider>
+    // </FirebaseAppProvider>
   );
 };
 

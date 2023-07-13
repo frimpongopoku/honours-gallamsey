@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -18,12 +18,23 @@ import {Text} from 'react-native';
 import GModal from './app/components/modal/Modal';
 import AsDialogBox from './app/components/modal/AsDialogBox';
 import {bindActionCreators} from 'redux';
-import {toggleUniversalModal} from './app/redux/actions/actions';
+import {
+  loadFirebaseUserAction,
+  toggleUniversalModal,
+} from './app/redux/actions/actions';
 import {connect} from 'react-redux';
+import {checkUserAuthenticationStatus} from './app/firebase/utils';
 
 const Stack = createStackNavigator();
 
-const Router = ({modalOptions, toggleModal}) => {
+const Router = ({modalOptions, toggleModal, fireAuth, setFirebaseUser}) => {
+  useEffect(() => {
+    checkUserAuthenticationStatus(user => {
+      setFirebaseUser(user);
+      console.log('USER IN ROUTER', user);
+    });
+  }, [fireAuth]);
+
   return (
     <NavigationContainer>
       <GModal
@@ -98,13 +109,14 @@ const Router = ({modalOptions, toggleModal}) => {
 };
 
 const mapStateToProps = state => {
-  return {modalOptions: state.modal};
+  return {modalOptions: state.modal, fireAuth: state.fireAuth};
 };
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       toggleModal: toggleUniversalModal,
+      setFirebaseUser: loadFirebaseUserAction,
     },
     dispatch,
   );

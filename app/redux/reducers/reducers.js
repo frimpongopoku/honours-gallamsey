@@ -1,4 +1,8 @@
-import {DO_NOTHING, UPDATE_ERRAND_FORM} from '../redux-constants';
+import {
+  DO_NOTHING,
+  LOAD_FIREBASE_USER,
+  UPDATE_ERRAND_FORM,
+} from '../redux-constants';
 
 export const doNothingReducer = (state = [], action = {}) => {
   if (action.type === DO_NOTHING) {
@@ -7,13 +11,19 @@ export const doNothingReducer = (state = [], action = {}) => {
   return state;
 };
 export const reducerForErrandForm = (state = {}, action = {}) => {
-if (action.type === UPDATE_ERRAND_FORM) {
+  if (action.type === UPDATE_ERRAND_FORM) {
     return action.payload;
   }
   return state;
 };
 export const reducerForUniversalModal = (state = {}, action = {}) => {
-if (action.type === UPDATE_ERRAND_FORM) {
+  if (action.type === UPDATE_ERRAND_FORM) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerToLoadFirebaseUser = (state = {}, action = {}) => {
+  if (action.type === LOAD_FIREBASE_USER) {
     return action.payload;
   }
   return state;

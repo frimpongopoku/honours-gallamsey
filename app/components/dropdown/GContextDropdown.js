@@ -6,18 +6,18 @@ import {
   UIManager,
   findNodeHandle,
 } from 'react-native';
+const BUTTONS = ['Option 1', 'Option 2', 'Option 3', 'Cancel'];
 
-const GContextDropdown = ({children}) => {
+const GContextDropdown = ({children, onItemSelected, data}) => {
   const showContextMenu = () => {
-    const BUTTONS = ['Option 1', 'Option 2', 'Option 3', 'Cancel'];
-
     UIManager.showPopupMenu(
       findNodeHandle(buttonRef.current),
-      BUTTONS,
+      data || BUTTONS,
       () => {},
       (result, index) => {
         if (result === 'itemSelected') {
-          handleOptionSelect(index);
+          onItemSelected((data || [])[index]);
+          // handleOptionSelect(index);
         }
       },
     );

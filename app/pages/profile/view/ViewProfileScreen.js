@@ -6,6 +6,7 @@ import ImagePro from '../../../components/image/ImagePro';
 import {colors} from '../../../styles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
+  faEllipsisH,
   faEnvelope,
   faLocation,
   faLocationPin,
@@ -18,11 +19,26 @@ import {
   faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import BankCard from './BankCard';
+import GContextDropdown from '../../../components/dropdown/GContextDropdown';
 
 const ViewProfileScreen = ({navigation}) => {
+  const signOut = () => {
+    console.log('yes, I have just signed out maan fuck off');
+  };
   return (
     <SafeAreaView>
-      <Toolbar title="Profile" />
+      <Toolbar
+        title="Profile"
+        options={
+          <GContextDropdown
+            data={['Signout']}
+            onItemSelected={selected =>
+              selected?.toLowerCase() === 'signout' && signOut()
+            }>
+            <FontAwesomeIcon size={22} color={colors.red} icon={faEllipsisH} />
+          </GContextDropdown>
+        }
+      />
       <ScrollView style={{padding: 20}}>
         <View
           style={{

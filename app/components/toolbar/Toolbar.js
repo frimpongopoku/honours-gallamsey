@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import {colors} from '../../styles';
 import {useNavigation} from '@react-navigation/native';
+import GContextDropdown from '../dropdown/GContextDropdown';
 
 const Toolbar = props => {
   const {title, onBackPress, options, v2} = props;
@@ -36,11 +37,13 @@ const Toolbar = props => {
       </TouchableOpacity>
 
       <Text style={styles.title}>{title}</Text>
-      {options && (
-        <TouchableOpacity onPress={onBackPress} style={{marginLeft: 'auto'}}>
+      <View style={{marginLeft: 'auto'}}>{options}</View>
+      {/* {options && <GContextDropdown />} */}
+      {/* <TouchableOpacity
+          onPress={options?.onPress}
+          style={{marginLeft: 'auto'}}>
           <FontAwesomeIcon size={22} icon={faEllipsis} color={colors.red} />
-        </TouchableOpacity>
-      )}
+        </TouchableOpacity> */}
     </View>
   );
 };
