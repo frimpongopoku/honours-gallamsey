@@ -5,6 +5,7 @@ import {
   reducerForUniversalModal,
   reducerToLoadFirebaseUser,
   reducerToLoadUserLocations,
+  reducerToSetUserPreferences,
 } from './reducers';
 
 export default combineReducers({
@@ -13,4 +14,5 @@ export default combineReducers({
   modal: reducerForUniversalModal,
   fireAuth: reducerToLoadFirebaseUser,
   userLocations: reducerToLoadUserLocations,
+  userPreferences: reducerToSetUserPreferences,
 });

@@ -13,8 +13,10 @@ const NotificationScreen = () => {
         subtext="Manage your notifications here"
       />
 
-      <ScrollView style={{paddingVertical: 20}}>
-        {[3, 4, 5, 3, 2, 2].map((_, index) => (
+      <ScrollView
+        style={{paddingVertical: 20, height: '100%', backgroundColor: 'white'}}>
+        <Notification complete subtext="COMPLETE (GHS 175)" />
+        {[3, 2, 2].map((_, index) => (
           <View key={index?.toString()}>
             <Notification />
           </View>

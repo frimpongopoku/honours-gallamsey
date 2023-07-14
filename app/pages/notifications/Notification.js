@@ -2,10 +2,10 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import ImagePro from '../../components/image/ImagePro';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faRunning} from '@fortawesome/free-solid-svg-icons';
+import {faCheckCircle, faRunning} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../styles';
 
-const Notification = () => {
+const Notification = ({complete, title, subtext, date}) => {
   return (
     <View
       style={{
@@ -30,16 +30,16 @@ const Notification = () => {
       />
       <View style={{marginHorizontal: 15}}>
         <Text style={{fontWeight: '600', color: colors.black, fontSize: 16}}>
-          Buy me new shoes
+          {title || 'Buy me new shoes'}
         </Text>
         <Text style={{fontWeight: '500', color: colors.green, fontSize: 14}}>
-          Lydia picked your errand up
+          {subtext || 'Lydia picked your errand up'}
         </Text>
         <Text>30 seconds ago</Text>
       </View>
       <FontAwesomeIcon
         style={{marginLeft: 'auto'}}
-        icon={faRunning}
+        icon={complete ? faCheckCircle : faRunning}
         size={28}
         color={colors.green}
       />

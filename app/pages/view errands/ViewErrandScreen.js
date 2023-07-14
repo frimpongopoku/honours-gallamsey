@@ -17,7 +17,7 @@ import {connect} from 'react-redux';
 import {toggleUniversalModal} from '../../redux/actions/actions';
 import AsDialogBox from '../../components/modal/AsDialogBox';
 
-const ViewErrandScreen = ({toggleModal}) => {
+const ViewErrandScreen = ({toggleModal, navigation}) => {
   const [running, setRunning] = useState(false);
   return (
     <GBottomSheet
@@ -27,8 +27,26 @@ const ViewErrandScreen = ({toggleModal}) => {
         running ? (
           <CanCancelRunningErrand
             done={() => {
-              console.log('Done is tapped');
-              toggleModal({show: true, component: <AsDialogBox />});
+              toggleModal({
+                show: true,
+                component: (
+                  <AsDialogBox
+                    textOptions={{
+                      text: 'Errand is complete, so request for funds?',
+                    }}
+                    noOptions={{
+                      text: 'NOT YET',
+                      onPress: () => toggleModal({show: false}),
+                    }}
+                    yesOptions={{
+                      onPress: () => {
+                        navigation.navigate('Home');
+                        toggleModal({show: false});
+                      },
+                    }}
+                  />
+                ),
+              });
             }}
             cancel={() => setRunning(false)}
           />

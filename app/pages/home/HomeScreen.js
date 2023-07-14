@@ -19,6 +19,7 @@ import {colors} from '../../styles';
 import GButton from '../../components/button/Button';
 import {apiCall} from '../../api/messenger';
 import {ALL_ERRANDS} from '../../api/urls';
+import {connect} from 'react-redux';
 
 const TABS = [
   {
@@ -80,4 +81,8 @@ const HomeScreen = ({navigation}) => {
   );
 };
 
-export default HomeScreen;
+const mapStateToProps = state => {
+  return {preferences: state.userPreferences};
+};
+
+export default connect(mapStateToProps)(HomeScreen);

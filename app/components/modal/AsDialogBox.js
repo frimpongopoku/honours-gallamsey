@@ -23,6 +23,7 @@ const AsDialogBox = ({textOptions, yesOptions, noOptions}) => {
       </Text>
       <View style={{display: 'flex', flexDirection: 'row', marginTop: 20}}>
         <GButton
+          onPress={noOptions?.onPress}
           variant="red"
           textStyle={{fontSize: 11}}
           style={{
@@ -34,6 +35,7 @@ const AsDialogBox = ({textOptions, yesOptions, noOptions}) => {
           {noOptions?.text || 'NO'}
         </GButton>
         <GButton
+          onPress={yesOptions?.onPress}
           variant="black"
           textStyle={{fontSize: 11}}
           style={{

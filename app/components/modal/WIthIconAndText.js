@@ -1,7 +1,11 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faTimes, faTimesCircle} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEllipsisH,
+  faTimes,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 
 const WIthIconAndText = ({iconOptions, textOptions}) => {
   return (
@@ -15,7 +19,7 @@ const WIthIconAndText = ({iconOptions, textOptions}) => {
       }}>
       <FontAwesomeIcon
         color={iconOptions?.color || 'black'}
-        icon={iconOptions?.icon}
+        icon={iconOptions?.icon || faEllipsisH}
         size={35}
         style={{marginBottom: 10}}
       />

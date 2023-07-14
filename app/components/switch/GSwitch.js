@@ -1,11 +1,17 @@
 import {View, Text, Switch} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
-const GSwitch = ({label}) => {
-  const [toggleValue, setToggleValue] = useState(false);
+const GSwitch = ({label, onChange, value}) => {
+  const [toggleValue, setToggleValue] = useState(value);
+  console.log('This is the value now', value);
+
+  useEffect(() => {
+    setToggleValue(value);
+  }, [value]);
 
   const handleToggleChange = value => {
-    setToggleValue(value);
+    onChange && onChange(value);
+    // setToggleValue(value);
   };
 
   return (

@@ -6,7 +6,7 @@ import {colors} from '../../../styles';
 import ImagePro from '../../../components/image/ImagePro';
 import {useNavigation} from '@react-navigation/native';
 
-const ErrandFeedItem = ({}) => {
+const ErrandFeedItem = ({showDistanceInformation}) => {
   const navigation = useNavigation();
   return (
     <View style={{marginBottom: 15}}>
@@ -54,9 +54,13 @@ const ErrandFeedItem = ({}) => {
           onLoad={e => console.log('Image DON LOAD')}
           source={{uri: 'https://i.pravatar.cc/600'}}
         /> */}
-        <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
-          Delivery destination is only 3 mins walk away
-        </Text>
+        {showDistanceInformation ? (
+          <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
+            Delivery destination is only 3 mins walk away
+          </Text>
+        ) : (
+          <View style={{marginVertical: 6}}></View>
+        )}
 
         <View
           style={{

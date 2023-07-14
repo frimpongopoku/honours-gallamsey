@@ -2,6 +2,7 @@ import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
   LOAD_USER_LOCATIONS,
+  SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
 } from '../redux-constants';
@@ -32,6 +33,12 @@ export const reducerToLoadFirebaseUser = (state = {}, action = {}) => {
 };
 export const reducerToLoadUserLocations = (state = [], action = {}) => {
   if (action.type === LOAD_USER_LOCATIONS) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerToSetUserPreferences = (state = {}, action = {}) => {
+  if (action.type === SET_USER_PREFERENCES) {
     return action.payload;
   }
   return state;

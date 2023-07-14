@@ -1,10 +1,44 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {colors} from '../../../styles';
+import {bindActionCreators} from 'redux';
+import {toggleUniversalModal} from '../../../redux/actions/actions';
+import {connect} from 'react-redux';
+import AsDialogBox from '../../../components/modal/AsDialogBox';
+import WIthIconAndText from '../../../components/modal/WIthIconAndText';
+import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 
-const BankCard = () => {
+const BankCard = ({toggleModal}) => {
   return (
     <TouchableOpacity
+      onPress={() =>
+        toggleModal({
+          show: true,
+          component: (
+            <AsDialogBox
+              textOptions={{text: 'Would you like to cashout or Cash In'}}
+              noOptions={{
+                text: 'CASH IN',
+                onPress: () => toggleModal({show: false}),
+              }}
+              yesOptions={{
+                text: 'CASH OUT',
+                onPress: () =>
+                  toggleModal({
+                    component: (
+                      <WIthIconAndText
+                        textOptions={{
+                          text: 'Congratulations! An amount of 568 has been sent to your default mobile wallet, enjoy!',
+                        }}
+                        iconOptions={{icon: faCheckCircle, color: colors.green}}
+                      />
+                    ),
+                  }),
+              }}
+            />
+          ),
+        })
+      }
       style={{
         padding: 20,
         height: 180,
@@ -73,4 +107,12 @@ const BankCard = () => {
   );
 };
 
-export default BankCard;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      toggleModal: toggleUniversalModal,
+    },
+    dispatch,
+  );
+};
+export default connect(null, mapDispatchToProps)(BankCard);
