@@ -16,7 +16,7 @@ const GContextDropdown = ({children, onItemSelected, data}) => {
       () => {},
       (result, index) => {
         if (result === 'itemSelected') {
-          onItemSelected((data || [])[index]);
+          onItemSelected((data || [])[index], index);
           // handleOptionSelect(index);
         }
       },

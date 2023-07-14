@@ -27,7 +27,6 @@ const LoginScreen = ({navigation}) => {
     setErrors({...errors, ...errorObj});
   };
 
-
   return (
     <KeyboardAvoidingView
       style={{
@@ -66,7 +65,7 @@ const LoginScreen = ({navigation}) => {
             I have forgotten my password
           </GButton> */}
           <View style={{marginTop: 25, paddingHorizontal: 10}}>
-            <GButton style={{}} variant="black" loading disabled>
+            <GButton style={{}} variant="black">
               LOGIN
             </GButton>
           </View>

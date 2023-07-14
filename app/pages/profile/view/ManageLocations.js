@@ -1,5 +1,5 @@
 import {View, Text, SafeAreaView, TouchableOpacity, Alert} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Toolbar from '../../../components/toolbar/Toolbar';
 import {ScrollView} from 'react-native-gesture-handler';
 import PageTitle from '../../../components/intros/PageTitle';
@@ -12,8 +12,13 @@ import Geolocation from '@react-native-community/geolocation';
 import {PERMISSIONS, request} from 'react-native-permissions';
 import GContextDropdown from '../../../components/dropdown/GContextDropdown';
 import {MenuProvider} from 'react-native-popup-menu';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {updateUserLocationAction} from '../../../redux/actions/actions';
 
-const ManageLocations = () => {
+const ManageLocations = ({locations, updateLocationsInRedux}) => {
+  const [saveLocation, setSaveLocation] = useState(false);
+  const [newLocation, setNewLocation] = useState({});
   const requestLocationPermission = async () => {
     try {
       const result = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
@@ -27,6 +32,7 @@ const ManageLocations = () => {
       console.log('Error requesting location permission:', error);
     }
   };
+  console.log('lets see locations', locations);
   const calculateLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -35,6 +41,8 @@ const ManageLocations = () => {
           'Current Location',
           `Latitude: ${latitude}, Longitude: ${longitude}`,
         );
+        setSaveLocation(true);
+        setNewLocation({coords: [longitude, latitude]});
       },
       error => {
         // sometimes this is fired because location is off. Find a way to figure out when location is off, and when there is an actual error
@@ -43,41 +51,83 @@ const ManageLocations = () => {
       },
     );
   };
+
+  const handleChange = obj => {
+    setNewLocation({...newLocation, ...obj});
+  };
+  const addTheUpdates = () => {
+    setSaveLocation(false);
+    setNewLocation({});
+    updateLocationsInRedux([newLocation, ...locations]);
+  };
+
+  const remove = index => {
+    const rem = locations?.filter((item, i) => index !== i);
+    console.log('this is the remainder', rem);
+    updateLocationsInRedux(rem);
+  };
   return (
     <GBottomSheet
       // generics={{snapPoints: ['37%']}}
-      generics={{snapPoints: ['23%']}}
+      generics={{snapPoints: saveLocation ? ['37%'] : ['23%']}}
       sheetContent={
-        <GetLocationComponent onPress={requestLocationPermission} />
+        saveLocation ? (
+          <SaveOrEditLocation
+            location={newLocation}
+            onChange={handleChange}
+            addLocation={addTheUpdates}
+          />
+        ) : (
+          <GetLocationComponent onPress={requestLocationPermission} />
+        )
       }>
-      <MenuProvider>
-        <View style={{backgroundColor: 'white'}}>
-          <Toolbar title="Your Locations" />
-          <ScrollView>
-            <PageTitle
-              title="Manage Locations"
-              subtext="Edit your saved locations here to make posting & finding errands easier"
-              v2
-            />
+      <View
+        style={{
+          backgroundColor: 'white',
+          width: '100%',
+          height: '100%',
+          padding: 0,
+          margin: 0,
+        }}>
+        <Toolbar title="Your Locations" />
+        <ScrollView>
+          <PageTitle
+            title="Manage Locations"
+            subtext="Edit your saved locations here to make posting & finding errands easier"
+            v2
+          />
 
-            {/* <GContextDropdown>
-              <Text>Gbemi</Text>
-            </GContextDropdown> */}
-            <View>
-              {[2, 3, 4, 5, 3, 2].map((item, index) => (
-                <View key={index?.toString()}>
-                  <LocationItem />
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
-      </MenuProvider>
+          <View>
+            {!locations?.length && (
+              <Text style={{width: '100%', textAlign: 'center'}}>
+                No locations available yet
+              </Text>
+            )}
+            {locations?.map((item, index) => (
+              <View key={index?.toString()}>
+                <LocationItem
+                  location={item}
+                  remove={remove}
+                  locationId={index}
+                />
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </View>
     </GBottomSheet>
   );
 };
 
-const LocationItem = () => {
+const LocationItem = ({location, remove, locationId}) => {
+  const options = {
+    2: () => remove(locationId),
+  };
+  const handleOptions = (_, index) => {
+    const fxn = options[index];
+    console.log('FOUND FUNCATION', fxn, index);
+    fxn && fxn(index);
+  };
   return (
     <View
       style={{
@@ -97,7 +147,7 @@ const LocationItem = () => {
       />
       <View>
         <Text style={{color: colors.black, fontSize: 18, fontWeight: '700'}}>
-          My main house
+          {location?.name || '...'}
         </Text>
         <View
           style={{
@@ -107,19 +157,32 @@ const LocationItem = () => {
             marginTop: 5,
           }}>
           <Text>1 month ago</Text>
-          <Text
+          {/* <Text
             style={{marginLeft: 'auto', fontWeight: '600', color: colors.red}}>
             {' '}
             Your delivery address
-          </Text>
+          </Text> */}
         </View>
       </View>
       <View style={{marginLeft: 'auto'}}>
-        <GContextDropdown>
+        <GContextDropdown
+          onItemSelected={handleOptions}
+          data={['Set as default address', 'Edit', 'Remove']}>
           <FontAwesomeIcon icon={faEllipsisH} size={27} color={colors.red} />
         </GContextDropdown>
       </View>
     </View>
   );
 };
-export default ManageLocations;
+
+const mapStateToProps = state => ({
+  locations: state.userLocations,
+});
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {updateLocationsInRedux: updateUserLocationAction},
+    dispatch,
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ManageLocations);

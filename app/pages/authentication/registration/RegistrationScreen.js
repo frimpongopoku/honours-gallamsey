@@ -28,6 +28,7 @@ const RegistrationScreen = ({navigation}) => {
   };
 
   const register = () => {
+    return navigation.navigate('CompleteProfile');
     if (!form.email) return addError({email: 'Please enter a valid email'});
     if (!form.password)
       return addError({password: 'Please enter a valid password'});

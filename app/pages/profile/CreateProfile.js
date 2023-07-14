@@ -7,16 +7,18 @@ import Toolbar from '../../components/toolbar/Toolbar';
 import GButton from '../../components/button/Button';
 import Identification from './Identification';
 import ChangeProfilePhoto from './ChangeProfilePhoto';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateProfile = () => {
   const [page, setPage] = useState('personal');
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
+  const navigation = useNavigation();
 
   console.log('LE FORM HERE', form);
 
   const _continue = currentTab => {
-    if (page === 'photo') return console.log('I am the last stage meern');
+    if (page === 'photo') return navigation.navigate('Home');
     setPage(currentTab.next);
   };
 

@@ -4,6 +4,7 @@ import {
   reducerForErrandForm,
   reducerForUniversalModal,
   reducerToLoadFirebaseUser,
+  reducerToLoadUserLocations,
 } from './reducers';
 
 export default combineReducers({
@@ -11,4 +12,5 @@ export default combineReducers({
   errandForm: reducerForErrandForm,
   modal: reducerForUniversalModal,
   fireAuth: reducerToLoadFirebaseUser,
+  userLocations: reducerToLoadUserLocations,
 });

@@ -2,6 +2,7 @@ import {signoutOfFirebase} from '../../firebase/utils.js';
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
+  LOAD_USER_LOCATIONS,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
 } from '../redux-constants.js';
@@ -21,4 +22,8 @@ export const loadFirebaseUserAction = data => {
 export const firebaseSignOutAction = () => dispatch => {
   signoutOfFirebase();
   loadFirebaseUserAction(null);
+};
+
+export const updateUserLocationAction = data => {
+  return {type: LOAD_USER_LOCATIONS, payload: data};
 };

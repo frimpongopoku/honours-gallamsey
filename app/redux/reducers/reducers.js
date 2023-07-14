@@ -1,6 +1,7 @@
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
+  LOAD_USER_LOCATIONS,
   UPDATE_ERRAND_FORM,
 } from '../redux-constants';
 
@@ -24,6 +25,12 @@ export const reducerForUniversalModal = (state = {}, action = {}) => {
 };
 export const reducerToLoadFirebaseUser = (state = {}, action = {}) => {
   if (action.type === LOAD_FIREBASE_USER) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerToLoadUserLocations = (state = [], action = {}) => {
+  if (action.type === LOAD_USER_LOCATIONS) {
     return action.payload;
   }
   return state;

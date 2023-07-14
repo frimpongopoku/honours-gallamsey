@@ -13,13 +13,12 @@ export const GetLocationComponent = ({onPress}) => {
         subtext="Calculate and save my current location"
       />
       <GButton onPress={onPress} variant="green">
-        {' '}
         GET MY CURRENT LOCATION
       </GButton>
     </View>
   );
 };
-export const SaveOrEditLocation = () => {
+export const SaveOrEditLocation = ({location, onChange, addLocation}) => {
   return (
     <View>
       <PageTitle
@@ -29,11 +28,16 @@ export const SaveOrEditLocation = () => {
       />
       {/* <View style={{display: 'flex', flexDirection: 'row'}}> */}
       <TextBox
+        value={location?.name}
+        name="name"
+        onChange={onChange}
         containerStyle={{marginTop: 10}}
         label="What should the name be?"
         placeholder="Enter it here..."
       />
-      <GButton variant="green">SAVE</GButton>
+      <GButton onPress={addLocation} variant="green">
+        SAVE
+      </GButton>
       {/* </View> */}
     </View>
   );
