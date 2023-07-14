@@ -2,6 +2,7 @@ import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
   LOAD_USER_LOCATIONS,
+  TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
 } from '../redux-constants';
 
@@ -18,7 +19,7 @@ export const reducerForErrandForm = (state = {}, action = {}) => {
   return state;
 };
 export const reducerForUniversalModal = (state = {}, action = {}) => {
-  if (action.type === UPDATE_ERRAND_FORM) {
+  if (action.type === TOGGLE_UNIVERSAL_MODAL) {
     return action.payload;
   }
   return state;

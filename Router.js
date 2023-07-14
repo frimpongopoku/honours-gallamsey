@@ -34,6 +34,9 @@ const Router = ({modalOptions, toggleModal, fireAuth, setFirebaseUser}) => {
       console.log('USER IN ROUTER', user);
     });
   }, [fireAuth]);
+  useEffect(() => {}, [modalOptions]);
+
+  console.log('MODAL OPTIONS', modalOptions);
 
   return (
     <NavigationContainer>

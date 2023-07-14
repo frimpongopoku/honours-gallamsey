@@ -12,8 +12,12 @@ import CanCancelRunningErrand from './CanCancelRunningErrand';
 import DenyTransfer from './DenyTransfer';
 import DetailsOfErrand from './DetailsOfErrand';
 import ErrandStateTracker from './ErrandStateTracker';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {toggleUniversalModal} from '../../redux/actions/actions';
+import AsDialogBox from '../../components/modal/AsDialogBox';
 
-const ViewErrandScreen = () => {
+const ViewErrandScreen = ({toggleModal}) => {
   const [running, setRunning] = useState(false);
   return (
     <GBottomSheet
@@ -21,7 +25,13 @@ const ViewErrandScreen = () => {
       generics={{snapPoints: ['30%']}}
       sheetContent={
         running ? (
-          <CanCancelRunningErrand cancel={() => setRunning(false)} />
+          <CanCancelRunningErrand
+            done={() => {
+              console.log('Done is tapped');
+              toggleModal({show: true, component: <AsDialogBox />});
+            }}
+            cancel={() => setRunning(false)}
+          />
         ) : (
           <AboutToPickErrand pickErrand={() => setRunning(true)} />
         )
@@ -78,4 +88,11 @@ const ViewErrandScreen = () => {
   );
 };
 
-export default ViewErrandScreen;
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({toggleModal: toggleUniversalModal}, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ViewErrandScreen);
