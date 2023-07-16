@@ -4,8 +4,16 @@ import React from 'react';
 import TextBox from '../../components/textbox/TextBox';
 import GDropdown from '../../components/dropdown/Dropdown';
 import PageTitle from '../../components/intros/PageTitle';
+import {bindActionCreators} from 'redux';
+import {updateErrandFormAction} from '../../redux/actions/actions';
+import {connect} from 'react-redux';
+import {colors} from '../../styles';
 
-const FirstStage = ({onChange, form, getError}) => {
+const FirstStage = ({setForm, form, getError, userLocations}) => {
+  const onChange = obj => {
+    setForm({...form, ...obj});
+  };
+
   return (
     <View>
       <ScrollView>
@@ -32,16 +40,29 @@ const FirstStage = ({onChange, form, getError}) => {
           />
 
           <GDropdown
+            data={userLocations || []}
+            labelExtractor={loc => loc.name}
+            valueExtractor={loc => loc.coords}
             name="deliveryLocation"
             onChange={onChange}
             value={form?.deliveryLocation}
             label="Select Delivery Destination"
-            placeholder=" Choose a delivery destination"
-          />
+            placeholder=" Choose a delivery destination">
+            <Text style={{marginTop: 5, color: colors.black, fontSize: 12}}>
+              Select from the list of locations you have saved
+            </Text>
+          </GDropdown>
         </View>
       </ScrollView>
     </View>
   );
 };
 
-export default FirstStage;
+const mapStateToProps = state => {
+  return {form: state.errandForm, userLocations: state.userLocations};
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({setForm: updateErrandFormAction}, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(FirstStage);

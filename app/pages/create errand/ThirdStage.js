@@ -6,8 +6,16 @@ import {colors} from '../../styles';
 import GButton from '../../components/button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
+import {updateErrandFormAction} from '../../redux/actions/actions';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
 
-const ThirdStage = ({onChange, form, getError}) => {
+const ThirdStage = ({setForm, form, getError}) => {
+  const onChange = obj => {
+    setForm({...form, ...obj});
+  };
+
+  console.log('Here is the FORM', form);
   return (
     <View style={{height: '100%'}}>
       <ScrollView>
@@ -80,4 +88,11 @@ const ThirdStage = ({onChange, form, getError}) => {
   );
 };
 
-export default ThirdStage;
+const mapStateToProps = state => {
+  return {form: state.errandForm};
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({setForm: updateErrandFormAction}, dispatch);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ThirdStage);

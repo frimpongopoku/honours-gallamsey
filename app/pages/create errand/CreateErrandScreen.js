@@ -18,22 +18,14 @@ const CreateErrandScreen = ({form, setForm}) => {
   const {aboveBottomNav} = fetchHeights();
   const [errors, setErrors] = useState({});
 
-  const handleInput = changeObject => {
-    console.log('Form before adding', form);
-    // console.log('What is coming here', changeObject);
-    setForm({...form, ...changeObject});
-  };
-  const getError = name => {
-    const {labelStyle, inputStyle} = errorStyles;
-    const message = errors[name];
-    if (!message) return {};
-    return {message, labelStyle, inputStyle};
-  };
+  // const handleInput = changeObject => {
+  //   setForm({...form, ...changeObject});
+  // };
 
   const props = {
-    onChange: handleInput,
-    form,
-    getError,
+    // onChange: handleInput,
+    // form,
+    // getError,
   };
 
   const TABS = [
@@ -59,8 +51,6 @@ const CreateErrandScreen = ({form, setForm}) => {
       component: <ThirdStage {...props} />,
     },
   ];
-
-  console.log('THIS IS THE FORM', form);
   return (
     <SafeAreaView>
       <View

@@ -11,6 +11,7 @@ const GDropdown = ({
   value,
   name,
   onChange,
+  children,
 }) => {
   const [selectedValue, setSelectedValue] = useState('');
 
@@ -55,6 +56,7 @@ const GDropdown = ({
         </Picker>
       </View>
       {/* <Text style={styles.selectedValue}>{selectedValue}</Text> */}
+      {children}
     </View>
   );
 };

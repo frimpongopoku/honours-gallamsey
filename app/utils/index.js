@@ -4,6 +4,13 @@ export const errorStyles = {
   labelStyle: {color: 'red'},
   inputStyle: {borderColor: 'red', color: 'red'},
 };
+
+export const getError = name => {
+  const {labelStyle, inputStyle} = errorStyles;
+  const message = errors[name];
+  if (!message) return {};
+  return {message, labelStyle, inputStyle};
+};
 export const fetchHeights = () => {
   const _window = Dimensions.get('window').height;
   const screen = Dimensions.get('screen').height;
