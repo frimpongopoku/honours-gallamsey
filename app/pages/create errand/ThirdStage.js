@@ -6,18 +6,28 @@ import {colors} from '../../styles';
 import GButton from '../../components/button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
-import {updateErrandFormAction} from '../../redux/actions/actions';
+import {
+  sendErrandsToBackend,
+  updateErrandFormAction,
+} from '../../redux/actions/actions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getError} from '../../utils';
 
-const ThirdStage = ({setForm, form, errors}) => {
+const ThirdStage = ({setForm, form, errors, saveNewErrand}) => {
   const onChange = obj => {
     setForm({...form, ...obj});
   };
 
+  const createNewErrand = () => {
+    saveNewErrand(form, {allErrors: errors}, response =>
+      console.log('RESPONSE AFTER CREATING', response),
+    );
+  };
+
   const costError = getError('cost', errors?.errandForm || {});
-  const compError = getError('compensation', errors?.errandForm || {});
+  const compError = getError('reward', errors?.errandForm || {});
+  console.log('LETS SEE THE FORM', form);
   return (
     <View style={{height: '100%'}}>
       <ScrollView>
@@ -42,7 +52,7 @@ const ThirdStage = ({setForm, form, errors}) => {
             name="cost"
             onChange={onChange}
             value={form?.cost}
-            label="Cost of errand"
+            label={costError?.message || 'Cost of errand'}
             generics={{keyboardType: 'numeric'}}
             placeholder="How much will everything in the errand cost...">
             <Text style={{marginTop: 5, color: colors.black, fontSize: 12}}>
@@ -54,10 +64,10 @@ const ThirdStage = ({setForm, form, errors}) => {
           <TextBox
             labelStyle={compError?.labelStyle}
             style={compError?.inputStyle}
-            name="compensation"
+            name="reward"
             onChange={onChange}
-            value={form?.compensation}
-            label="Compensation Amount "
+            value={form?.reward}
+            label={compError?.message || 'Compensation Amount'}
             generics={{keyboardType: 'numeric'}}
             placeholder="Amount for runner...">
             <Text style={{marginTop: 5, color: colors.black, fontSize: 12}}>
@@ -77,7 +87,12 @@ const ThirdStage = ({setForm, form, errors}) => {
           </Text>
         </View>
       </ScrollView>
-      <GButton iconOptions={{icon: faCheck}} floating />
+      <GButton
+        onPress={createNewErrand}
+        onClick
+        iconOptions={{icon: faCheck}}
+        floating
+      />
       {/* <TouchableOpacity
         style={{
           position: 'absolute',
@@ -99,6 +114,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({setForm: updateErrandFormAction}, dispatch);
+  return bindActionCreators(
+    {
+      setForm: updateErrandFormAction,
+      saveNewErrand: sendErrandsToBackend,
+    },
+    dispatch,
+  );
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ThirdStage);

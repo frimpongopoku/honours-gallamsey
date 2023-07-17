@@ -33,7 +33,7 @@ const FirstStage = ({setForm, form, errors, userLocations}) => {
             name="title"
             onChange={onChange}
             value={form?.title}
-            label="Title"
+            label={titleError?.message || 'Title'}
             placeholder="Enter a title"
           />
           <TextBox
@@ -42,7 +42,7 @@ const FirstStage = ({setForm, form, errors, userLocations}) => {
             name="description"
             onChange={onChange}
             value={form?.description}
-            label="Description"
+            label={descError?.message || 'Description'}
             placeholder="Enter a description"
             textarea
           />
@@ -56,7 +56,7 @@ const FirstStage = ({setForm, form, errors, userLocations}) => {
             name="deliveryLocation"
             onChange={onChange}
             value={form?.deliveryLocation}
-            label="Select Delivery Destination"
+            label={locError?.message || 'Select Delivery Destination'}
             placeholder=" Choose a delivery destination">
             <Text style={{marginTop: 5, color: colors.black, fontSize: 12}}>
               Select from the list of locations you have saved
