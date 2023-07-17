@@ -2,6 +2,7 @@ import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
   LOAD_USER_LOCATIONS,
+  SET_ERRORS,
   SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
@@ -9,6 +10,12 @@ import {
 
 export const doNothingReducer = (state = [], action = {}) => {
   if (action.type === DO_NOTHING) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerForErrors = (state = {}, action = {}) => {
+  if (action.type === SET_ERRORS) {
     return action.payload;
   }
   return state;

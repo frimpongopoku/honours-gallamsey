@@ -8,12 +8,16 @@ import {bindActionCreators} from 'redux';
 import {updateErrandFormAction} from '../../redux/actions/actions';
 import {connect} from 'react-redux';
 import {colors} from '../../styles';
+import {getError} from '../../utils';
 
-const FirstStage = ({setForm, form, getError, userLocations}) => {
+const FirstStage = ({setForm, form, errors, userLocations}) => {
   const onChange = obj => {
     setForm({...form, ...obj});
   };
 
+  const titleError = getError('title', errors?.errandForm || {});
+  const descError = getError('description', errors?.errandForm || {});
+  const locError = getError('deliveryLocation', errors?.errandForm || {});
   return (
     <View>
       <ScrollView>
@@ -24,6 +28,8 @@ const FirstStage = ({setForm, form, getError, userLocations}) => {
         />
         <View style={{paddingHorizontal: 10}}>
           <TextBox
+            labelStyle={titleError.labelStyle}
+            style={titleError.style}
             name="title"
             onChange={onChange}
             value={form?.title}
@@ -31,6 +37,8 @@ const FirstStage = ({setForm, form, getError, userLocations}) => {
             placeholder="Enter a title"
           />
           <TextBox
+            labelStyle={descError.labelStyle}
+            style={descError.style}
             name="description"
             onChange={onChange}
             value={form?.description}
@@ -40,6 +48,8 @@ const FirstStage = ({setForm, form, getError, userLocations}) => {
           />
 
           <GDropdown
+            labelStyle={locError.labelStyle}
+            style={locError.style}
             data={userLocations || []}
             labelExtractor={loc => loc.name}
             valueExtractor={loc => loc.coords}
@@ -59,7 +69,11 @@ const FirstStage = ({setForm, form, getError, userLocations}) => {
 };
 
 const mapStateToProps = state => {
-  return {form: state.errandForm, userLocations: state.userLocations};
+  return {
+    form: state.errandForm,
+    errors: state.errors,
+    userLocations: state.userLocations,
+  };
 };
 
 const mapDispatchToProps = dispatch => {

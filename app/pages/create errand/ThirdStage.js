@@ -9,13 +9,15 @@ import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {updateErrandFormAction} from '../../redux/actions/actions';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import {getError} from '../../utils';
 
-const ThirdStage = ({setForm, form, getError}) => {
+const ThirdStage = ({setForm, form, errors}) => {
   const onChange = obj => {
     setForm({...form, ...obj});
   };
 
-  console.log('Here is the FORM', form);
+  const costError = getError('cost', errors?.errandForm || {});
+  const compError = getError('compensation', errors?.errandForm || {});
   return (
     <View style={{height: '100%'}}>
       <ScrollView>
@@ -35,6 +37,8 @@ const ThirdStage = ({setForm, form, getError}) => {
             Current Balance: GHS 880
           </Text>
           <TextBox
+            labelStyle={costError?.labelStyle}
+            style={costError?.inputStyle}
             name="cost"
             onChange={onChange}
             value={form?.cost}
@@ -48,6 +52,8 @@ const ThirdStage = ({setForm, form, getError}) => {
             </Text>
           </TextBox>
           <TextBox
+            labelStyle={compError?.labelStyle}
+            style={compError?.inputStyle}
             name="compensation"
             onChange={onChange}
             value={form?.compensation}
@@ -89,7 +95,7 @@ const ThirdStage = ({setForm, form, getError}) => {
 };
 
 const mapStateToProps = state => {
-  return {form: state.errandForm};
+  return {form: state.errandForm, errors: state.errors};
 };
 
 const mapDispatchToProps = dispatch => {

@@ -5,7 +5,7 @@ export const errorStyles = {
   inputStyle: {borderColor: 'red', color: 'red'},
 };
 
-export const getError = name => {
+export const getError = (name, errors) => {
   const {labelStyle, inputStyle} = errorStyles;
   const message = errors[name];
   if (!message) return {};

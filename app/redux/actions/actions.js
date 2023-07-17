@@ -3,6 +3,7 @@ import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
   LOAD_USER_LOCATIONS,
+  SET_ERRORS,
   SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
@@ -31,4 +32,7 @@ export const updateUserLocationAction = data => {
 };
 export const setUserPreferencesAction = data => {
   return {type: SET_USER_PREFERENCES, payload: data};
+};
+export const s = data => {
+  return {type: SET_ERRORS, payload: data};
 };

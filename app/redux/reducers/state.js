@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 import {
   doNothingReducer,
   reducerForErrandForm,
+  reducerForErrors,
   reducerForUniversalModal,
   reducerToLoadFirebaseUser,
   reducerToLoadUserLocations,
@@ -15,4 +16,5 @@ export default combineReducers({
   fireAuth: reducerToLoadFirebaseUser,
   userLocations: reducerToLoadUserLocations,
   userPreferences: reducerToSetUserPreferences,
+  errors: reducerForErrors,
 });
