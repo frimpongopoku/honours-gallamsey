@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import HomeScreen from './app/pages/home/HomeScreen';
@@ -25,6 +25,7 @@ import {
 } from './app/redux/actions/actions';
 import {connect} from 'react-redux';
 import {checkUserAuthenticationStatus} from './app/firebase/utils';
+import {CREATE_NEW_PROFILE} from './app/pages/authentication/constants';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,7 @@ const Router = ({
   fireAuth,
   setFirebaseUser,
   fetchProfile,
+  user,
 }) => {
   useEffect(() => {
     checkUserAuthenticationStatus(fireUser => {
@@ -42,8 +44,9 @@ const Router = ({
       console.log('USER IN ROUTER', fireUser);
     });
   }, [fireAuth]);
-  useEffect(() => {}, [modalOptions]);
 
+  console.log("This is what MR starboy like ", user)
+  // useEffect(() => {}, [modalOptions]);
   return (
     <NavigationContainer>
       <GModal
@@ -118,7 +121,11 @@ const Router = ({
 };
 
 const mapStateToProps = state => {
-  return {modalOptions: state.modal, fireAuth: state.fireAuth};
+  return {
+    modalOptions: state.modal,
+    fireAuth: state.fireAuth,
+    user: state.user,
+  };
 };
 
 const mapDispatchToProps = dispatch =>

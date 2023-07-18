@@ -30,9 +30,13 @@ export const firebaseSignOutAction = () => dispatch => {
   dispatch(loadFirebaseUserAction(null));
 };
 export const findUserProfile = body => dispatch => {
-  apiCall(FIND_USER_PROFILE, {body: {email: body}}, response =>
-    console.log('This I think is the user my gee', response),
-  );
+  apiCall(FIND_USER_PROFILE, {body: {email: body}}, response => {
+    if (!response.success) {
+      console.log('ERROR LOADING GALLAMSEY USER: ', response.error);
+      // return dispatch(setGallamseyUser(null));
+    }
+    dispatch(setGallamseyUser(response.data));
+  });
 };
 export const setGallamseyUser = data => {
   return {type: SET_GALLAMSEY_USER, payload: data};

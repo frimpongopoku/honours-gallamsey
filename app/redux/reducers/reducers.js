@@ -1,3 +1,4 @@
+import {LOADING} from '../../pages/authentication/constants';
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
@@ -33,13 +34,14 @@ export const reducerForUniversalModal = (state = {}, action = {}) => {
   }
   return state;
 };
-export const reducerToSetGallamseyUser = (state = {}, action = {}) => {
+
+export const reducerToSetGallamseyUser = (state = LOADING, action = {}) => {
   if (action.type === SET_GALLAMSEY_USER) {
     return action.payload;
   }
   return state;
 };
-export const reducerToLoadFirebaseUser = (state = {}, action = {}) => {
+export const reducerToLoadFirebaseUser = (state = LOADING, action = {}) => {
   if (action.type === LOAD_FIREBASE_USER) {
     return action.payload;
   }

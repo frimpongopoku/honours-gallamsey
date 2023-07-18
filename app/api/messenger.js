@@ -1,6 +1,5 @@
 export const apiCall = (url, options, cb) => {
   const {body} = options || {};
-  console.log('LE BODY MEERHN', body);
   return fetch(url, {
     method: 'POST',
     headers: {
