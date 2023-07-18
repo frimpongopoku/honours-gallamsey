@@ -13,13 +13,21 @@ export const checkUserAuthenticationStatus = cb => {
   auth().onAuthStateChanged(user => cb && cb(user));
 };
 export const useEmailAndPassword = (email, password, cb) => {
-  console.log('lets see the values', email, password);
-
   auth()
     .createUserWithEmailAndPassword(email?.trim(), password.trim())
     .then(userCredential => {
       cb && cb(userCredential);
     })
+    .catch(error => {
+      cb && cb(null, error.toString());
+      console.log(error.toString());
+    });
+};
+
+export const firebaseLoginWithEmailAndPassword = (email, password, cb) => {
+  auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(userResponse => cb && cb(userResponse))
     .catch(error => {
       cb && cb(null, error.toString());
       console.log(error.toString());

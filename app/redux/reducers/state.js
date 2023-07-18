@@ -6,6 +6,7 @@ import {
   reducerForUniversalModal,
   reducerToLoadFirebaseUser,
   reducerToLoadUserLocations,
+  reducerToSetGallamseyUser,
   reducerToSetUserPreferences,
 } from './reducers';
 
@@ -17,4 +18,5 @@ export default combineReducers({
   userLocations: reducerToLoadUserLocations,
   userPreferences: reducerToSetUserPreferences,
   errors: reducerForErrors,
+  user: reducerToSetGallamseyUser,
 });

@@ -3,6 +3,7 @@ import {
   LOAD_FIREBASE_USER,
   LOAD_USER_LOCATIONS,
   SET_ERRORS,
+  SET_GALLAMSEY_USER,
   SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
@@ -28,6 +29,12 @@ export const reducerForErrandForm = (state = {}, action = {}) => {
 };
 export const reducerForUniversalModal = (state = {}, action = {}) => {
   if (action.type === TOGGLE_UNIVERSAL_MODAL) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerToSetGallamseyUser = (state = {}, action = {}) => {
+  if (action.type === SET_GALLAMSEY_USER) {
     return action.payload;
   }
   return state;

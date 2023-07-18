@@ -1,11 +1,12 @@
 import {apiCall} from '../../api/messenger.js';
-import {CREATE_ERRAND_URL} from '../../api/urls.js';
+import {CREATE_ERRAND_URL, FIND_USER_PROFILE} from '../../api/urls.js';
 import {signoutOfFirebase} from '../../firebase/utils.js';
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
   LOAD_USER_LOCATIONS,
   SET_ERRORS,
+  SET_GALLAMSEY_USER,
   SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
@@ -28,7 +29,14 @@ export const firebaseSignOutAction = () => dispatch => {
   signoutOfFirebase();
   dispatch(loadFirebaseUserAction(null));
 };
-
+export const findUserProfile = body => dispatch => {
+  apiCall(FIND_USER_PROFILE, {body: {email: body}}, response =>
+    console.log('This I think is the user my gee', response),
+  );
+};
+export const setGallamseyUser = data => {
+  return {type: SET_GALLAMSEY_USER, payload: data};
+};
 export const updateUserLocationAction = data => {
   return {type: LOAD_USER_LOCATIONS, payload: data};
 };

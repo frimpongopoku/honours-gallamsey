@@ -19,6 +19,7 @@ import GModal from './app/components/modal/Modal';
 import AsDialogBox from './app/components/modal/AsDialogBox';
 import {bindActionCreators} from 'redux';
 import {
+  findUserProfile,
   loadFirebaseUserAction,
   toggleUniversalModal,
 } from './app/redux/actions/actions';
@@ -27,16 +28,21 @@ import {checkUserAuthenticationStatus} from './app/firebase/utils';
 
 const Stack = createStackNavigator();
 
-const Router = ({modalOptions, toggleModal, fireAuth, setFirebaseUser}) => {
+const Router = ({
+  modalOptions,
+  toggleModal,
+  fireAuth,
+  setFirebaseUser,
+  fetchProfile,
+}) => {
   useEffect(() => {
-    checkUserAuthenticationStatus(user => {
-      setFirebaseUser(user);
-      console.log('USER IN ROUTER', user);
+    checkUserAuthenticationStatus(fireUser => {
+      setFirebaseUser(fireUser);
+      if (fireUser) fetchProfile(fireUser?.email);
+      console.log('USER IN ROUTER', fireUser);
     });
   }, [fireAuth]);
   useEffect(() => {}, [modalOptions]);
-
-  console.log('MODAL OPTIONS', modalOptions);
 
   return (
     <NavigationContainer>
@@ -120,6 +126,7 @@ const mapDispatchToProps = dispatch =>
     {
       toggleModal: toggleUniversalModal,
       setFirebaseUser: loadFirebaseUserAction,
+      fetchProfile: findUserProfile,
     },
     dispatch,
   );

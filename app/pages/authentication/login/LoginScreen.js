@@ -12,9 +12,15 @@ import TextBox from '../../../components/textbox/TextBox';
 import GButton from '../../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 import {errorStyles} from '../../../utils';
-import {useEmailAndPassword} from '../../../firebase/utils';
+import {
+  firebaseLoginWithEmailAndPassword,
+  useEmailAndPassword,
+} from '../../../firebase/utils';
+import {bindActionCreators} from 'redux';
+import {loadFirebaseUserAction} from '../../../redux/actions/actions';
+import {connect} from 'react-redux';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({navigation, setFireUser}) => {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -23,8 +29,21 @@ const LoginScreen = ({navigation}) => {
     setForm({...form, ...changeObject});
   };
 
-  const addError = errorObj => {
-    setErrors({...errors, ...errorObj});
+  const login = () => {
+    console.log('I am firing');
+    setErrors({});
+    if (!form.email) return (errors.email = 'Please enter a valid email');
+    if (!form.password)
+      return (errors.password = 'Please enter a valid password');
+    firebaseLoginWithEmailAndPassword(
+      form.email.trim(),
+      form.password.trim(),
+      (response, error) => {
+        if (error) return Alert.alert(error);
+        setFireUser(response.user);
+        console.log('AFTER LOGIN RESPONSE', response);
+      },
+    );
   };
 
   return (
@@ -47,7 +66,7 @@ const LoginScreen = ({navigation}) => {
             style={errors.email && errorStyles.inputStyle}
             name="email"
             onChange={handleInput}
-            label="Email"
+            label={errors.email || 'Email'}
             value={form.email}
             placeholder="Enter your email..."
           />
@@ -57,7 +76,7 @@ const LoginScreen = ({navigation}) => {
             value={form.password}
             name="password"
             onChange={handleInput}
-            label="Password"
+            label={errors.password || 'Password'}
             placeholder="Enter your password..."
             generics={{secureTextEntry: true}}
           />
@@ -65,7 +84,7 @@ const LoginScreen = ({navigation}) => {
             I have forgotten my password
           </GButton> */}
           <View style={{marginTop: 25, paddingHorizontal: 10}}>
-            <GButton style={{}} variant="black">
+            <GButton onPress={login} style={{}} variant="black">
               LOGIN
             </GButton>
           </View>
@@ -106,4 +125,11 @@ const styles = StyleSheet.create({
     color: colors.black,
   },
 });
-export default LoginScreen;
+
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({setFireUser: loadFirebaseUserAction}, dispatch);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
