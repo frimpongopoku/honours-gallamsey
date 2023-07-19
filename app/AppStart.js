@@ -35,7 +35,6 @@ function App({test, testValue}) {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  console.log('I did test the value', testValue);
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar

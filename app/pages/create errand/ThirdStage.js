@@ -27,7 +27,6 @@ const ThirdStage = ({setForm, form, errors, saveNewErrand}) => {
 
   const costError = getError('cost', errors?.errandForm || {});
   const compError = getError('reward', errors?.errandForm || {});
-  console.log('LETS SEE THE FORM', form);
   return (
     <View style={{height: '100%'}}>
       <ScrollView>

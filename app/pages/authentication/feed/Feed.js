@@ -5,7 +5,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 
 const Feed = ({preferences}) => {
-  console.log('Here are hte preferences', preferences);
   return (
     <View>
       <ScrollView>

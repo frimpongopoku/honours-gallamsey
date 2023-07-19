@@ -41,12 +41,11 @@ const Router = ({
     checkUserAuthenticationStatus(fireUser => {
       setFirebaseUser(fireUser);
       if (fireUser) fetchProfile(fireUser?.email);
-      console.log('USER IN ROUTER', fireUser);
     });
   }, [fireAuth]);
 
-  console.log("This is what MR starboy like ", user)
-  // useEffect(() => {}, [modalOptions]);
+  console.log('USER PROFILE IN ROUTER:  ', user);
+
   return (
     <NavigationContainer>
       <GModal

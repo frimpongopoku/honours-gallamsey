@@ -4,3 +4,4 @@ export const ALL_ERRANDS = HOST + 'errands/list';
 export const CREATE_ERRAND_URL = HOST + 'errands/create';
 export const UPDATE_ERRAND_URL = HOST + 'errands/update';
 export const FIND_USER_PROFILE = HOST + 'users/whoami';
+export const CREATE_NEW_PROFILE_URL = HOST + 'users/create';

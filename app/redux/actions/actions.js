@@ -19,7 +19,6 @@ export const updateErrandFormAction = data => {
   return {type: UPDATE_ERRAND_FORM, payload: data};
 };
 export const toggleUniversalModal = data => {
-  console.log('Its happening here', data);
   return {type: TOGGLE_UNIVERSAL_MODAL, payload: data};
 };
 export const loadFirebaseUserAction = data => {

@@ -5,8 +5,14 @@ import PageTitle from '../../components/intros/PageTitle';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import TextBox from '../../components/textbox/TextBox';
 import GButton from '../../components/button/Button';
+import {getError} from '../../utils';
 
-const PersonalInformation = ({onChange, form, getError}) => {
+const PersonalInformation = ({onChange, form, errors}) => {
+  const preferredNameError = getError('preferredName', errors);
+  const lastNameError = getError('lastName', errors);
+  const firstNameError = getError('firstName', errors);
+  // const preferredNameError = getError("preferredName", errors)
+
   return (
     <View>
       <ScrollView>
@@ -20,21 +26,27 @@ const PersonalInformation = ({onChange, form, getError}) => {
             name="preferredName"
             onChange={onChange}
             value={form?.preferredName}
-            label="Preferred Name"
+            labelStyle={preferredNameError.labelStyle}
+            style={preferredNameError.style}
+            label={preferredNameError.message || 'Preferred Name'}
             placeholder="What should users call you..."
           />
           <TextBox
             name="firstName"
             onChange={onChange}
             value={form?.firstName}
-            label="First Name"
+            labelStyle={firstNameError.labelStyle}
+            style={firstNameError.style}
+            label={firstNameError.message || 'First Name'}
             placeholder="What's your first name..."
           />
           <TextBox
             name="lastName"
             onChange={onChange}
             value={form?.lastName}
-            label="Last Name"
+            labelStyle={lastNameError.labelStyle}
+            style={lastNameError.style}
+            label={lastNameError.message || 'Last Name'}
             placeholder="What's your last name..."
           />
           <TextBox

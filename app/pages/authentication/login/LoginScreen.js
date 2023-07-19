@@ -30,7 +30,6 @@ const LoginScreen = ({navigation, setFireUser}) => {
   };
 
   const login = () => {
-    console.log('I am firing');
     setErrors({});
     if (!form.email) return (errors.email = 'Please enter a valid email');
     if (!form.password)
