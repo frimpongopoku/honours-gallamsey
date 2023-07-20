@@ -24,7 +24,7 @@ import {bindActionCreators} from 'redux';
 import {firebaseSignOutAction} from '../../../redux/actions/actions';
 import {connect} from 'react-redux';
 
-const ViewProfileScreen = ({navigation, signOutFromFirebase}) => {
+const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
   const signOut = () => {
     signOutFromFirebase();
   };
@@ -42,7 +42,8 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase}) => {
           </GContextDropdown>
         }
       />
-      <ScrollView style={{padding: 20}}>
+      <ScrollView
+        style={{padding: 20, height: '100%', backgroundColor: 'white'}}>
         <View
           style={{
             display: 'flex',
@@ -51,7 +52,7 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase}) => {
           }}>
           <View style={{width: 100, position: 'relative'}}>
             <ImagePro
-              imageUrl="https://i.pravatar.cc/300"
+              imageUrl={user?.image}
               style={{
                 height: 100,
                 width: 100,
@@ -82,14 +83,14 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase}) => {
               color: colors.black,
               marginBottom: 5,
             }}>
-            Frimpong Opoku Agyemang
+            {user?.firstName} {user?.lastName}
           </Text>
           <Text style={{fontWeight: '500', fontSize: 16, color: colors.black}}>
-            @lospongos
+            @{user?.preferredName}
           </Text>
         </View>
         <UserEarningStats />
-        <BankCard />
+        <BankCard user={user} />
         <View style={{marginVertical: 20, marginBottom: 100}}>
           <Header
             text="Edit your details"
@@ -243,6 +244,9 @@ const Header = ({icon, text, onPress}) => {
   );
 };
 
-const mapStateToProps = dispatch =>
+const mapStateToProps = state => {
+  return {user: state.user};
+};
+const mapDispatchToProps = dispatch =>
   bindActionCreators({signOutFromFirebase: firebaseSignOutAction}, dispatch);
-export default connect(null, mapStateToProps)(ViewProfileScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewProfileScreen);

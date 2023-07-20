@@ -1,5 +1,5 @@
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import TextBox from '../../components/textbox/TextBox';
 import PageTitle from '../../components/intros/PageTitle';
 import {colors} from '../../styles';
@@ -14,14 +14,21 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getError} from '../../utils';
 
-const ThirdStage = ({setForm, form, errors, saveNewErrand}) => {
+const ThirdStage = ({setForm, form, errors, saveNewErrand, user}) => {
+  const [loading, setLoading] = useState(false);
   const onChange = obj => {
     setForm({...form, ...obj});
   };
 
   const createNewErrand = () => {
-    saveNewErrand(form, {allErrors: errors}, response =>
-      console.log('RESPONSE AFTER CREATING', response),
+    setLoading(true);
+    saveNewErrand(
+      {...form, poster: {id: user?._id, name: user?.preferredName}},
+      {allErrors: errors},
+      response => {
+        setLoading(false);
+        console.log('RESPONSE AFTER CREATING', response);
+      },
     );
   };
 
@@ -43,7 +50,7 @@ const ThirdStage = ({setForm, form, errors, saveNewErrand}) => {
               marginHorizontal: 10,
               color: colors.green,
             }}>
-            Current Balance: GHS 880
+            Current Balance: GHS {user?.wallet?.balance || '...'}
           </Text>
           <TextBox
             labelStyle={costError?.labelStyle}
@@ -91,6 +98,8 @@ const ThirdStage = ({setForm, form, errors, saveNewErrand}) => {
         onClick
         iconOptions={{icon: faCheck}}
         floating
+        loading={loading}
+        disabled={loading}
       />
       {/* <TouchableOpacity
         style={{
@@ -109,7 +118,7 @@ const ThirdStage = ({setForm, form, errors, saveNewErrand}) => {
 };
 
 const mapStateToProps = state => {
-  return {form: state.errandForm, errors: state.errors};
+  return {form: state.errandForm, errors: state.errors, user: state.user};
 };
 
 const mapDispatchToProps = dispatch => {

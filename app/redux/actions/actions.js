@@ -1,6 +1,7 @@
 import {apiCall} from '../../api/messenger.js';
 import {CREATE_ERRAND_URL, FIND_USER_PROFILE} from '../../api/urls.js';
 import {signoutOfFirebase} from '../../firebase/utils.js';
+import {uploadImageToFirebase} from '../../utils/index.js';
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
@@ -67,11 +68,14 @@ export const sendErrandsToBackend = (data, options, cb) => dispatch => {
   if (hasErrors)
     return dispatch(setErrorsAction({...allErrors, errandForm: errors}));
   dispatch(setErrorsAction({...allErrors, errandForm: {}}));
-  data = {
-    ...data,
-    poster: {id: 'some-random-id-from-poster', name: 'SeniorUserFromPhone'},
-  };
-  apiCall(CREATE_ERRAND_URL, {body: data}, response => {
-    cb && cb(response);
+  // data = {
+  //   ...data,
+  //   // poster: {id: 'some-random-id-from-poster', name: 'SeniorUserFromPhone'},
+  // };
+  uploadImageToFirebase(data?.images, {collectionName: 'errands'}, url => {
+    const urls = [url];
+    apiCall(CREATE_ERRAND_URL, {body: {...data, images: urls}}, response => {
+      cb && cb(response);
+    });
   });
 };

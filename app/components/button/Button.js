@@ -38,7 +38,7 @@ const GButton = props => {
     onPress && onPress();
   };
 
-  if (floating) return <FloatingButton {...props} />;
+  if (floating) return <FloatingButton {...props} onPress={handlePress} />;
   if (likeLink) return <BtnLikeLink {...props} />;
   return (
     <TouchableNativeFeedback
@@ -75,7 +75,14 @@ const BtnLikeLink = ({style, onPress, children}) => {
   );
 };
 
-const FloatingButton = ({onPress, children, style, iconOptions}) => {
+const FloatingButton = ({
+  onPress,
+  children,
+  style,
+  iconOptions,
+  disabled,
+  loading,
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -88,9 +95,11 @@ const FloatingButton = ({onPress, children, style, iconOptions}) => {
         backgroundColor: colors.green,
         elevation: 15,
         ...(style || {}),
+        ...(disabled ? styles.disabled : {}),
       }}>
       {children}
-      {iconOptions && (
+      {loading && <ActivityIndicator color="white" size={28} />}
+      {iconOptions && !loading && (
         <FontAwesomeIcon
           icon={iconOptions?.icon || faCheck}
           color={iconOptions?.color || 'white'}

@@ -8,7 +8,7 @@ import AsDialogBox from '../../../components/modal/AsDialogBox';
 import WIthIconAndText from '../../../components/modal/WIthIconAndText';
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 
-const BankCard = ({toggleModal}) => {
+const BankCard = ({toggleModal, user}) => {
   return (
     <TouchableOpacity
       onPress={() =>
@@ -77,7 +77,7 @@ const BankCard = ({toggleModal}) => {
           </Text>
           <Text
             style={{fontWeight: 'bold', color: colors.yellowish, fontSize: 40}}>
-            568
+            {user?.wallet?.balance}
           </Text>
           <Text
             style={{

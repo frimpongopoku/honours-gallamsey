@@ -27,10 +27,26 @@ export const fetchHeights = () => {
 };
 
 export const uploadImageToFirebase = async (image, options, cb) => {
+  // console.log('------------------------------');
+  // console.log('MULTIPLE STATUS: INDEXJS:', options, image);
+  // if (!image) return cb && cb([]);
+  // if (options?.multiple) {
+  //   const urls = [];
+  //   const newOptions = {...options, multiple: false};
+
+  //   for (img of image) {
+  //     uploadImageToFirebase(img, newOptions, url => {
+  //       console.log('URL FOUND HERE', url);
+  //       if (url) urls.push(url);
+  //     });
+  //   }
+  //   console.log('........URLS', urls);
+  //   return cb && cb(urls);
+  // }
   try {
     const {fileName, collectionName} = options;
     const imageName =
-      fileName || image.path.substring(image.path.lastIndexOf('/') + 1);
+      fileName || image.path?.substring(image.path.lastIndexOf('/') + 1);
     const reference = storage().ref(
       `/${collectionName || 'gallamsey'}/${imageName}`,
     );

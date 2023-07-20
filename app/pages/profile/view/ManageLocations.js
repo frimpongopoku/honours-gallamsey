@@ -14,11 +14,18 @@ import GContextDropdown from '../../../components/dropdown/GContextDropdown';
 import {MenuProvider} from 'react-native-popup-menu';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {updateUserLocationAction} from '../../../redux/actions/actions';
+import {
+  setGallamseyUser,
+  updateUserLocationAction,
+} from '../../../redux/actions/actions';
+import {apiCall} from '../../../api/messenger';
+import {UPDATE_USER_URL} from '../../../api/urls';
 
-const ManageLocations = ({locations, updateLocationsInRedux}) => {
+const ManageLocations = ({updateLocationsInRedux, updateUserInRedux, user}) => {
   const [saveLocation, setSaveLocation] = useState(false);
   const [newLocation, setNewLocation] = useState({});
+  const locations = user?.locations;
+
   const requestLocationPermission = async () => {
     try {
       const result = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
@@ -32,7 +39,7 @@ const ManageLocations = ({locations, updateLocationsInRedux}) => {
       console.log('Error requesting location permission:', error);
     }
   };
-  console.log('lets see locations', locations);
+  console.log('lets see locations', locations, user);
   const calculateLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -56,9 +63,18 @@ const ManageLocations = ({locations, updateLocationsInRedux}) => {
     setNewLocation({...newLocation, ...obj});
   };
   const addTheUpdates = () => {
-    setSaveLocation(false);
-    setNewLocation({});
-    updateLocationsInRedux([newLocation, ...locations]);
+    const newList = [newLocation, ...locations];
+    console.log('See the new list', newList);
+    apiCall(
+      UPDATE_USER_URL,
+      {body: {locations: newList, id: user?._id}},
+      response => {
+        setSaveLocation(false);
+        setNewLocation({});
+        if (response.success) return updateUserInRedux(response.data);
+        console.log('ERROR UPDATING LOCATION IN BACKEND: ', response.error);
+      },
+    );
   };
 
   const remove = index => {
@@ -176,12 +192,16 @@ const LocationItem = ({location, remove, locationId}) => {
 };
 
 const mapStateToProps = state => ({
-  locations: state.userLocations,
+  // locations: state.userLocations,
+  user: state.user,
 });
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
-    {updateLocationsInRedux: updateUserLocationAction},
+    {
+      updateLocationsInRedux: updateUserLocationAction,
+      updateUserInRedux: setGallamseyUser,
+    },
     dispatch,
   );
 };

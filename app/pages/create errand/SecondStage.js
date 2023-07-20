@@ -6,14 +6,18 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../styles';
 import GButton from '../../components/button/Button';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {updateErrandFormAction} from '../../redux/actions/actions';
 
-const SecondStage = () => {
+const SecondStage = ({form, setForm}) => {
   const [selectedImages, setSelectedImages] = useState([]);
 
   const removeImage = path => {
     const rem = selectedImages?.filter(image => image.path !== path);
     setSelectedImages(rem);
   };
+  console.log('THIS IS THE FORM: SECOND STAGE: ', form);
 
   return (
     <View>
@@ -25,9 +29,11 @@ const SecondStage = () => {
         />
 
         <GImagePicker
-          onImageSelected={images =>
-            setSelectedImages([...images, ...selectedImages])
-          }
+          pickerOptions={{multiple: false}}
+          onImageSelected={image => {
+            setSelectedImages([image]);
+            setForm({...form, images: image});
+          }}
           render={(_, openPicker) => {
             return (
               <View style={{padding: 20}}>
@@ -76,5 +82,17 @@ const OneSelected = ({uri, onRemove}) => {
     </View>
   );
 };
+const mapStateToProps = state => {
+  return {form: state.errandForm, errors: state.errors, user: state.user};
+};
 
-export default SecondStage;
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      setForm: updateErrandFormAction,
+    },
+    dispatch,
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SecondStage);
