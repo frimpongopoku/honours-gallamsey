@@ -52,7 +52,9 @@ const GButton = props => {
           ...(style || {}),
           ...(disabled ? styles.disabled : {}),
         }}>
-        {loading && <ActivityIndicator style={{marginRight: 7}} />}
+        {loading && (
+          <ActivityIndicator style={{marginRight: 7}} color="white" />
+        )}
         <Text style={{...styles.buttonText, ...(textStyle || {})}}>
           {children || 'CLICK HERE'}
         </Text>

@@ -1,4 +1,5 @@
 import {Dimensions, StatusBar} from 'react-native';
+import storage from '@react-native-firebase/storage';
 
 export const errorStyles = {
   labelStyle: {color: 'red'},
@@ -23,4 +24,31 @@ export const fetchHeights = () => {
     StatusBarHeight: StatusBar.currentHeight,
     aboveBottomNav,
   };
+};
+
+export const uploadImageToFirebase = async (image, options, cb) => {
+  try {
+    const {fileName, collectionName} = options;
+    const imageName =
+      fileName || image.path.substring(image.path.lastIndexOf('/') + 1);
+    const reference = storage().ref(
+      `/${collectionName || 'gallamsey'}/${imageName}`,
+    );
+    const task = reference.putFile(image.path);
+    task.on(
+      'state_changed',
+      null,
+      error => {
+        console.error('Error uploading image:', error);
+        cb && cb(null, error?.toString());
+      },
+      async () => {
+        const url = await reference.getDownloadURL();
+        cb && cb(url);
+      },
+    );
+  } catch (error) {
+    console.error('Error uploading image (try/catch):', error);
+    cb && cb(null, error?.toString());
+  }
 };
