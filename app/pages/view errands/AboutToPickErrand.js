@@ -5,15 +5,15 @@ import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const AboutToPickErrand = ({pickErrand}) => {
+const AboutToPickErrand = ({pickErrand, errand}) => {
   return (
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
-        <Text style={{color: colors.black, fontWeight: '700', fontSize: 24}}>
-          A New Pair of Shoes
+        <Text style={{color: colors.black, fontWeight: '700', fontSize: 21}}>
+          {errand?.title}
         </Text>
         <Text style={{color: colors.green, fontWeight: '700', fontSize: 22}}>
-          GHS 175
+          GHS {errand?.reward + errand?.cost}
         </Text>
         <Paragraph
           style={{

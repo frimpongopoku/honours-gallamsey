@@ -1,5 +1,5 @@
 import {View, Text, SafeAreaView} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Toolbar from '../../components/toolbar/Toolbar';
 import {colors} from '../../styles';
 import Paragraph from '../../components/paragraph/Paragraph';
@@ -16,9 +16,16 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {toggleUniversalModal} from '../../redux/actions/actions';
 import AsDialogBox from '../../components/modal/AsDialogBox';
+import {faFileLines} from '@fortawesome/free-solid-svg-icons';
 
-const ViewErrandScreen = ({toggleModal, navigation}) => {
+const ViewErrandScreen = ({toggleModal, navigation, route}) => {
   const [running, setRunning] = useState(false);
+  const [errand, setErrand] = useState({});
+  useEffect(() => {
+    const passedErrand = route.params?.data;
+    setErrand(passedErrand || {});
+  }, [route]);
+
   return (
     <GBottomSheet
       // generics={{snapPoints: ['30%', '60%']}}
@@ -51,10 +58,13 @@ const ViewErrandScreen = ({toggleModal, navigation}) => {
             cancel={() => setRunning(false)}
           />
         ) : (
-          <AboutToPickErrand pickErrand={() => setRunning(true)} />
+          <AboutToPickErrand
+            errand={errand}
+            pickErrand={() => setRunning(true)}
+          />
         )
       }>
-      <Toolbar title="A new pair of shoes" />
+      <Toolbar title={errand?.title || '...'} />
       <ScrollView
         style={{marginBottom: 220, width: '100%', backgroundColor: 'white'}}>
         <View>
@@ -74,7 +84,7 @@ const ViewErrandScreen = ({toggleModal, navigation}) => {
                 color: colors.red,
                 flex: 1,
               }}>
-              GHS 150
+              GHS {errand?.cost}
             </Text>
             <Text
               style={{
@@ -86,19 +96,30 @@ const ViewErrandScreen = ({toggleModal, navigation}) => {
                 textAlign: 'center',
                 flex: 1,
               }}>
-              GHS 25
+              GHS {errand?.reward}
             </Text>
           </View>
           {/* <DetailsOfErrand /> */}
 
-          {running ? <ErrandStateTracker /> : <DetailsOfErrand />}
+          {running ? (
+            <ErrandStateTracker errand={errand} />
+          ) : (
+            <DetailsOfErrand errand={errand} />
+          )}
         </View>
       </ScrollView>
+      {running && (
+        <GButton
+          onPress={() => setRunning(false)}
+          iconOptions={{icon: faFileLines}}
+          style={{bottom: 310, right: 25}}
+          floating></GButton>
+      )}
       <GButton
         style={{padding: 5, backgroundColor: '#F0F0F0', bottom: 230}}
         floating>
         <ImagePro
-          imageUrl="https://i.pravatar.cc/300"
+          imageUrl={errand?.images[0]}
           style={{borderRadius: 55, width: 60, height: 60}}
         />
       </GButton>

@@ -55,7 +55,7 @@ const ErrandFeedItem = ({showDistanceInformation, errand}) => {
         {title}
       </Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate('ViewErrand')}
+        onPress={() => navigation.navigate('ViewErrand', {data: errand})}
         style={{paddingHorizontal: 15}}>
         <ImagePro
           style={{borderRadius: 10, height: 250}}

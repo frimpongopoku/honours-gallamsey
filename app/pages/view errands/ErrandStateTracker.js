@@ -5,13 +5,32 @@ import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../styles';
 import ImagePro from '../../components/image/ImagePro';
 const STAGES = [
-  {key: 'started', text: 'Started running...'},
-  {key: 'engaging', text: 'Engaging Instructions...'},
-  {key: 'returning', text: 'Returning / Delivering...'},
-  {key: 'complete', text: 'Complete'},
-  {key: 'transferred', text: 'Funds Transferred!'},
+  {key: 'default', text: 'Started running...', checked: ['default']},
+  {
+    key: 'engaging',
+    text: 'Engaging Instructions...',
+    checked: ['engaging', 'default'],
+  },
+  {
+    key: 'returning',
+    text: 'Returning / Delivering...',
+    checked: ['engaging', 'default', 'returning'],
+  },
+  {
+    key: 'complete',
+    text: 'Complete',
+    checked: ['engaging', 'default', 'returning', 'complete'],
+  },
+  {
+    key: 'transferred',
+    text: 'Funds Transferred!',
+    checked: ['engaging', 'default', 'returning', 'complete', 'transferred'],
+  },
 ];
-const ErrandStateTracker = () => {
+const ErrandStateTracker = ({errand}) => {
+  const errandStatus = STAGES.find(stage => stage.key === errand.status);
+  const {runner} = errand || {};
+  console.log('How is the errand', errandStatus);
   return (
     <View style={{}}>
       <View
@@ -23,7 +42,7 @@ const ErrandStateTracker = () => {
           alignItems: 'center',
         }}>
         <ImagePro
-          imageUrl="https://i.pravatar.cc/300"
+          imageUrl={runner?.image || 'https://i.pravatar.cc/300'}
           style={{
             height: 60,
             width: 60,
@@ -36,20 +55,22 @@ const ErrandStateTracker = () => {
 
         <View>
           <Text style={{fontWeight: 'bold', color: colors.black, fontSize: 18}}>
-            Akwesi Frimpong
+            {runner?.name || '...'}
           </Text>
           <Text>Running this errand...</Text>
         </View>
       </View>
-      {STAGES.map((stage, index) => (
-        <View key={index?.toString()}>
-          <Stage
-            text={stage.text}
-            complete={index === 0}
-            trail={index === STAGES.length - 1 ? false : true}
-          />
-        </View>
-      ))}
+      {STAGES.map((stage, index) => {
+        return (
+          <View key={index?.toString()}>
+            <Stage
+              text={stage.text}
+              complete={errandStatus?.checked?.includes(stage.key)}
+              trail={index === STAGES.length - 1 ? false : true}
+            />
+          </View>
+        );
+      })}
     </View>
   );
 };

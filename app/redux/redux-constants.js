@@ -9,3 +9,4 @@ export const SET_GALLAMSEY_USER = 'SET_GALLAMSEY_USER';
 export const YOUR_RUNNING_ERRANDS = 'YOUR_RUNNING_ERRANDS';
 export const YOUR_POSTS = 'YOUR_POSTS';
 export const LOAD_NEWS = 'LOAD_NEWS';
+
