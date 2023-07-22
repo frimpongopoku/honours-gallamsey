@@ -16,19 +16,27 @@ import {
   SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
+  YOUR_POSTS,
+  YOUR_RUNNING_ERRANDS,
 } from '../redux-constants.js';
 
 export const testReduxAction = someValue => {
   return {type: DO_NOTHING, payload: someValue};
 };
-export const loadNewsAction = someValue => {
-  return {type: LOAD_NEWS, payload: someValue};
+export const loadNewsAction = value => {
+  return {type: LOAD_NEWS, payload: value};
 };
 export const updateErrandFormAction = data => {
   return {type: UPDATE_ERRAND_FORM, payload: data};
 };
 export const toggleUniversalModal = data => {
   return {type: TOGGLE_UNIVERSAL_MODAL, payload: data};
+};
+export const loadUsersRunningErrandAction = data => {
+  return {type: YOUR_RUNNING_ERRANDS, payload: data};
+};
+export const loadUsersErrandPostsAction = data => {
+  return {type: YOUR_POSTS, payload: data};
 };
 export const loadFirebaseUserAction = data => {
   return {type: LOAD_FIREBASE_USER, payload: data};

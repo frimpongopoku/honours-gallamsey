@@ -9,10 +9,27 @@ import {
   SET_USER_PREFERENCES,
   TOGGLE_UNIVERSAL_MODAL,
   UPDATE_ERRAND_FORM,
+  YOUR_POSTS,
+  YOUR_RUNNING_ERRANDS,
 } from '../redux-constants';
 
 export const doNothingReducer = (state = [], action = {}) => {
   if (action.type === DO_NOTHING) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerForLoadingRunningErrands = (
+  state = LOADING,
+  action = {},
+) => {
+  if (action.type === YOUR_RUNNING_ERRANDS) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerForLoadingYourPosts = (state = LOADING, action = {}) => {
+  if (action.type === YOUR_POSTS) {
     return action.payload;
   }
   return state;

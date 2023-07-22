@@ -4,6 +4,8 @@ import {
   reducerForErrandForm,
   reducerForErrors,
   reducerForLoadingNews,
+  reducerForLoadingRunningErrands,
+  reducerForLoadingYourPosts,
   reducerForUniversalModal,
   reducerToLoadFirebaseUser,
   reducerToLoadUserLocations,
@@ -21,4 +23,6 @@ export default combineReducers({
   errors: reducerForErrors,
   user: reducerToSetGallamseyUser,
   news: reducerForLoadingNews,
+  runningErrands: reducerForLoadingRunningErrands,
+  yourPosts: reducerForLoadingYourPosts,
 });
