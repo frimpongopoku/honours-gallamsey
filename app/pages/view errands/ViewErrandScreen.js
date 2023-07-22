@@ -17,14 +17,41 @@ import {connect} from 'react-redux';
 import {toggleUniversalModal} from '../../redux/actions/actions';
 import AsDialogBox from '../../components/modal/AsDialogBox';
 import {faFileLines} from '@fortawesome/free-solid-svg-icons';
+import {apiCall} from '../../api/messenger';
+import {ENGAGE_ERRAND} from '../../api/urls';
 
-const ViewErrandScreen = ({toggleModal, navigation, route}) => {
+const ViewErrandScreen = ({toggleModal, navigation, route, user}) => {
   const [running, setRunning] = useState(false);
   const [errand, setErrand] = useState({});
   useEffect(() => {
     const passedErrand = route.params?.data;
     setErrand(passedErrand || {});
   }, [route]);
+
+  const pickErrand = () => {
+    const runner = {
+      name: user?.preferredName,
+      image: user?.image,
+      phone: user?.phone,
+    };
+    apiCall(
+      ENGAGE_ERRAND,
+      {body: {runner, errand_id: errand?._id}},
+      response => {
+        if (!response.success)
+          return console.log('ENGAGEMENT ERROR: ', response.error);
+        setErrand(response.data);
+      },
+    );
+  };
+
+  const switchStage = status => {
+    apiCall(ENGAGE_ERRAND, {body: {status}}, response => {
+      if (!response.success)
+        return console.log('ENGAGEMENT ERROR: ', response.error);
+      setErrand(response.data);
+    });
+  };
 
   return (
     <GBottomSheet
@@ -102,7 +129,7 @@ const ViewErrandScreen = ({toggleModal, navigation, route}) => {
           {/* <DetailsOfErrand /> */}
 
           {running ? (
-            <ErrandStateTracker errand={errand} />
+            <ErrandStateTracker switchStage={switchStage} errand={errand} />
           ) : (
             <DetailsOfErrand errand={errand} />
           )}
@@ -128,7 +155,7 @@ const ViewErrandScreen = ({toggleModal, navigation, route}) => {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {user: state.user};
 };
 
 const mapDispatchToProps = dispatch => {

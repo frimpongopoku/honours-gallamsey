@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
@@ -78,7 +78,7 @@ const ErrandStateTracker = ({errand}) => {
 const Stage = ({text, complete, trail = true}) => {
   const opacity = complete ? 1 : 0.3;
   return (
-    <View>
+    <TouchableOpacity>
       <View
         style={{
           display: 'flex',
@@ -107,7 +107,7 @@ const Stage = ({text, complete, trail = true}) => {
             marginLeft: 43,
           }}></View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
