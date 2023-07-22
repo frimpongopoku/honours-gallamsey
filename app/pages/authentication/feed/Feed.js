@@ -1,16 +1,34 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import {View, Text, RefreshControl, ScrollView} from 'react-native';
+import React, {useState} from 'react';
 import ErrandFeedItem from './ErrandFeedItem';
-import {ScrollView} from 'react-native-gesture-handler';
+// import {ScrollView} from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import {fetchNewsFeed} from '../../../redux/actions/actions';
 
-const Feed = ({preferences}) => {
+const Feed = ({news, fetchNews, user}) => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+
+    fetchNews(user, () => {
+      console.log('Finished refreshing');
+      setRefreshing(false);
+    });
+    // fetchData();
+    // setIsRefreshing(false);
+  };
+
   return (
     <View>
-      <ScrollView>
-        {[23, 4, 4].map((item, index) => (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }>
+        {news?.map((errand, index) => (
           <View key={index?.toString()}>
-            <ErrandFeedItem showDistanceInformation={preferences?.closeToMe} />
+            <ErrandFeedItem errand={errand} />
           </View>
         ))}
       </ScrollView>
@@ -18,7 +36,18 @@ const Feed = ({preferences}) => {
   );
 };
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchNews: fetchNewsFeed,
+    },
+    dispatch,
+  );
 const mapStateToProps = state => {
-  return {preferences: state.userPreferences};
+  return {
+    preferences: state.userPreferences,
+    news: state.news,
+    user: state.user,
+  };
 };
-export default connect(mapStateToProps)(Feed);
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);

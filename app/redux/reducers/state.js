@@ -3,6 +3,7 @@ import {
   doNothingReducer,
   reducerForErrandForm,
   reducerForErrors,
+  reducerForLoadingNews,
   reducerForUniversalModal,
   reducerToLoadFirebaseUser,
   reducerToLoadUserLocations,
@@ -19,4 +20,5 @@ export default combineReducers({
   userPreferences: reducerToSetUserPreferences,
   errors: reducerForErrors,
   user: reducerToSetGallamseyUser,
+  news: reducerForLoadingNews,
 });

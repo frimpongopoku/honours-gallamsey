@@ -1,6 +1,8 @@
 import {Dimensions, StatusBar} from 'react-native';
 import storage from '@react-native-firebase/storage';
 
+
+
 export const errorStyles = {
   labelStyle: {color: 'red'},
   inputStyle: {borderColor: 'red', color: 'red'},

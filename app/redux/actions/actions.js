@@ -1,10 +1,15 @@
 import {apiCall} from '../../api/messenger.js';
-import {CREATE_ERRAND_URL, FIND_USER_PROFILE} from '../../api/urls.js';
+import {
+  ALL_ERRANDS,
+  CREATE_ERRAND_URL,
+  FIND_USER_PROFILE,
+} from '../../api/urls.js';
 import {signoutOfFirebase} from '../../firebase/utils.js';
 import {uploadImageToFirebase} from '../../utils/index.js';
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
+  LOAD_NEWS,
   LOAD_USER_LOCATIONS,
   SET_ERRORS,
   SET_GALLAMSEY_USER,
@@ -15,6 +20,9 @@ import {
 
 export const testReduxAction = someValue => {
   return {type: DO_NOTHING, payload: someValue};
+};
+export const loadNewsAction = someValue => {
+  return {type: LOAD_NEWS, payload: someValue};
 };
 export const updateErrandFormAction = data => {
   return {type: UPDATE_ERRAND_FORM, payload: data};
@@ -29,12 +37,22 @@ export const firebaseSignOutAction = () => dispatch => {
   signoutOfFirebase();
   dispatch(loadFirebaseUserAction(null));
 };
+
+export const fetchNewsFeed = (user, cb) => dispatch => {
+  apiCall(ALL_ERRANDS, {body: {user_id: user?._id}}, response => {
+    cb && cb();
+    if (!response.success) console.log('COULD NOT LOAD NEWS FEED');
+
+    dispatch(loadNewsAction(response.data));
+  });
+};
 export const findUserProfile = body => dispatch => {
   apiCall(FIND_USER_PROFILE, {body: {email: body}}, response => {
     if (!response.success) {
       console.log('ERROR LOADING GALLAMSEY USER: ', response.error);
       // return dispatch(setGallamseyUser(null));
     }
+    dispatch(fetchNewsFeed(response.data));
     dispatch(setGallamseyUser(response.data));
   });
 };

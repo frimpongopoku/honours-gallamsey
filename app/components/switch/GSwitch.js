@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 
 const GSwitch = ({label, onChange, value}) => {
   const [toggleValue, setToggleValue] = useState(value);
-  console.log('This is the value now', value);
 
   useEffect(() => {
     setToggleValue(value);

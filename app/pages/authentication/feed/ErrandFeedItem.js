@@ -6,8 +6,11 @@ import {colors} from '../../../styles';
 import ImagePro from '../../../components/image/ImagePro';
 import {useNavigation} from '@react-navigation/native';
 
-const ErrandFeedItem = ({showDistanceInformation}) => {
+const ErrandFeedItem = ({showDistanceInformation, errand}) => {
   const navigation = useNavigation();
+  const {poster, title, createdAt, images, cost, reward, distance} =
+    errand || {};
+  const kms = Math.round((distance / 1000) * 100) / 100;
   return (
     <View style={{marginBottom: 15}}>
       <View
@@ -27,13 +30,13 @@ const ErrandFeedItem = ({showDistanceInformation}) => {
             borderColor: colors.red,
             marginRight: 15,
           }}
-          imageUrl="https://i.pravatar.cc/300"
+          imageUrl={poster?.image}
         />
         <View>
           <Text style={{fontWeight: '600', color: 'black', fontSize: 18}}>
-            Portia Adjetey
+            {poster?.name}
           </Text>
-          <Text>40 mins ago</Text>
+          <Text>{createdAt || '...'}</Text>
         </View>
 
         <View style={{marginLeft: 'auto'}}>
@@ -42,25 +45,34 @@ const ErrandFeedItem = ({showDistanceInformation}) => {
           </TouchableOpacity>
         </View>
       </View>
+      <Text
+        style={{
+          paddingHorizontal: 20,
+          paddingBottom: 10,
+          color: colors.black,
+          fontWeight: '700',
+        }}>
+        {title}
+      </Text>
       <TouchableOpacity
         onPress={() => navigation.navigate('ViewErrand')}
         style={{paddingHorizontal: 15}}>
         <ImagePro
           style={{borderRadius: 10, height: 250}}
-          imageUrl="https://picsum.photos/600"
+          imageUrl={(images || [])[0] || 'https://picsum.photos/600'}
         />
         {/* <Image
           style={{borderRadius: 10, height: 250}}
           onLoad={e => console.log('Image DON LOAD')}
           source={{uri: 'https://i.pravatar.cc/600'}}
         /> */}
-        {showDistanceInformation ? (
-          <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
-            Delivery destination is only 3 mins walk away
-          </Text>
-        ) : (
+        {/* {showDistanceInformation ? ( */}
+        <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
+          Delivery destination is only {kms} kilometers away
+        </Text>
+        {/* ) : (
           <View style={{marginVertical: 6}}></View>
-        )}
+        )} */}
 
         <View
           style={{
@@ -71,7 +83,7 @@ const ErrandFeedItem = ({showDistanceInformation}) => {
           <View>
             <Text
               style={{fontWeight: 'bold', color: colors.black, fontSize: 20}}>
-              GHS 150
+              GHS {cost}
             </Text>
             <Text
               style={{fontWeight: '500', fontSize: 16, color: colors.black}}>
@@ -86,7 +98,7 @@ const ErrandFeedItem = ({showDistanceInformation}) => {
                 fontSize: 20,
                 textAlign: 'right',
               }}>
-              + GHS 25
+              + GHS {reward}
             </Text>
             <Text
               style={{

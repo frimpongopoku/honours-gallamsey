@@ -2,6 +2,7 @@ import {LOADING} from '../../pages/authentication/constants';
 import {
   DO_NOTHING,
   LOAD_FIREBASE_USER,
+  LOAD_NEWS,
   LOAD_USER_LOCATIONS,
   SET_ERRORS,
   SET_GALLAMSEY_USER,
@@ -37,6 +38,12 @@ export const reducerForUniversalModal = (state = {}, action = {}) => {
 
 export const reducerToSetGallamseyUser = (state = LOADING, action = {}) => {
   if (action.type === SET_GALLAMSEY_USER) {
+    return action.payload;
+  }
+  return state;
+};
+export const reducerForLoadingNews = (state = LOADING, action = {}) => {
+  if (action.type === LOAD_NEWS) {
     return action.payload;
   }
   return state;
