@@ -10,11 +10,11 @@ import {connect} from 'react-redux';
 import {colors} from '../../styles';
 import {getError} from '../../utils';
 
-const FirstStage = ({setForm, form, errors, userLocations}) => {
+const FirstStage = ({setForm, form, errors, user}) => {
   const onChange = obj => {
     setForm({...form, ...obj});
   };
-
+  const userLocations = user?.locations;
   const titleError = getError('title', errors?.errandForm || {});
   const descError = getError('description', errors?.errandForm || {});
   const locError = getError('deliveryLocation', errors?.errandForm || {});
@@ -50,7 +50,7 @@ const FirstStage = ({setForm, form, errors, userLocations}) => {
           <GDropdown
             labelStyle={locError.labelStyle}
             style={locError.style}
-            data={userLocations || []}
+            data={[{name: 'None', coords: null}, ...(userLocations || [])]}
             labelExtractor={loc => loc.name}
             valueExtractor={loc => loc.coords}
             name="deliveryLocation"
@@ -73,6 +73,7 @@ const mapStateToProps = state => {
     form: state.errandForm,
     errors: state.errors,
     userLocations: state.userLocations,
+    user: state.user,
   };
 };
 

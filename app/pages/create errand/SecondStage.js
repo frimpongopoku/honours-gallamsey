@@ -10,8 +10,9 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {updateErrandFormAction} from '../../redux/actions/actions';
 
-const SecondStage = ({form, setForm}) => {
+const SecondStage = ({form, setForm, modalOptions}) => {
   const [selectedImages, setSelectedImages] = useState([]);
+  console.log("Here are the optiosn", modalOptions)
 
   const removeImage = path => {
     const rem = selectedImages?.filter(image => image.path !== path);
@@ -83,7 +84,12 @@ const OneSelected = ({uri, onRemove}) => {
   );
 };
 const mapStateToProps = state => {
-  return {form: state.errandForm, errors: state.errors, user: state.user};
+  return {
+    form: state.errandForm,
+    errors: state.errors,
+    user: state.user,
+    modalOptions: state.modal,
+  };
 };
 
 const mapDispatchToProps = dispatch => {

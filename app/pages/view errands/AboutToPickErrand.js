@@ -4,13 +4,14 @@ import {colors} from '../../styles';
 import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
+import {smartString} from '../../utils';
 
-const AboutToPickErrand = ({pickErrand, errand}) => {
+const AboutToPickErrand = ({pickErrand, errand, authUserOwnsErrand}) => {
   return (
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
         <Text style={{color: colors.black, fontWeight: '700', fontSize: 21}}>
-          {errand?.title}
+          {smartString(errand?.title, 28)}
         </Text>
         <Text style={{color: colors.green, fontWeight: '700', fontSize: 22}}>
           GHS {errand?.reward + errand?.cost}
@@ -28,8 +29,11 @@ const AboutToPickErrand = ({pickErrand, errand}) => {
           Unsatisfied users may result in you not getting payed.
         </Paragraph>
       </View>
-      <GButton onPress={pickErrand} variant="green">
-        RUN THIS
+      <GButton
+        onPress={pickErrand}
+        disabled={authUserOwnsErrand}
+        variant="green">
+        {authUserOwnsErrand ? 'YOU CREATED THIS' : 'RUN THIS'}
       </GButton>
     </ScrollView>
   );

@@ -34,6 +34,8 @@ const ViewErrandScreen = ({
 }) => {
   const [running, setRunning] = useState(false);
   const [errand, setErrand] = useState({});
+
+  const authUserOwnsErrand = errand?.poster?.id === user?._id;
   useEffect(() => {
     const passedErrand = route.params?.data;
     setErrand(passedErrand || {});
@@ -104,7 +106,7 @@ const ViewErrandScreen = ({
             cancel={() => setRunning(false)}
           />
         ) : (
-          <AboutToPickErrand errand={errand} pickErrand={() => pickErrand()} />
+          <AboutToPickErrand authUserOwnsErrand={authUserOwnsErrand} errand={errand} pickErrand={() => pickErrand()} />
         )
       }>
       <Toolbar title={errand?.title || '...'} />

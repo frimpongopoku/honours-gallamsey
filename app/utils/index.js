@@ -1,7 +1,13 @@
 import {Dimensions, StatusBar} from 'react-native';
 import storage from '@react-native-firebase/storage';
 
-
+export function smartString(str, length) {
+  if (!length) return str;
+  if (str.length <= length) {
+    return str;
+  }
+  return str.slice(0, length) + '...';
+}
 
 export const errorStyles = {
   labelStyle: {color: 'red'},

@@ -10,5 +10,7 @@ export const apiCall = (url, options, cb) => {
   })
     .then(response => response.json())
     .then(json => cb && cb(json))
-    .catch(error => console.error('Error fetching data:', error));
+    .catch(error =>
+      console.error('Error fetching data:' + url + '--->', error),
+    );
 };

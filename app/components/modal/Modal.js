@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {colors} from '../../styles';
 
-const GModal = ({show, children, style, close}) => {
+const GModal = ({show = false, children, style, close}) => {
   const [modalVisible, setModalVisible] = useState(show);
 
   // const openModal = () => {

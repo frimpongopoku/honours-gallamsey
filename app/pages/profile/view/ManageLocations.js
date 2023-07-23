@@ -62,8 +62,8 @@ const ManageLocations = ({updateLocationsInRedux, updateUserInRedux, user}) => {
   const handleChange = obj => {
     setNewLocation({...newLocation, ...obj});
   };
-  const addTheUpdates = () => {
-    const newList = [newLocation, ...locations];
+  const addTheUpdates = (list = null) => {
+    const newList = list || [newLocation, ...locations];
     console.log('See the new list', newList);
     apiCall(
       UPDATE_USER_URL,
@@ -79,8 +79,10 @@ const ManageLocations = ({updateLocationsInRedux, updateUserInRedux, user}) => {
 
   const remove = index => {
     const rem = locations?.filter((item, i) => index !== i);
-    console.log('this is the remainder', rem);
-    updateLocationsInRedux(rem);
+    addTheUpdates(rem);
+
+    // console.log('this is the remainder', rem);
+    // updateLocationsInRedux(rem);
   };
   return (
     <GBottomSheet

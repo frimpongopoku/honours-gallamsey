@@ -1,5 +1,5 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import TextBox from '../../components/textbox/TextBox';
 import PageTitle from '../../components/intros/PageTitle';
 import {colors} from '../../styles';
@@ -7,6 +7,7 @@ import GButton from '../../components/button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {
+  fetchMyPosts,
   sendErrandsToBackend,
   updateErrandFormAction,
 } from '../../redux/actions/actions';
@@ -14,19 +15,35 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {getError} from '../../utils';
 
-const ThirdStage = ({setForm, form, errors, saveNewErrand, user}) => {
+const ThirdStage = ({
+  setForm,
+  form,
+  errors,
+  saveNewErrand,
+  user,
+  refreshMyPosts,
+}) => {
   const [loading, setLoading] = useState(false);
   const onChange = obj => {
     setForm({...form, ...obj});
   };
+  useEffect(() => {}, [form]);
 
   const createNewErrand = () => {
+    if (!form?.deliveryLocation) {
+      return Alert.alert('Please select a location...');
+    }
     setLoading(true);
     saveNewErrand(
-      {...form, poster: {id: user?._id, name: user?.preferredName}},
+      {
+        ...form,
+        poster: {id: user?._id, name: user?.preferredName, image: user?.image},
+      },
       {allErrors: errors},
       response => {
         setLoading(false);
+        refreshMyPosts(user);
+        setForm({});
         console.log('RESPONSE AFTER CREATING', response);
       },
     );
@@ -126,6 +143,7 @@ const mapDispatchToProps = dispatch => {
     {
       setForm: updateErrandFormAction,
       saveNewErrand: sendErrandsToBackend,
+      refreshMyPosts: fetchMyPosts,
     },
     dispatch,
   );

@@ -4,6 +4,7 @@ import {
   CREATE_ERRAND_URL,
   FIND_USER_PROFILE,
   MY_OWN_ERRANDS_URL,
+  NEWS_FEED_URL,
   RUNNING_ERRANDS_URL,
 } from '../../api/urls.js';
 import {signoutOfFirebase} from '../../firebase/utils.js';
@@ -67,7 +68,7 @@ export const fetchMyRunningErrands = (user, cb) => dispatch => {
   });
 };
 export const fetchNewsFeed = (user, cb) => dispatch => {
-  apiCall(ALL_ERRANDS, {body: {user_id: user?._id}}, response => {
+  apiCall(NEWS_FEED_URL, {body: {user_id: user?._id}}, response => {
     cb && cb();
     if (!response.success) console.log('COULD NOT LOAD NEWS FEED');
 
