@@ -4,7 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../styles';
 import ImagePro from '../../components/image/ImagePro';
-const STAGES = [
+export const STAGES = [
   {key: 'default', text: 'Started running...', checked: ['default']},
   {
     key: 'engaging',

@@ -3,6 +3,8 @@ import {
   ALL_ERRANDS,
   CREATE_ERRAND_URL,
   FIND_USER_PROFILE,
+  MY_OWN_ERRANDS_URL,
+  RUNNING_ERRANDS_URL,
 } from '../../api/urls.js';
 import {signoutOfFirebase} from '../../firebase/utils.js';
 import {uploadImageToFirebase} from '../../utils/index.js';
@@ -46,6 +48,24 @@ export const firebaseSignOutAction = () => dispatch => {
   dispatch(loadFirebaseUserAction(null));
 };
 
+export const fetchMyPosts = (user, cb) => dispatch => {
+  apiCall(MY_OWN_ERRANDS_URL, {body: {user_id: user?._id}}, response => {
+    cb && cb();
+    if (!response.success)
+      console.log('COULD NOT LOAD YOUR POSTED ERRANDS....');
+
+    dispatch(loadUsersErrandPostsAction(response.data));
+  });
+};
+export const fetchMyRunningErrands = (user, cb) => dispatch => {
+  apiCall(RUNNING_ERRANDS_URL, {body: {user_id: user?._id}}, response => {
+    cb && cb();
+    if (!response.success)
+      console.log('COULD NOT LOAD YOUR RUNNING ERRANDS....');
+
+    dispatch(loadUsersRunningErrandAction(response.data));
+  });
+};
 export const fetchNewsFeed = (user, cb) => dispatch => {
   apiCall(ALL_ERRANDS, {body: {user_id: user?._id}}, response => {
     cb && cb();
@@ -60,8 +80,10 @@ export const findUserProfile = body => dispatch => {
       console.log('ERROR LOADING GALLAMSEY USER: ', response.error);
       // return dispatch(setGallamseyUser(null));
     }
-    dispatch(fetchNewsFeed(response.data));
     dispatch(setGallamseyUser(response.data));
+    dispatch(fetchNewsFeed(response.data));
+    dispatch(fetchMyRunningErrands(response.data));
+    dispatch(fetchMyPosts(response.data));
   });
 };
 export const setGallamseyUser = data => {

@@ -14,35 +14,53 @@ import DetailsOfErrand from './DetailsOfErrand';
 import ErrandStateTracker from './ErrandStateTracker';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {toggleUniversalModal} from '../../redux/actions/actions';
+import {
+  fetchMyRunningErrands,
+  fetchNewsFeed,
+  toggleUniversalModal,
+} from '../../redux/actions/actions';
 import AsDialogBox from '../../components/modal/AsDialogBox';
 import {faFileLines} from '@fortawesome/free-solid-svg-icons';
 import {apiCall} from '../../api/messenger';
-import {ENGAGE_ERRAND} from '../../api/urls';
+import {ENGAGE_ERRAND, PICK_ERRAND} from '../../api/urls';
 
-const ViewErrandScreen = ({toggleModal, navigation, route, user}) => {
+const ViewErrandScreen = ({
+  toggleModal,
+  navigation,
+  route,
+  user,
+  refreshNewsFeed,
+  refreshRunningErrands,
+}) => {
   const [running, setRunning] = useState(false);
   const [errand, setErrand] = useState({});
   useEffect(() => {
     const passedErrand = route.params?.data;
     setErrand(passedErrand || {});
+    const isRunning =
+      passedErrand?.status && passedErrand?.status !== 'default';
+    setRunning(isRunning);
   }, [route]);
+
+  console.log('Lets see errand', errand);
 
   const pickErrand = () => {
     const runner = {
+      id: user?._id,
       name: user?.preferredName,
       image: user?.image,
       phone: user?.phone,
     };
-    apiCall(
-      ENGAGE_ERRAND,
-      {body: {runner, errand_id: errand?._id}},
-      response => {
-        if (!response.success)
-          return console.log('ENGAGEMENT ERROR: ', response.error);
-        setErrand(response.data);
-      },
-    );
+    apiCall(PICK_ERRAND, {body: {runner, errand_id: errand?._id}}, response => {
+      if (!response.success)
+        return console.log('ENGAGEMENT ERROR: ', response.error);
+
+      console.log('HERE IS THE RESPONSE');
+      setRunning(true);
+      setErrand(response.data);
+      refreshNewsFeed(user);
+      refreshRunningErrands(user);
+    });
   };
 
   const switchStage = status => {
@@ -52,6 +70,7 @@ const ViewErrandScreen = ({toggleModal, navigation, route, user}) => {
       setErrand(response.data);
     });
   };
+  const image = (errand?.images || [])[0];
 
   return (
     <GBottomSheet
@@ -85,10 +104,7 @@ const ViewErrandScreen = ({toggleModal, navigation, route, user}) => {
             cancel={() => setRunning(false)}
           />
         ) : (
-          <AboutToPickErrand
-            errand={errand}
-            pickErrand={() => setRunning(true)}
-          />
+          <AboutToPickErrand errand={errand} pickErrand={() => pickErrand()} />
         )
       }>
       <Toolbar title={errand?.title || '...'} />
@@ -142,14 +158,16 @@ const ViewErrandScreen = ({toggleModal, navigation, route, user}) => {
           style={{bottom: 310, right: 25}}
           floating></GButton>
       )}
-      <GButton
-        style={{padding: 5, backgroundColor: '#F0F0F0', bottom: 230}}
-        floating>
-        <ImagePro
-          imageUrl={errand?.images[0]}
-          style={{borderRadius: 55, width: 60, height: 60}}
-        />
-      </GButton>
+      {image && (
+        <GButton
+          style={{padding: 5, backgroundColor: '#F0F0F0', bottom: 230}}
+          floating>
+          <ImagePro
+            imageUrl={image}
+            style={{borderRadius: 55, width: 60, height: 60}}
+          />
+        </GButton>
+      )}
     </GBottomSheet>
   );
 };
@@ -159,6 +177,13 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({toggleModal: toggleUniversalModal}, dispatch);
+  return bindActionCreators(
+    {
+      toggleModal: toggleUniversalModal,
+      refreshRunningErrands: fetchMyRunningErrands,
+      refreshNewsFeed: fetchNewsFeed,
+    },
+    dispatch,
+  );
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ViewErrandScreen);
