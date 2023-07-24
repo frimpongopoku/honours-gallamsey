@@ -36,7 +36,7 @@ const Feed = ({news, fetchNews, user}) => {
         }>
         {news?.map((errand, index) => (
           <View key={index?.toString()}>
-            <ErrandFeedItem errand={errand} />
+            <ErrandFeedItem errand={errand} user={user} />
           </View>
         ))}
       </ScrollView>

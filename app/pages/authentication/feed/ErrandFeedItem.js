@@ -6,11 +6,16 @@ import {colors} from '../../../styles';
 import ImagePro from '../../../components/image/ImagePro';
 import {useNavigation} from '@react-navigation/native';
 
-const ErrandFeedItem = ({showDistanceInformation, errand}) => {
+const ErrandFeedItem = ({user, errand}) => {
   const navigation = useNavigation();
   const {poster, title, createdAt, images, cost, reward, distance} =
     errand || {};
   const kms = Math.round((distance / 1000) * 100) / 100;
+
+  const locations = user?.locations;
+  const preferences = user?.preferences;
+  console.log('HER ARE HTE PREFS', preferences);
+
   return (
     <View style={{marginBottom: 15}}>
       <View
@@ -67,9 +72,13 @@ const ErrandFeedItem = ({showDistanceInformation, errand}) => {
           source={{uri: 'https://i.pravatar.cc/600'}}
         /> */}
         {/* {showDistanceInformation ? ( */}
-        <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
-          Delivery destination is only {kms} kilometers away
-        </Text>
+        {locations?.length && preferences?.closeToMe ? (
+          <Text style={{marginVertical: 10, color: 'black', fontWeight: '500'}}>
+            Delivery destination is only {kms} kilometers away
+          </Text>
+        ) : (
+          <View style={{marginVertical: 6}}></View>
+        )}
         {/* ) : (
           <View style={{marginVertical: 6}}></View>
         )} */}

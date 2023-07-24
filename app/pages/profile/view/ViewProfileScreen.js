@@ -28,6 +28,7 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
   const signOut = () => {
     signOutFromFirebase();
   };
+  console.log("lets see users image", user)
   return (
     <SafeAreaView>
       <Toolbar
@@ -52,7 +53,7 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
           }}>
           <View style={{width: 100, position: 'relative'}}>
             <ImagePro
-              imageUrl={user?.image}
+              imageUrl={user?.image || 'https://i.pravatar.cc/300'}
               style={{
                 height: 100,
                 width: 100,

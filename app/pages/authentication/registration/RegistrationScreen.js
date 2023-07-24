@@ -28,7 +28,6 @@ const RegistrationScreen = ({navigation}) => {
   };
 
   const register = () => {
-    return navigation.navigate('CompleteProfile');
     if (!form.email) return addError({email: 'Please enter a valid email'});
     if (!form.password)
       return addError({password: 'Please enter a valid password'});
@@ -40,9 +39,9 @@ const RegistrationScreen = ({navigation}) => {
     setLoading(true);
     useEmailAndPassword(form.email, form.password, (response, error) => {
       setLoading(false);
-
       if (error) return Alert.alert(error);
       console.log('USER OBJECT HERE ', response.user);
+      navigation.navigate('CompleteProfile');
     });
   };
 
