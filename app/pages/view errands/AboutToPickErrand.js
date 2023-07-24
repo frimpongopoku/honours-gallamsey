@@ -6,7 +6,8 @@ import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 import {smartString} from '../../utils';
 
-const AboutToPickErrand = ({pickErrand, errand, authUserOwnsErrand}) => {
+const AboutToPickErrand = ({pickErrand, errand, authUserOwnsErrand, user}) => {
+  console.log('Is this the user', user);
   return (
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
@@ -29,12 +30,18 @@ const AboutToPickErrand = ({pickErrand, errand, authUserOwnsErrand}) => {
           Unsatisfied users may result in you not getting payed.
         </Paragraph>
       </View>
-      <GButton
-        onPress={pickErrand}
-        disabled={authUserOwnsErrand}
-        variant="green">
-        {authUserOwnsErrand ? 'YOU CREATED THIS' : 'RUN THIS'}
-      </GButton>
+      {user ? (
+        <GButton
+          onPress={pickErrand}
+          disabled={authUserOwnsErrand}
+          variant="green">
+          {authUserOwnsErrand ? 'YOU CREATED THIS' : 'RUN THIS'}
+        </GButton>
+      ) : (
+        <GButton onPress={pickErrand} disabled variant="green">
+          LOGIN
+        </GButton>
+      )}
     </ScrollView>
   );
 };

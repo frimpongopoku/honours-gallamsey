@@ -52,6 +52,7 @@ export const firebaseSignOutAction = () => dispatch => {
 export const fetchMyPosts = (user, cb) => dispatch => {
   apiCall(MY_OWN_ERRANDS_URL, {body: {user_id: user?._id}}, response => {
     cb && cb();
+
     if (!response.success)
       console.log('COULD NOT LOAD YOUR POSTED ERRANDS....');
 
@@ -70,7 +71,10 @@ export const fetchMyRunningErrands = (user, cb) => dispatch => {
 export const fetchNewsFeed = (user, cb) => dispatch => {
   apiCall(NEWS_FEED_URL, {body: {user_id: user?._id}}, response => {
     cb && cb();
-    if (!response.success) console.log('COULD NOT LOAD NEWS FEED');
+    if (!response.success) {
+      console.log('Where is the response', response);
+      console.log('COULD NOT LOAD NEWS FEED');
+    }
 
     dispatch(loadNewsAction(response.data));
   });

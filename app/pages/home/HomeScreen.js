@@ -55,11 +55,13 @@ const HomeScreen = ({navigation}) => {
     // });
   }, []);
 
+  console.log("ABOVE BOTTOM VALUE",  aboveBottomNav)
+
   return (
     <SafeAreaView>
       <View
         style={{
-          height: aboveBottomNav,
+          height:aboveBottomNav,
           backgroundColor: 'white',
         }}>
         <Toolbar

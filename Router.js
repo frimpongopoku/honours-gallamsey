@@ -19,8 +19,10 @@ import GModal from './app/components/modal/Modal';
 import AsDialogBox from './app/components/modal/AsDialogBox';
 import {bindActionCreators} from 'redux';
 import {
+  fetchNewsFeed,
   findUserProfile,
   loadFirebaseUserAction,
+  setGallamseyUser,
   toggleUniversalModal,
 } from './app/redux/actions/actions';
 import {connect} from 'react-redux';
@@ -36,15 +38,21 @@ const Router = ({
   setFirebaseUser,
   fetchProfile,
   user,
+  fetchNews,
+  setUserProfile,
 }) => {
   useEffect(() => {
     checkUserAuthenticationStatus(fireUser => {
       setFirebaseUser(fireUser);
       if (fireUser) fetchProfile(fireUser?.email);
+      else {
+        fetchNews();
+        setUserProfile(null);
+      }
     });
   }, [fireAuth]);
 
-  console.log('USER PROFILE IN ROUTER:  ', user);
+  // console.log('USER PROFILE IN ROUTER:  ', user);
 
   return (
     <NavigationContainer>
@@ -133,6 +141,8 @@ const mapDispatchToProps = dispatch =>
       toggleModal: toggleUniversalModal,
       setFirebaseUser: loadFirebaseUserAction,
       fetchProfile: findUserProfile,
+      fetchNews: fetchNewsFeed,
+      setUserProfile: setGallamseyUser,
     },
     dispatch,
   );

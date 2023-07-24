@@ -1,4 +1,7 @@
-const HOST = 'http://192.168.8.100:4000/';
+import {isEmulator} from '../utils';
+let HOST;
+if (isEmulator()) HOST = 'http://10.0.3.2:4000/';
+else HOST = 'http://192.168.8.100:4000/';
 
 export const ALL_ERRANDS = HOST + 'errands/list';
 export const CREATE_ERRAND_URL = HOST + 'errands/create';

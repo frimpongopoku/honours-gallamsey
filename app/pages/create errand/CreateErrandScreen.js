@@ -12,7 +12,7 @@ import {bindActionCreators} from 'redux';
 import {updateErrandFormAction} from '../../redux/actions/actions';
 import {connect} from 'react-redux';
 
-const CreateErrandScreen = ({form, setForm, navigation}) => {
+const CreateErrandScreen = ({form, setForm, navigation, user}) => {
   // const [form, setForm] = useState({});
   const [currentTab, setCurrentTab] = useState({});
   const {aboveBottomNav} = fetchHeights();
@@ -24,6 +24,7 @@ const CreateErrandScreen = ({form, setForm, navigation}) => {
 
   const props = {
     navigation,
+    user,
     // onChange: handleInput,
     // form,
     // getError,
@@ -72,7 +73,7 @@ const CreateErrandScreen = ({form, setForm, navigation}) => {
 };
 
 const mapStateToProps = state => {
-  return {form: state.errandForm};
+  return {form: state.errandForm, user: state.user};
 };
 
 const mapDispatchToProps = dispatch => {

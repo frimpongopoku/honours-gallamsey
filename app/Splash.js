@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import LoadingSpinner from './components/spinner/LoadingSpinner';
 import {CREATE_NEW_PROFILE, LOADING} from './pages/authentication/constants';
+import {isEmulator} from './utils';
 
 const Splash = ({navigation, fireUser, user}) => {
   useEffect(() => {
@@ -18,7 +19,7 @@ const Splash = ({navigation, fireUser, user}) => {
       <View
         style={{
           height: '100%',
-          backgroundColor: 'red',
+          backgroundColor: isEmulator() ? 'blue' : 'red',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

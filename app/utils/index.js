@@ -1,12 +1,33 @@
-import {Dimensions, StatusBar} from 'react-native';
+import {Dimensions, Platform, StatusBar} from 'react-native';
 import storage from '@react-native-firebase/storage';
+import DeviceInfo from 'react-native-device-info';
+
+export const isEmulator = () => {
+  const level = DeviceInfo.getApiLevel()?._j;
+  return level === 32; // NB: this works only cos the genymotion device emulator I use is on api level 32, and my physical device is on 31
+  // return Platform.OS === 'android' && DeviceInfo.isEmulator();
+
+  // if (Platform.OS === 'android') {
+  //   // Check if the manufacturer name contains "Genymotion" (case-insensitive).
+  //   return DeviceInfo.getManufacturer().toLowerCase().includes('genymotion');
+  // }
+  // return false; // Return false for other platforms (iOS, etc.).
+};
+
+// export const isEmulator = () => {
+//   return (
+//     Platform.OS === 'android' &&
+//     Platform.isTV === false &&
+//     Platform.isTesting === false
+//   );
+// };
 
 export function smartString(str, length) {
   if (!length) return str;
-  if (str.length <= length) {
+  if (str?.length <= length) {
     return str;
   }
-  return str.slice(0, length) + '...';
+  return str?.slice(0, length) + '...';
 }
 
 export const errorStyles = {
@@ -24,7 +45,10 @@ export const fetchHeights = () => {
   const _window = Dimensions.get('window').height;
   const screen = Dimensions.get('screen').height;
   const bottomNavHeight = screen - (_window + StatusBar?.currentHeight);
-  const aboveBottomNav = _window - (bottomNavHeight + 0.26 * bottomNavHeight);
+  let aboveBottomNav;
+  if (isEmulator())
+    aboveBottomNav = _window + (bottomNavHeight + 2.38 * bottomNavHeight);
+  else aboveBottomNav = _window - (bottomNavHeight + 0.26 * bottomNavHeight);
   return {
     screenHeight: screen,
     windowHeight: _window,

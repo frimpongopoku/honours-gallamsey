@@ -106,7 +106,12 @@ const ViewErrandScreen = ({
             cancel={() => setRunning(false)}
           />
         ) : (
-          <AboutToPickErrand authUserOwnsErrand={authUserOwnsErrand} errand={errand} pickErrand={() => pickErrand()} />
+          <AboutToPickErrand
+            user={user}
+            authUserOwnsErrand={authUserOwnsErrand}
+            errand={errand}
+            pickErrand={() => pickErrand()}
+          />
         )
       }>
       <Toolbar title={errand?.title || '...'} />

@@ -13,6 +13,7 @@ const ImagePro = ({imageUrl, style, generics}) => {
   }, [imageUrl]);
   const handleImageLoad = () => {
     setIsLoading(false);
+    setIsError(false);
   };
 
   const handleImageError = () => {
@@ -24,16 +25,18 @@ const ImagePro = ({imageUrl, style, generics}) => {
   }
   return (
     <View>
-      <Image
-        style={
-          isLoading
-            ? {width: 1, display: 'none'}
-            : {width: '100%', ...(style || {})}
-        }
-        source={{uri: imageUrl}}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
-      />
+      {!isError && (
+        <Image
+          style={
+            isLoading
+              ? {width: 1, display: 'none'}
+              : {width: '100%', ...(style || {})}
+          }
+          source={{uri: imageUrl}}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+        />
+      )}
       {isLoading ? (
         <ActivityIndicator size="large" color="red" />
       ) : isError ? (
