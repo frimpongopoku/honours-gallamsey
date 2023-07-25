@@ -29,6 +29,7 @@ import {connect} from 'react-redux';
 import {checkUserAuthenticationStatus} from './app/firebase/utils';
 import {CREATE_NEW_PROFILE} from './app/pages/authentication/constants';
 import Chatting from './app/pages/chat/Chatting';
+import CashInOrOut from './app/pages/cash in or out/CashInOrOut';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,11 @@ const Router = ({
         {modalOptions?.component}
       </GModal>
       <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          name="CashInOrOut"
+          options={{headerShown: false}}
+          component={CashInOrOut}
+        />
         <Stack.Screen
           name="Chatting"
           options={{headerShown: false}}

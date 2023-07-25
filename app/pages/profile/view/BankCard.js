@@ -7,8 +7,10 @@ import {connect} from 'react-redux';
 import AsDialogBox from '../../../components/modal/AsDialogBox';
 import WIthIconAndText from '../../../components/modal/WIthIconAndText';
 import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
+import {useNavigation} from '@react-navigation/native';
 
 const BankCard = ({toggleModal, user}) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() =>
@@ -19,21 +21,27 @@ const BankCard = ({toggleModal, user}) => {
               textOptions={{text: 'Would you like to cashout or Cash In'}}
               noOptions={{
                 text: 'CASH IN',
-                onPress: () => toggleModal({show: false}),
+                onPress: () => {
+                  toggleModal({show: false});
+                  navigation.navigate('CashInOrOut', {data: 'cashin'});
+                },
               }}
               yesOptions={{
                 text: 'CASH OUT',
-                onPress: () =>
-                  toggleModal({
-                    component: (
-                      <WIthIconAndText
-                        textOptions={{
-                          text: 'Congratulations! An amount of 568 has been sent to your default mobile wallet, enjoy!',
-                        }}
-                        iconOptions={{icon: faCheckCircle, color: colors.green}}
-                      />
-                    ),
-                  }),
+                onPress: () => {
+                  toggleModal({show: false});
+                  navigation.navigate('CashInOrOut', {data: 'cashout'});
+                  // toggleModal({
+                  //   component: (
+                  //     <WIthIconAndText
+                  //       textOptions={{
+                  //         text: 'Congratulations! An amount of 568 has been sent to your default mobile wallet, enjoy!',
+                  //       }}
+                  //       iconOptions={{icon: faCheckCircle, color: colors.green}}
+                  //     />
+                  //   ),
+                  // });
+                },
               }}
             />
           ),

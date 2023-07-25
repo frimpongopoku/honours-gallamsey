@@ -41,6 +41,7 @@ const ViewErrandScreen = ({
 
   const authUserOwnsErrand = errand?.poster?.id === user?._id;
   const isLoading = errand === LOADING;
+  const isComplete = errand?.status === 'complete';
 
   useEffect(() => {
     const passedErrand = route.params?.data;
@@ -168,9 +169,6 @@ const ViewErrandScreen = ({
         // Now recall user running errands and users posts
         navigation.goBack();
         refresh();
-        // refreshNewsFeed(user);
-        // refreshRunningErrands(user);
-        // refreshYourPosts(user);
       },
     );
   };
@@ -198,6 +196,7 @@ const ViewErrandScreen = ({
       sheetContent={
         running ? (
           <CanCancelRunningErrand
+            errand={errand}
             ownsThis={authUserOwnsErrand}
             runner={errand?.runner}
             done={() => {
