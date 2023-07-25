@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Toolbar from '../../components/toolbar/Toolbar';
 import {colors} from '../../styles';
@@ -15,6 +15,7 @@ import ErrandStateTracker from './ErrandStateTracker';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {
+  fetchMyPosts,
   fetchMyRunningErrands,
   fetchNewsFeed,
   toggleUniversalModal,
@@ -22,7 +23,9 @@ import {
 import AsDialogBox from '../../components/modal/AsDialogBox';
 import {faFileLines} from '@fortawesome/free-solid-svg-icons';
 import {apiCall} from '../../api/messenger';
-import {ENGAGE_ERRAND, PICK_ERRAND} from '../../api/urls';
+import {ENGAGE_ERRAND, FIND_ONE_ERRAND, PICK_ERRAND} from '../../api/urls';
+import firestore from '@react-native-firebase/firestore';
+import {LOADING} from '../authentication/constants';
 
 const ViewErrandScreen = ({
   toggleModal,
@@ -31,20 +34,86 @@ const ViewErrandScreen = ({
   user,
   refreshNewsFeed,
   refreshRunningErrands,
+  refreshYourPosts,
 }) => {
   const [running, setRunning] = useState(false);
-  const [errand, setErrand] = useState({});
+  const [errand, setErrand] = useState(LOADING);
 
   const authUserOwnsErrand = errand?.poster?.id === user?._id;
+  const isLoading = errand === LOADING;
+
   useEffect(() => {
     const passedErrand = route.params?.data;
-    setErrand(passedErrand || {});
-    const isRunning =
-      passedErrand?.status && passedErrand?.status !== 'default';
-    // console.log('Errand we dy here', passedErrand, isRunning);
-    setRunning(passedErrand?.runner);
+    apiCall(
+      FIND_ONE_ERRAND,
+      {body: {errand_id: passedErrand?._id}},
+      response => {
+        if (!response.success)
+          return console.log(
+            'Sorry could not find errand with id ' + passedErrand?._id,
+          );
+
+        setErrand(response.data);
+      },
+    );
+    // setErrand(passedErrand || {});
+    // setRunning(passedErrand?.runner);
   }, [route]);
 
+  useEffect(() => {
+    if (isLoading) return;
+    setRunning(errand?.runner);
+
+    // if (!authUserOwnsErrand) return;
+    const unsubscribe = firestore()
+      .collection('Errands')
+      .doc(errand?._id)
+      .onSnapshot(documentSnapshot => {
+        // Handle the updated data here
+        const data = documentSnapshot.data();
+        console.log('--------FROM FIRESTORE-----', data);
+        if (!data) return;
+        setRunning(data?.runner);
+        setErrand(data);
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, [errand]);
+
+  // useEffect(() => {
+  //   const passedErrand = route.params?.data;
+  //   const hasARunner = passedErrand?.runner;
+  //   if (!hasARunner || !authUserOwnsErrand)
+  //     return console.log(
+  //       'Runner mode so no need to subscribe...!',
+  //       hasARunner,
+  //       authUserOwnsErrand,
+  //     );
+
+  //   const unsubscribe = firestore()
+  //     .collection('Errands')
+  //     .doc(passedErrand?._id)
+  //     .onSnapshot(documentSnapshot => {
+  //       // Handle the updated data here
+  //       const data = documentSnapshot.data();
+  //       console.log('--------FROM FIRESTORE-----', data);
+  //       if (!data) return;
+  //       setRunning(data?.runner);
+  //       setErrand(data);
+  //     });
+
+  //   // Unsubscribe from Firestore changes when the component unmounts
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, [route, authUserOwnsErrand]);
+
+  const refresh = () => {
+    refreshNewsFeed(user);
+    refreshRunningErrands(user);
+    refreshYourPosts(user);
+  };
   const pickErrand = () => {
     const runner = {
       id: user?._id,
@@ -56,11 +125,12 @@ const ViewErrandScreen = ({
       if (!response.success)
         return console.log('ENGAGEMENT ERROR: ', response.error);
 
-      console.log('HERE IS THE RESPONSE');
+      console.log('HERE IS THE RESPONSE IN PICK ERRAND FUNCTION: ', response);
       setRunning(true);
       setErrand(response.data);
-      refreshNewsFeed(user);
-      refreshRunningErrands(user);
+      // refreshNewsFeed(user);
+      // refreshRunningErrands(user);
+      refresh();
     });
   };
 
@@ -72,6 +142,44 @@ const ViewErrandScreen = ({
     });
   };
   const image = (errand?.images || [])[0];
+
+  const runnerIsCancelling = () => {
+    apiCall(
+      PICK_ERRAND,
+      {body: {cancel: true, errand_id: errand?._id, runner_id: user?._id}},
+      response => {
+        toggleModal({show: false});
+        if (!response.success)
+          return console.log(
+            'Sorry could not cancel running errand...',
+            response,
+          );
+        console.log('RESPONSE AFTER CANCELLING ---> ', response);
+        // Now recall user running errands and users posts
+        navigation.goBack();
+        refresh();
+        // refreshNewsFeed(user);
+        // refreshRunningErrands(user);
+        // refreshYourPosts(user);
+      },
+    );
+  };
+
+  if (isLoading)
+    return (
+      <View>
+        <Toolbar title={errand?.title || '...'} />
+        <ActivityIndicator color="red" size={40} />
+      </View>
+    );
+
+  if (!errand)
+    return (
+      <Text
+        style={{padding: 20, color: 'black', fontWeight: '600', fontSize: 16}}>
+        Sorry, could not find the errand you are looking for...
+      </Text>
+    );
 
   return (
     <GBottomSheet
@@ -104,7 +212,27 @@ const ViewErrandScreen = ({
                 ),
               });
             }}
-            cancel={() => setRunning(false)}
+            cancel={() => {
+              toggleModal({
+                show: true,
+                component: (
+                  <AsDialogBox
+                    textOptions={{
+                      text: 'Are you sure you want to cancel running this errand?',
+                    }}
+                    noOptions={{
+                      text: 'NO',
+                      onPress: () => toggleModal({show: false}),
+                    }}
+                    yesOptions={{
+                      onPress: () => {
+                        runnerIsCancelling();
+                      },
+                    }}
+                  />
+                ),
+              });
+            }}
           />
         ) : (
           <AboutToPickErrand
@@ -117,8 +245,13 @@ const ViewErrandScreen = ({
         )
       }>
       <Toolbar title={errand?.title || '...'} />
+
       <ScrollView
-        style={{marginBottom: 220, width: '100%', backgroundColor: 'white'}}>
+        style={{
+          marginBottom: 220,
+          width: '100%',
+          backgroundColor: 'white',
+        }}>
         <View>
           <View
             style={{
@@ -154,7 +287,33 @@ const ViewErrandScreen = ({
           {/* <DetailsOfErrand /> */}
 
           {running ? (
-            <ErrandStateTracker switchStage={switchStage} errand={errand} />
+            <ErrandStateTracker
+              switchStage={switchStage}
+              errand={errand}
+              updateStage={stage => {
+                if (authUserOwnsErrand) return;
+                toggleModal({
+                  show: true,
+                  component: (
+                    <AsDialogBox
+                      textOptions={{
+                        text: `The poster will be informed of this update. You want to go ahead and update to '${stage?.key}'?`,
+                      }}
+                      noOptions={{
+                        text: 'NOT YET',
+                        onPress: () => toggleModal({show: false}),
+                      }}
+                      yesOptions={{
+                        onPress: () => {
+                          // navigation.navigate('Home');
+                          toggleModal({show: false});
+                        },
+                      }}
+                    />
+                  ),
+                });
+              }}
+            />
           ) : (
             <DetailsOfErrand errand={errand} />
           )}
@@ -190,6 +349,7 @@ const mapDispatchToProps = dispatch => {
     {
       toggleModal: toggleUniversalModal,
       refreshRunningErrands: fetchMyRunningErrands,
+      refreshYourPosts: fetchMyPosts,
       refreshNewsFeed: fetchNewsFeed,
     },
     dispatch,

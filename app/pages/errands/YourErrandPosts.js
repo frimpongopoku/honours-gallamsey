@@ -4,8 +4,9 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PageTitle from '../../components/intros/PageTitle';
 import {SmallErrandItem} from './RunningErrands';
 import {STAGES} from '../view errands/ErrandStateTracker';
@@ -14,12 +15,28 @@ import {colors} from '../../styles';
 import {connect} from 'react-redux';
 import {LOADING} from '../authentication/constants';
 import {useNavigation} from '@react-navigation/native';
+import {bindActionCreators} from 'redux';
+import {fetchMyPosts} from '../../redux/actions/actions';
 
-const YourErrandPosts = ({myErrands}) => {
+const YourErrandPosts = ({myErrands, user, fetchPosts}) => {
+  const [refreshing, setRefreshing] = useState(false);
+  useEffect(() => {}, [myErrands]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+
+    fetchPosts(user, () => {
+      // console.log('Finished refreshing my errand POSTS!', response);
+      setRefreshing(false);
+    });
+  };
   if (myErrands === LOADING) return <ActivityIndicator color="red" size={40} />;
   const navigation = useNavigation();
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }>
       <PageTitle
         v2
         title="Your Posts"
@@ -40,8 +57,18 @@ const YourErrandPosts = ({myErrands}) => {
   );
 };
 
-const mapStateToProps = state => ({myErrands: state.yourPosts});
-export default connect(mapStateToProps)(YourErrandPosts);
+const mapStateToProps = state => ({
+  myErrands: state.yourPosts,
+  user: state.user,
+});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchPosts: fetchMyPosts,
+    },
+    dispatch,
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(YourErrandPosts);
 export const MyPostErrandItem = ({
   cost,
   images,
@@ -49,6 +76,7 @@ export const MyPostErrandItem = ({
   title,
   status,
   createdAt,
+  runner,
   onPress,
 }) => {
   const image = (images || [])[0];
@@ -101,7 +129,7 @@ export const MyPostErrandItem = ({
                 textTransform: 'capitalize',
                 // color: colors.green,
               }}>
-              {stage?.text || '...'}
+              {runner? stage?.text || '...' : "Not taken yet..."}
             </Text>
             <Text
               style={{

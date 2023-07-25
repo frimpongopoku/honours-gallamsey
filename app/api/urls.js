@@ -14,4 +14,5 @@ export const PICK_ERRAND = HOST + 'errands/pick';
 export const RUNNING_ERRANDS_URL = HOST + 'errands/list.running';
 export const MY_OWN_ERRANDS_URL = HOST + 'errands/list.mine';
 export const NEWS_FEED_URL = HOST + 'news/feed';
+export const FIND_ONE_ERRAND = HOST + 'errands/find.one';
 // export const FETCH_NEWS_FEED = HOST + 'users/update';

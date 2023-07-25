@@ -51,7 +51,7 @@ export const firebaseSignOutAction = () => dispatch => {
 
 export const fetchMyPosts = (user, cb) => dispatch => {
   apiCall(MY_OWN_ERRANDS_URL, {body: {user_id: user?._id}}, response => {
-    cb && cb();
+    cb && cb(response);
 
     if (!response.success)
       console.log('COULD NOT LOAD YOUR POSTED ERRANDS....');

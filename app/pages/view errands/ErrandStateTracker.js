@@ -27,10 +27,9 @@ export const STAGES = [
     checked: ['engaging', 'default', 'returning', 'complete', 'transferred'],
   },
 ];
-const ErrandStateTracker = ({errand}) => {
+const ErrandStateTracker = ({errand, updateStage}) => {
   const errandStatus = STAGES.find(stage => stage.key === errand.status);
   const {runner} = errand || {};
-  console.log('How is the errand', errandStatus);
   return (
     <View style={{}}>
       <View
@@ -64,6 +63,7 @@ const ErrandStateTracker = ({errand}) => {
         return (
           <View key={index?.toString()}>
             <Stage
+              onPress={() => updateStage(stage)}
               text={stage.text}
               complete={errandStatus?.checked?.includes(stage.key)}
               trail={index === STAGES.length - 1 ? false : true}
@@ -75,10 +75,10 @@ const ErrandStateTracker = ({errand}) => {
   );
 };
 
-const Stage = ({text, complete, trail = true}) => {
+const Stage = ({text, complete, trail = true, onPress}) => {
   const opacity = complete ? 1 : 0.3;
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View
         style={{
           display: 'flex',

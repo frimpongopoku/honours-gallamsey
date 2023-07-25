@@ -1,6 +1,13 @@
-import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
-import React from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+} from 'react-native';
+import React, {useState} from 'react';
+// import {ScrollView} from 'react-native-gesture-handler';
 import PageTitle from '../../components/intros/PageTitle';
 import ImagePro from '../../components/image/ImagePro';
 import {colors} from '../../styles';
@@ -8,13 +15,31 @@ import {connect} from 'react-redux';
 import {LOADING} from '../authentication/constants';
 import {STAGES} from '../view errands/ErrandStateTracker';
 import {useNavigation} from '@react-navigation/native';
+import {bindActionCreators} from 'redux';
+import {fetchMyRunningErrands} from '../../redux/actions/actions';
 
-const RunningErrands = ({running}) => {
+const RunningErrands = ({running, fetchMyErrands, user}) => {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+
+    fetchMyErrands(user, () => {
+      console.log('Finished refreshing running errands!');
+      setRefreshing(false);
+    });
+    // fetchData();
+    // setIsRefreshing(false);
+  };
   if (running === LOADING) return <ActivityIndicator color="red" size={40} />;
 
   const navigation = useNavigation();
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+      }>
       <PageTitle
         v2
         title="Running Errands"
@@ -35,8 +60,18 @@ const RunningErrands = ({running}) => {
   );
 };
 
-const mapStateToProps = state => ({running: state.runningErrands});
-export default connect(mapStateToProps)(RunningErrands);
+const mapStateToProps = state => ({
+  running: state.runningErrands,
+  user: state.user,
+});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchMyErrands: fetchMyRunningErrands,
+    },
+    dispatch,
+  );
+export default connect(mapStateToProps, mapDispatchToProps)(RunningErrands);
 
 export const SmallErrandItem = ({
   cost,
