@@ -5,7 +5,7 @@ import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const CanCancelRunningErrand = ({cancel, done}) => {
+const CanCancelRunningErrand = ({cancel, done, ownsThis, runner}) => {
   return (
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
@@ -28,14 +28,22 @@ const CanCancelRunningErrand = ({cancel, done}) => {
           Unsatisfied users may result in you not getting payed.
         </Paragraph>
       </View>
-      <View style={{display: 'flex', flexDirection: 'row'}}>
-        <GButton onPress={cancel} variant="red" style={{flex: 1}}>
-          CANCEL
-        </GButton>
-        <GButton onPress={done} variant="green" style={{flex: 1}}>
-          DONE!
-        </GButton>
-      </View>
+      {!ownsThis ? (
+        <View style={{display: 'flex', flexDirection: 'row'}}>
+          <GButton onPress={cancel} variant="red" style={{flex: 1}}>
+            CANCEL
+          </GButton>
+          <GButton onPress={done} variant="green" style={{flex: 1}}>
+            DONE!
+          </GButton>
+        </View>
+      ) : (
+        <View style={{paddingHorizontal: 30, paddingVertical: 10}}>
+          <Text style={{fontWeight: '600', fontSize: 16, color: colors.green}}>
+            Sit back and relax, {runner?.name || '...'} is working!
+          </Text>
+        </View>
+      )}
     </ScrollView>
   );
 };

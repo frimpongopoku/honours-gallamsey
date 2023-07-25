@@ -41,10 +41,9 @@ const ViewErrandScreen = ({
     setErrand(passedErrand || {});
     const isRunning =
       passedErrand?.status && passedErrand?.status !== 'default';
-    setRunning(isRunning);
+    // console.log('Errand we dy here', passedErrand, isRunning);
+    setRunning(passedErrand?.runner);
   }, [route]);
-
-  console.log('Lets see errand', errand);
 
   const pickErrand = () => {
     const runner = {
@@ -81,6 +80,8 @@ const ViewErrandScreen = ({
       sheetContent={
         running ? (
           <CanCancelRunningErrand
+            ownsThis={authUserOwnsErrand}
+            runner={errand?.runner}
             done={() => {
               toggleModal({
                 show: true,
@@ -111,6 +112,7 @@ const ViewErrandScreen = ({
             authUserOwnsErrand={authUserOwnsErrand}
             errand={errand}
             pickErrand={() => pickErrand()}
+            seeInstructions={() => setRunning(true)}
           />
         )
       }>

@@ -14,7 +14,6 @@ const ErrandFeedItem = ({user, errand}) => {
 
   const locations = user?.locations;
   const preferences = user?.preferences;
-  console.log('HER ARE HTE PREFS', preferences);
 
   return (
     <View style={{marginBottom: 15}}>

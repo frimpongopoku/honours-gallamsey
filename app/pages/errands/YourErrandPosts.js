@@ -13,9 +13,11 @@ import ImagePro from '../../components/image/ImagePro';
 import {colors} from '../../styles';
 import {connect} from 'react-redux';
 import {LOADING} from '../authentication/constants';
+import {useNavigation} from '@react-navigation/native';
 
 const YourErrandPosts = ({myErrands}) => {
   if (myErrands === LOADING) return <ActivityIndicator color="red" size={40} />;
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <PageTitle
@@ -27,7 +29,10 @@ const YourErrandPosts = ({myErrands}) => {
       <View style={{}}>
         {myErrands?.map((errand, index) => (
           <View key={index?.toString()}>
-            <MyPostErrandItem {...errand} />
+            <MyPostErrandItem
+              {...errand}
+              onPress={() => navigation.navigate('ViewErrand', {data: errand})}
+            />
           </View>
         ))}
       </View>
@@ -44,11 +49,13 @@ export const MyPostErrandItem = ({
   title,
   status,
   createdAt,
+  onPress,
 }) => {
   const image = (images || [])[0];
   const stage = STAGES.find(item => item.key === status);
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={{
         paddingHorizontal: 20,
         paddingVertical: 10,

@@ -7,9 +7,12 @@ import {colors} from '../../styles';
 import {connect} from 'react-redux';
 import {LOADING} from '../authentication/constants';
 import {STAGES} from '../view errands/ErrandStateTracker';
+import {useNavigation} from '@react-navigation/native';
 
 const RunningErrands = ({running}) => {
   if (running === LOADING) return <ActivityIndicator color="red" size={40} />;
+
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <PageTitle
@@ -21,7 +24,10 @@ const RunningErrands = ({running}) => {
       <View style={{}}>
         {running?.map((errand, index) => (
           <View key={index?.toString()}>
-            <SmallErrandItem {...errand} />
+            <SmallErrandItem
+              {...errand}
+              onPress={() => navigation.navigate('ViewErrand', {data: errand})}
+            />
           </View>
         ))}
       </View>
@@ -39,11 +45,13 @@ export const SmallErrandItem = ({
   title,
   status,
   children,
+  onPress,
 }) => {
   const image = (images || [])[0];
   const stage = STAGES.find(item => item.key === status);
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={{
         paddingHorizontal: 20,
         paddingVertical: 10,

@@ -5,7 +5,7 @@ import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../styles';
 import ImagePro from '../../components/image/ImagePro';
 export const STAGES = [
-  {key: 'default', text: 'Not started yet...', checked: ['default']},
+  {key: 'default', text: 'Picked up...', checked: ['default']},
   {
     key: 'engaging',
     text: 'Engaging Instructions...',
