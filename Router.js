@@ -28,6 +28,7 @@ import {
 import {connect} from 'react-redux';
 import {checkUserAuthenticationStatus} from './app/firebase/utils';
 import {CREATE_NEW_PROFILE} from './app/pages/authentication/constants';
+import Chatting from './app/pages/chat/Chatting';
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,11 @@ const Router = ({
         {modalOptions?.component}
       </GModal>
       <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          name="Chatting"
+          options={{headerShown: false}}
+          component={Chatting}
+        />
         <Stack.Screen
           name="Splash"
           options={{headerShown: false}}

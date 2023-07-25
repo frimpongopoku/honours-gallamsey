@@ -21,7 +21,7 @@ import {
   toggleUniversalModal,
 } from '../../redux/actions/actions';
 import AsDialogBox from '../../components/modal/AsDialogBox';
-import {faFileLines} from '@fortawesome/free-solid-svg-icons';
+import {faFileLines, faMessage} from '@fortawesome/free-solid-svg-icons';
 import {apiCall} from '../../api/messenger';
 import {ENGAGE_ERRAND, FIND_ONE_ERRAND, PICK_ERRAND} from '../../api/urls';
 import firestore from '@react-native-firebase/firestore';
@@ -79,7 +79,7 @@ const ViewErrandScreen = ({
     return () => {
       unsubscribe();
     };
-  }, [errand]);
+  }, [errand?._id]);
 
   // useEffect(() => {
   //   const passedErrand = route.params?.data;
@@ -135,11 +135,21 @@ const ViewErrandScreen = ({
   };
 
   const switchStage = status => {
-    apiCall(ENGAGE_ERRAND, {body: {status}}, response => {
-      if (!response.success)
-        return console.log('ENGAGEMENT ERROR: ', response.error);
-      setErrand(response.data);
-    });
+    apiCall(
+      ENGAGE_ERRAND,
+      {
+        body: {
+          data: {status: status?.key},
+          errand_id: errand?._id,
+          user_id: user?._id,
+        },
+      },
+      response => {
+        if (!response.success)
+          return console.log('ENGAGEMENT ERROR: ', response.error);
+        setErrand(response.data);
+      },
+    );
   };
   const image = (errand?.images || [])[0];
 
@@ -307,6 +317,7 @@ const ViewErrandScreen = ({
                         onPress: () => {
                           // navigation.navigate('Home');
                           toggleModal({show: false});
+                          switchStage(stage);
                         },
                       }}
                     />
@@ -320,11 +331,18 @@ const ViewErrandScreen = ({
         </View>
       </ScrollView>
       {running && (
-        <GButton
-          onPress={() => setRunning(false)}
-          iconOptions={{icon: faFileLines}}
-          style={{bottom: 310, right: 25}}
-          floating></GButton>
+        <>
+          <GButton
+            onPress={() => navigation.navigate('Chatting', {data: errand})}
+            iconOptions={{icon: faMessage}}
+            style={{bottom: 380, right: 25, backgroundColor: colors.red}}
+            floating></GButton>
+          <GButton
+            onPress={() => setRunning(false)}
+            iconOptions={{icon: faFileLines}}
+            style={{bottom: 310, right: 25}}
+            floating></GButton>
+        </>
       )}
       {image && (
         <GButton
