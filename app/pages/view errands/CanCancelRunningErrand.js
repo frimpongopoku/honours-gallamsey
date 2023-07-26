@@ -5,6 +5,8 @@ import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
 import {itsBeenMoreThan30Minutes, smartString} from '../../utils';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faCheckCircle} from '@fortawesome/free-solid-svg-icons';
 
 const CanCancelRunningErrand = ({
   cancel,
@@ -16,6 +18,7 @@ const CanCancelRunningErrand = ({
   requestReview,
 }) => {
   const isComplete = errand?.status === 'complete';
+  const isTransferred = errand?.status === 'transferred';
 
   const now = new Date();
   const timeIsUp = itsBeenMoreThan30Minutes(now, errand?.completedAt);
@@ -45,69 +48,95 @@ const CanCancelRunningErrand = ({
             : 'You will receive updates from the runnner in real time as they update stages on this page!'}
         </Paragraph>
       </View>
-      {!ownsThis ? (
-        <View style={{display: 'flex', flexDirection: 'row'}}>
-          {isComplete ? ( // replacewith isComplete
-            <GButton
-              disabled={!timeIsUp}
-              onPress={cancel}
-              variant="green"
-              style={{flex: 1}}>
-              TAKE FUNDS NOW
-            </GButton>
-          ) : (
-            <GButton
-              disabled={isComplete}
-              onPress={cancel}
-              variant="red"
-              style={{flex: 1}}>
-              CANCEL
-            </GButton>
-          )}
-          {/* <GButton
+      {isTransferred ? (
+        <View
+          style={{
+            paddingHorizontal: 30,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <FontAwesomeIcon
+            icon={faCheckCircle}
+            color={colors.green}
+            size={24}
+          />
+          <Text style={{marginLeft: 12}}>
+            All done, errand is complete. Funds are fully transferred to 
+             {" "+runner?.name || '...'}!
+          </Text>
+        </View>
+      ) : (
+        <View>
+          {!ownsThis ? (
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              {isComplete ? ( // replacewith isComplete
+                <GButton
+                  disabled={!timeIsUp}
+                  onPress={cancel}
+                  variant="green"
+                  style={{flex: 1}}>
+                  TAKE FUNDS NOW
+                </GButton>
+              ) : (
+                <GButton
+                  disabled={isComplete}
+                  onPress={cancel}
+                  variant="red"
+                  style={{flex: 1}}>
+                  CANCEL
+                </GButton>
+              )}
+              {/* <GButton
             disabled={!isComplete}
             onPress={done}
             variant="green"
             style={{flex: 1}}>
             REQUEST FUNDS
           </GButton> */}
-        </View>
-      ) : (
-        <View>
-          {isComplete ? ( // replace with isComplete
-            <View>
-              <Text
-                style={{
-                  paddingHorizontal: 30,
-                  paddingBottom: 5,
-                  fontWeight: 'bold',
-                  color: colors.green,
-                }}>
-                {runner?.name} is done, send him the funds!
-              </Text>
-              <View style={{display: 'flex', flexDirection: 'row'}}>
-                <GButton
-                  variant="red"
-                  style={{flex: 1}}
-                  onPress={requestReview}
-                  disabled={timeIsUp}>
-                  REQUEST REVIEW
-                </GButton>
-                <GButton
-                  variant="green"
-                  style={{flex: 1}}
-                  onPress={sendFunds}
-                  disabled={timeIsUp}>
-                  SEND FUNDS
-                </GButton>
-              </View>
             </View>
           ) : (
-            <View style={{paddingHorizontal: 30, paddingVertical: 10}}>
-              <Text
-                style={{fontWeight: '600', fontSize: 16, color: colors.green}}>
-                Sit back and relax, {runner?.name || '...'} is working!
-              </Text>
+            <View>
+              {isComplete ? ( // replace with isComplete
+                <View>
+                  <Text
+                    style={{
+                      paddingHorizontal: 30,
+                      paddingBottom: 5,
+                      fontWeight: 'bold',
+                      color: colors.green,
+                    }}>
+                    {runner?.name} is done, send him the funds!
+                  </Text>
+                  <View style={{display: 'flex', flexDirection: 'row'}}>
+                    <GButton
+                      variant="red"
+                      style={{flex: 1}}
+                      onPress={requestReview}
+                      disabled={timeIsUp}>
+                      REQUEST REVIEW
+                    </GButton>
+                    <GButton
+                      variant="green"
+                      style={{flex: 1}}
+                      onPress={sendFunds}
+                      disabled={timeIsUp}>
+                      SEND FUNDS
+                    </GButton>
+                  </View>
+                </View>
+              ) : (
+                <View style={{paddingHorizontal: 30, paddingVertical: 10}}>
+                  <Text
+                    style={{
+                      fontWeight: '600',
+                      fontSize: 16,
+                      color: colors.green,
+                    }}>
+                    Sit back and relax, {runner?.name || '...'} is working!
+                  </Text>
+                </View>
+              )}
             </View>
           )}
         </View>

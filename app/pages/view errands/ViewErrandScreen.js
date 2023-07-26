@@ -31,6 +31,7 @@ import {
 } from '../../api/urls';
 import firestore from '@react-native-firebase/firestore';
 import {LOADING} from '../authentication/constants';
+import InReview from './InReview';
 
 const ViewErrandScreen = ({
   toggleModal,
@@ -150,8 +151,47 @@ const ViewErrandScreen = ({
     );
   };
 
+  const doReview = () => {
+    apiCall(
+      ENGAGE_ERRAND,
+      {
+        body: {
+          data: {inReview: true},
+          errand_id: errand?._id,
+          user_id: user?._id,
+        },
+      },
+      response => {
+        if (!response.success)
+          return console.log('REVIEW REQUEST ERROR: ', response.error);
+        setErrand(response.data);
+      },
+    );
+  };
+
   const requestReview = () => {
-    const total = errand?.reward + errand?.cost;
+    toggleModal({
+      show: true,
+      component: (
+        <AsDialogBox
+          textOptions={{
+            text: `By doing this, you are refusing to send the runner the funds, and you need a third party to resolve the situation. The team will contact both parties soon!`,
+          }}
+          noOptions={{
+            text: 'NO',
+            onPress: () => toggleModal({show: false}),
+          }}
+          yesOptions={{
+            text: 'YES, GO AHEAD',
+            onPress: () => {
+              // finishErrand();
+              doReview();
+              toggleModal({show: false});
+            },
+          }}
+        />
+      ),
+    });
   };
 
   const finishErrand = () => {
@@ -160,7 +200,7 @@ const ViewErrandScreen = ({
       {
         body: {
           errand_id: errand?._id,
-          data: {status: 'transferred'},
+          data: {status: 'transferred', inReview: false},
           runner_id: errand?.runner?.id,
           poster_id: user?._id,
         },
@@ -213,70 +253,81 @@ const ViewErrandScreen = ({
     );
 
   const chatKey = errand?.poster?.id + errand?.runner?.id + errand?._id; // posterid+runnerid+errandid
+  const isInReview = errand?.inReview;
   return (
     <GBottomSheet
       // generics={{snapPoints: ['30%', '60%']}}
-      generics={{snapPoints: ['30%']}}
+      generics={{snapPoints: isInReview ? ['33%'] : ['30%']}}
       sheetContent={
-        running ? (
-          <CanCancelRunningErrand
-            sendFunds={sendFunds}
-            requestReview={requestReview}
+        isInReview ? (
+          <InReview
             errand={errand}
             ownsThis={authUserOwnsErrand}
-            runner={errand?.runner}
-            done={() => {
-              toggleModal({
-                show: true,
-                component: (
-                  <AsDialogBox
-                    textOptions={{
-                      text: 'Errand is complete, so request for funds?',
-                    }}
-                    noOptions={{
-                      text: 'NOT YET',
-                      onPress: () => toggleModal({show: false}),
-                    }}
-                    yesOptions={{
-                      onPress: () => {
-                        navigation.navigate('Home');
-                        toggleModal({show: false});
-                      },
-                    }}
-                  />
-                ),
-              });
-            }}
-            cancel={() => {
-              toggleModal({
-                show: true,
-                component: (
-                  <AsDialogBox
-                    textOptions={{
-                      text: 'Are you sure you want to cancel running this errand?',
-                    }}
-                    noOptions={{
-                      text: 'NO',
-                      onPress: () => toggleModal({show: false}),
-                    }}
-                    yesOptions={{
-                      onPress: () => {
-                        runnerIsCancelling();
-                      },
-                    }}
-                  />
-                ),
-              });
-            }}
+            sendFunds={sendFunds}
           />
         ) : (
-          <AboutToPickErrand
-            user={user}
-            authUserOwnsErrand={authUserOwnsErrand}
-            errand={errand}
-            pickErrand={() => pickErrand()}
-            seeInstructions={() => setRunning(true)}
-          />
+          <>
+            {running ? (
+              <CanCancelRunningErrand
+                sendFunds={sendFunds}
+                requestReview={requestReview}
+                errand={errand}
+                ownsThis={authUserOwnsErrand}
+                runner={errand?.runner}
+                done={() => {
+                  toggleModal({
+                    show: true,
+                    component: (
+                      <AsDialogBox
+                        textOptions={{
+                          text: 'Errand is complete, so request for funds?',
+                        }}
+                        noOptions={{
+                          text: 'NOT YET',
+                          onPress: () => toggleModal({show: false}),
+                        }}
+                        yesOptions={{
+                          onPress: () => {
+                            navigation.navigate('Home');
+                            toggleModal({show: false});
+                          },
+                        }}
+                      />
+                    ),
+                  });
+                }}
+                cancel={() => {
+                  toggleModal({
+                    show: true,
+                    component: (
+                      <AsDialogBox
+                        textOptions={{
+                          text: 'Are you sure you want to cancel running this errand?',
+                        }}
+                        noOptions={{
+                          text: 'NO',
+                          onPress: () => toggleModal({show: false}),
+                        }}
+                        yesOptions={{
+                          onPress: () => {
+                            runnerIsCancelling();
+                          },
+                        }}
+                      />
+                    ),
+                  });
+                }}
+              />
+            ) : (
+              <AboutToPickErrand
+                user={user}
+                authUserOwnsErrand={authUserOwnsErrand}
+                errand={errand}
+                pickErrand={() => pickErrand()}
+                seeInstructions={() => setRunning(true)}
+              />
+            )}
+          </>
         )
       }>
       <Toolbar title={errand?.title || '...'} />
@@ -355,7 +406,7 @@ const ViewErrandScreen = ({
           )}
         </View>
       </ScrollView>
-      {running && (
+      {errand?.runner && (
         <>
           <GButton
             onPress={() =>
@@ -367,7 +418,7 @@ const ViewErrandScreen = ({
             style={{bottom: 380, right: 25, backgroundColor: colors.red}}
             floating></GButton>
           <GButton
-            onPress={() => setRunning(false)}
+            onPress={() => setRunning(!running)}
             iconOptions={{icon: faFileLines}}
             style={{bottom: 310, right: 25}}
             floating></GButton>
