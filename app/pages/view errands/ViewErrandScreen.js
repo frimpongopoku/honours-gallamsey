@@ -57,15 +57,11 @@ const ViewErrandScreen = ({
         setErrand(response.data);
       },
     );
-    // setErrand(passedErrand || {});
-    // setRunning(passedErrand?.runner);
   }, [route]);
 
   useEffect(() => {
     if (isLoading) return;
     setRunning(errand?.runner);
-
-    // if (!authUserOwnsErrand) return;
     const unsubscribe = firestore()
       .collection('Errands')
       .doc(errand?._id)
@@ -81,34 +77,6 @@ const ViewErrandScreen = ({
       unsubscribe();
     };
   }, [errand?._id]);
-
-  // useEffect(() => {
-  //   const passedErrand = route.params?.data;
-  //   const hasARunner = passedErrand?.runner;
-  //   if (!hasARunner || !authUserOwnsErrand)
-  //     return console.log(
-  //       'Runner mode so no need to subscribe...!',
-  //       hasARunner,
-  //       authUserOwnsErrand,
-  //     );
-
-  //   const unsubscribe = firestore()
-  //     .collection('Errands')
-  //     .doc(passedErrand?._id)
-  //     .onSnapshot(documentSnapshot => {
-  //       // Handle the updated data here
-  //       const data = documentSnapshot.data();
-  //       console.log('--------FROM FIRESTORE-----', data);
-  //       if (!data) return;
-  //       setRunning(data?.runner);
-  //       setErrand(data);
-  //     });
-
-  //   // Unsubscribe from Firestore changes when the component unmounts
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, [route, authUserOwnsErrand]);
 
   const refresh = () => {
     refreshNewsFeed(user);
@@ -136,11 +104,13 @@ const ViewErrandScreen = ({
   };
 
   const switchStage = status => {
+    const others =
+      status.key === 'complete' ? {completedAt: new Date().toISOString()} : { completedAt:null};
     apiCall(
       ENGAGE_ERRAND,
       {
         body: {
-          data: {status: status?.key},
+          data: {status: status?.key, ...others},
           errand_id: errand?._id,
           user_id: user?._id,
         },
@@ -294,14 +264,14 @@ const ViewErrandScreen = ({
               GHS {errand?.reward}
             </Text>
           </View>
-          {/* <DetailsOfErrand /> */}
 
           {running ? (
             <ErrandStateTracker
               switchStage={switchStage}
               errand={errand}
               updateStage={stage => {
-                if (authUserOwnsErrand) return;
+                if (authUserOwnsErrand || stage.key === 'transferred') return;
+
                 toggleModal({
                   show: true,
                   component: (

@@ -3,6 +3,24 @@ import storage from '@react-native-firebase/storage';
 import DeviceInfo from 'react-native-device-info';
 import {formatDistanceStrict} from 'date-fns';
 
+const WAIT_TIME = 30
+// const WAIT_TIME = 3
+export function itsBeenMoreThan30Minutes(dateString1, dateString2) {
+  if (!dateString1 || !dateString2) return false;
+  const date1 = new Date(dateString1);
+  const date2 = new Date(dateString2);
+
+  // Calculate the difference in milliseconds between the two dates
+  const differenceInMillis = Math.abs(date1 - date2);
+
+  // Calculate the difference in minutes
+  const differenceInMinutes = differenceInMillis / (1000 * 60);
+  console.log("Thats the difference", differenceInMinutes)
+
+  // Check if the difference is greater than 30 minutes
+  return differenceInMinutes > WAIT_TIME;
+}
+
 export const getTimeAgo = dateString => {
   const date = new Date(dateString);
   const now = new Date();
