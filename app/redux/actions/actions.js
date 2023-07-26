@@ -79,12 +79,13 @@ export const fetchNewsFeed = (user, cb) => dispatch => {
     dispatch(loadNewsAction(response.data));
   });
 };
-export const findUserProfile = body => dispatch => {
+export const findUserProfile = (body, cb) => dispatch => {
   apiCall(FIND_USER_PROFILE, {body: {email: body}}, response => {
     if (!response.success) {
       console.log('ERROR LOADING GALLAMSEY USER: ', response.error);
       // return dispatch(setGallamseyUser(null));
     }
+    cb && cb(response);
     dispatch(setGallamseyUser(response.data));
     dispatch(fetchNewsFeed(response.data));
     dispatch(fetchMyRunningErrands(response.data));

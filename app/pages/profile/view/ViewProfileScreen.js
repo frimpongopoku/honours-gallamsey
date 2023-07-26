@@ -1,7 +1,14 @@
-import {View, Text, SafeAreaView, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
+import React, {useState} from 'react';
 import Toolbar from '../../../components/toolbar/Toolbar';
-import {ScrollView} from 'react-native-gesture-handler';
+
 import ImagePro from '../../../components/image/ImagePro';
 import {colors} from '../../../styles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -21,14 +28,31 @@ import {
 import BankCard from './BankCard';
 import GContextDropdown from '../../../components/dropdown/GContextDropdown';
 import {bindActionCreators} from 'redux';
-import {firebaseSignOutAction} from '../../../redux/actions/actions';
+import {
+  findUserProfile,
+  firebaseSignOutAction,
+} from '../../../redux/actions/actions';
 import {connect} from 'react-redux';
 
-const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
+const ViewProfileScreen = ({
+  navigation,
+  signOutFromFirebase,
+  user,
+  refreshProfile,
+}) => {
+  const [refreshing, setRefreshing] = useState(false);
   const signOut = () => {
     signOutFromFirebase();
   };
-  console.log("lets see users image", user)
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    refreshProfile(user?.email, response => {
+      console.log('REFRESHING FROM PROFILE PAGE', response);
+      setRefreshing(false);
+    });
+  };
+
   return (
     <SafeAreaView>
       <Toolbar
@@ -44,7 +68,10 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
         }
       />
       <ScrollView
-        style={{padding: 20, height: '100%', backgroundColor: 'white'}}>
+        style={{padding: 20, height: '100%', backgroundColor: 'white'}}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }>
         <View
           style={{
             display: 'flex',
@@ -115,7 +142,7 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
               />
               <Text
                 style={{fontSize: 18, fontWeight: '600', color: colors.black}}>
-                mrfimpong@gmail.com
+                {user?.email || '...'}
               </Text>
             </View>
             <View
@@ -134,7 +161,7 @@ const ViewProfileScreen = ({navigation, signOutFromFirebase, user}) => {
               />
               <Text
                 style={{fontSize: 18, fontWeight: '600', color: colors.black}}>
-                +230 45 674 82
+                {user?.phone || '+000 000000 0000'}
               </Text>
             </View>
           </View>
@@ -249,5 +276,11 @@ const mapStateToProps = state => {
   return {user: state.user};
 };
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({signOutFromFirebase: firebaseSignOutAction}, dispatch);
+  bindActionCreators(
+    {
+      signOutFromFirebase: firebaseSignOutAction,
+      refreshProfile: findUserProfile,
+    },
+    dispatch,
+  );
 export default connect(mapStateToProps, mapDispatchToProps)(ViewProfileScreen);
