@@ -23,7 +23,12 @@ import {
 import AsDialogBox from '../../components/modal/AsDialogBox';
 import {faFileLines, faMessage} from '@fortawesome/free-solid-svg-icons';
 import {apiCall} from '../../api/messenger';
-import {ENGAGE_ERRAND, FIND_ONE_ERRAND, PICK_ERRAND} from '../../api/urls';
+import {
+  ENGAGE_ERRAND,
+  FIND_ONE_ERRAND,
+  FINISH_UP_ERRAND,
+  PICK_ERRAND,
+} from '../../api/urls';
 import firestore from '@react-native-firebase/firestore';
 import {LOADING} from '../authentication/constants';
 
@@ -105,7 +110,9 @@ const ViewErrandScreen = ({
 
   const switchStage = status => {
     const others =
-      status.key === 'complete' ? {completedAt: new Date().toISOString()} : { completedAt:null};
+      status.key === 'complete'
+        ? {completedAt: new Date().toISOString()}
+        : {completedAt: null};
     apiCall(
       ENGAGE_ERRAND,
       {
@@ -143,6 +150,52 @@ const ViewErrandScreen = ({
     );
   };
 
+  const requestReview = () => {
+    const total = errand?.reward + errand?.cost;
+  };
+
+  const finishErrand = () => {
+    apiCall(
+      FINISH_UP_ERRAND,
+      {
+        body: {
+          errand_id: errand?._id,
+          data: {status: 'transferred'},
+          runner_id: errand?.runner?.id,
+          poster_id: user?._id,
+        },
+      },
+      response => {
+        toggleModal({show: false});
+        console.log('RESPONSE AFTER FINISHING:::', response);
+      },
+    );
+  };
+  const sendFunds = () => {
+    const total = errand?.reward + errand?.cost;
+
+    toggleModal({
+      show: true,
+      component: (
+        <AsDialogBox
+          textOptions={{
+            text: `You will be transferring an amount of GHS ${total} to ${errand?.runner?.name}, to denote the full completion of this errand. `,
+          }}
+          noOptions={{
+            text: 'NO',
+            onPress: () => toggleModal({show: false}),
+          }}
+          yesOptions={{
+            text: 'YES, GO AHEAD',
+            onPress: () => {
+              finishErrand();
+            },
+          }}
+        />
+      ),
+    });
+  };
+
   if (isLoading)
     return (
       <View>
@@ -167,6 +220,8 @@ const ViewErrandScreen = ({
       sheetContent={
         running ? (
           <CanCancelRunningErrand
+            sendFunds={sendFunds}
+            requestReview={requestReview}
             errand={errand}
             ownsThis={authUserOwnsErrand}
             runner={errand?.runner}

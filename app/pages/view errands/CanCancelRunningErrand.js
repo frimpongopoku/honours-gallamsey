@@ -4,9 +4,17 @@ import {colors} from '../../styles';
 import Paragraph from '../../components/paragraph/Paragraph';
 import GButton from '../../components/button/Button';
 import {ScrollView} from 'react-native-gesture-handler';
-import {itsBeenMoreThan30Minutes} from '../../utils';
+import {itsBeenMoreThan30Minutes, smartString} from '../../utils';
 
-const CanCancelRunningErrand = ({cancel, done, ownsThis, runner, errand}) => {
+const CanCancelRunningErrand = ({
+  cancel,
+  done,
+  ownsThis,
+  runner,
+  errand,
+  sendFunds,
+  requestReview,
+}) => {
   const isComplete = errand?.status === 'complete';
 
   const now = new Date();
@@ -16,10 +24,10 @@ const CanCancelRunningErrand = ({cancel, done, ownsThis, runner, errand}) => {
     <ScrollView>
       <View style={{paddingHorizontal: 30, paddingTop: 10}}>
         <Text style={{color: colors.black, fontWeight: '700', fontSize: 24}}>
-          A New Pair of Shoes
+          {smartString(errand?.title, 28)}
         </Text>
         <Text style={{color: colors.green, fontWeight: '700', fontSize: 22}}>
-          GHS 175
+          GHS {errand?.reward + errand?.cost}
         </Text>
         <Paragraph
           style={{
@@ -78,10 +86,18 @@ const CanCancelRunningErrand = ({cancel, done, ownsThis, runner, errand}) => {
                 {runner?.name} is done, send him the funds!
               </Text>
               <View style={{display: 'flex', flexDirection: 'row'}}>
-                <GButton variant="red" style={{flex: 1}} disabled={timeIsUp}>
+                <GButton
+                  variant="red"
+                  style={{flex: 1}}
+                  onPress={requestReview}
+                  disabled={timeIsUp}>
                   REQUEST REVIEW
                 </GButton>
-                <GButton variant="green" style={{flex: 1}} disabled={timeIsUp}>
+                <GButton
+                  variant="green"
+                  style={{flex: 1}}
+                  onPress={sendFunds}
+                  disabled={timeIsUp}>
                   SEND FUNDS
                 </GButton>
               </View>

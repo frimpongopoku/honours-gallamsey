@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {colors} from '../../styles';
 
 import {faCheck} from '@fortawesome/free-solid-svg-icons';
