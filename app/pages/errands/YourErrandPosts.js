@@ -17,6 +17,7 @@ import {LOADING} from '../authentication/constants';
 import {useNavigation} from '@react-navigation/native';
 import {bindActionCreators} from 'redux';
 import {fetchMyPosts} from '../../redux/actions/actions';
+import {getTimeAgo} from '../../utils';
 
 const YourErrandPosts = ({myErrands, user, fetchPosts}) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -129,7 +130,7 @@ export const MyPostErrandItem = ({
                 textTransform: 'capitalize',
                 // color: colors.green,
               }}>
-              {runner? stage?.text || '...' : "Not taken yet..."}
+              {runner ? stage?.text || '...' : 'Not taken yet...'}
             </Text>
             <Text
               style={{
@@ -144,7 +145,9 @@ export const MyPostErrandItem = ({
         </View>
       </View>
       <View style={{display: 'flex', flexDirection: 'auto'}}>
-        <Text style={{marginLeft: 'auto', fontSize: 12}}>{createdAt}</Text>
+        <Text style={{marginLeft: 'auto', fontSize: 12}}>
+          {getTimeAgo(createdAt)}
+        </Text>
       </View>
     </TouchableOpacity>
   );

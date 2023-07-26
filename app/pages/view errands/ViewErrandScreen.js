@@ -189,6 +189,7 @@ const ViewErrandScreen = ({
       </Text>
     );
 
+  const chatKey = errand?.poster?.id + errand?.runner?.id + errand?._id; // posterid+runnerid+errandid
   return (
     <GBottomSheet
       // generics={{snapPoints: ['30%', '60%']}}
@@ -332,7 +333,11 @@ const ViewErrandScreen = ({
       {running && (
         <>
           <GButton
-            onPress={() => navigation.navigate('Chatting', {data: errand})}
+            onPress={() =>
+              navigation.navigate('Chatting', {
+                data: {key: chatKey, errand},
+              })
+            }
             iconOptions={{icon: faMessage}}
             style={{bottom: 380, right: 25, backgroundColor: colors.red}}
             floating></GButton>

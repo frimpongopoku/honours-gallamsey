@@ -1,7 +1,18 @@
 import {Dimensions, Platform, StatusBar} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import DeviceInfo from 'react-native-device-info';
+import {formatDistanceStrict} from 'date-fns';
 
+export const getTimeAgo = dateString => {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  // Format the date as "time ago"
+  // const timeAgo = formatDistanceToNow(date, {addSuffix: true});
+  const timeAgo = formatDistanceStrict(date, now, {addSuffix: true});
+
+  return timeAgo;
+};
 export const isEmulator = () => {
   const level = DeviceInfo.getApiLevel()?._j;
   return level === 32; // NB: this works only cos the genymotion device emulator I use is on api level 32, and my physical device is on 31

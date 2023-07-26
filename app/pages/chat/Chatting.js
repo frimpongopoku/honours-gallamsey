@@ -4,24 +4,111 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Toolbar from '../../components/toolbar/Toolbar';
 import {colors} from '../../styles';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPaperPlane} from '@fortawesome/free-solid-svg-icons';
-
-const Chatting = () => {
+import firestore from '@react-native-firebase/firestore';
+import {LOADING} from '../authentication/constants';
+import {connect} from 'react-redux';
+import {getTimeAgo} from '../../utils';
+const Chatting = ({route, user}) => {
+  const [chat, setChat] = useState(LOADING);
+  const [message, setMessage] = useState('');
   const scrollViewRef = useRef();
   const scrollToBottom = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd({animated: true});
     }
   };
+  const data = route?.params.data;
+  const chatKey = data?.key;
+  const fullErrand = data?.errand;
+
+  const otherPerson = () => {
+    if (user?._id === fullErrand?.poster?.id) return fullErrand?.runner;
+    return fullErrand?.poster;
+  };
+
+  console.log('THIS IS CHAT KEY', chatKey);
+
+  useEffect(() => {
+    // Reference to the document in Firestore
+    const docRef = firestore().collection('Chats').doc(chatKey);
+    docRef
+      .get()
+      .then(documentSnapshot => {
+        if (documentSnapshot.exists) {
+          docRef.onSnapshot(snapshot => {
+            const data = snapshot.data();
+            // Update your component state or take any other actions
+            setChat(data);
+          });
+        } else {
+          docRef
+            .set({messages: []})
+            .then(() => {
+              console.log('Document created successfully!');
+              // Subscribe to snapshot updates
+              docRef.onSnapshot(snapshot => {
+                const data = snapshot.data();
+                setChat(data);
+              });
+            })
+            .catch(error => {
+              console.error('Error creating document:', error);
+            });
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching document:', error);
+      });
+    return () => {
+      docRef.onSnapshot(() => {});
+    };
+  }, [chatKey]);
+
+  const takeToFirestore = chatObj => {
+    const docRef = firestore().collection('Chats').doc(chatKey);
+    docRef
+      .set(chatObj)
+      .then(() => {
+        console.log('Document created successfully!');
+      })
+      .catch(error => {
+        console.error('Error creating document:', error);
+      });
+  };
+  const sendMessage = () => {
+    if (!message) return;
+    const obj = {
+      name: user?.preferredName,
+      user_id: user?._id,
+      text: message,
+      timestamp: new Date().toISOString(),
+    };
+    const chatObj = {...(chat || {}), messages: [...chat?.messages, obj]};
+    setChat(chatObj);
+    setMessage('');
+    takeToFirestore(chatObj);
+  };
+
+  if (chat === LOADING)
+    return (
+      <View style={{height: '100%', backgroundColor: 'white'}}>
+        <Toolbar title="..." />
+        <ActivityIndicator color="red" size={40} />
+      </View>
+    );
+
+  const messages = chat?.messages || [];
 
   return (
     <View>
-      <Toolbar title="Chat with senior man" />
+      <Toolbar title={`Talk to ${otherPerson()?.name || '...'}`} />
       <ScrollView
         ref={scrollViewRef}
         onLayout={scrollToBottom}
@@ -32,15 +119,16 @@ const Chatting = () => {
           paddingVertical: 10,
           paddingHorizontal: 20,
         }}>
-        {[3, 2, 3, 4, 3, 4, 5, 6, 6, 76, 67, 67, 76, 6, 54, 45].map(
-          (item, index) => {
-            return (
-              <View key={index?.toString()}>
-                <ChatItem receiver={index % 2 === 0} />
-              </View>
-            );
-          },
-        )}
+        {messages.map((messageObj, index) => {
+          return (
+            <View key={index?.toString()}>
+              <ChatItem
+                {...messageObj}
+                receiver={messageObj.user_id === user?._id}
+              />
+            </View>
+          );
+        })}
       </ScrollView>
       <View
         style={{
@@ -57,6 +145,8 @@ const Chatting = () => {
           elevation: 10,
         }}>
         <TextInput
+          onChangeText={text => setMessage(text)}
+          value={message}
           style={{
             flex: 8.5,
             backgroundColor: 'white',
@@ -67,6 +157,7 @@ const Chatting = () => {
           placeholder="Enter message here..."
         />
         <TouchableOpacity
+          onPress={sendMessage}
           style={{
             flex: 1.5,
             padding: 10,
@@ -85,7 +176,7 @@ const Chatting = () => {
   );
 };
 
-const ChatItem = ({receiver = false}) => {
+const ChatItem = ({receiver = false, timestamp, text, name}) => {
   const mods = receiver
     ? {}
     : {
@@ -116,13 +207,26 @@ const ChatItem = ({receiver = false}) => {
             fontSize: 14,
             ...(mods?.items || {}),
           }}>
-          Charles
+          {name || '...'}
         </Text>
         <Text style={{color: 'white', fontSize: 16, ...(mods?.items || {})}}>
-          This is the real spelling
+          {text || '...'}
+        </Text>
+        <Text
+          style={{
+            color: 'white',
+            marginTop: 5,
+            fontSize: 12,
+            ...(mods?.items || {}),
+          }}>
+          {getTimeAgo(timestamp) || '...'}
         </Text>
       </View>
     </View>
   );
 };
-export default Chatting;
+const mapStateToProps = state => {
+  return {user: state.user};
+};
+
+export default connect(mapStateToProps)(Chatting);

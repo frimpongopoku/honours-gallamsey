@@ -5,6 +5,7 @@ import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {colors} from '../../../styles';
 import ImagePro from '../../../components/image/ImagePro';
 import {useNavigation} from '@react-navigation/native';
+import {getTimeAgo} from '../../../utils';
 
 const ErrandFeedItem = ({user, errand}) => {
   const navigation = useNavigation();
@@ -40,7 +41,7 @@ const ErrandFeedItem = ({user, errand}) => {
           <Text style={{fontWeight: '600', color: 'black', fontSize: 18}}>
             {poster?.name}
           </Text>
-          <Text>{createdAt || '...'}</Text>
+          <Text>{getTimeAgo(createdAt) || '...'}</Text>
         </View>
 
         <View style={{marginLeft: 'auto'}}>
