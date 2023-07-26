@@ -51,6 +51,7 @@ const ThirdStage = ({
 
   const costError = getError('cost', errors?.errandForm || {});
   const compError = getError('reward', errors?.errandForm || {});
+  const total = (Number(form?.cost) || 0) + (Number(form?.reward) || 0);
   return (
     <View style={{height: '100%'}}>
       <ScrollView>
@@ -99,15 +100,19 @@ const ThirdStage = ({
             </Text>
           </TextBox>
 
-          <Text
-            style={{
-              fontWeight: '700',
-              fontSize: 18,
-              marginHorizontal: 10,
-              color: colors.red,
-            }}>
-            Amount Payable: GHS 80
-          </Text>
+          {total ? (
+            <Text
+              style={{
+                fontWeight: '700',
+                fontSize: 18,
+                marginHorizontal: 10,
+                color: colors.red,
+              }}>
+              Amount Payable: GHS {total}
+            </Text>
+          ) : (
+            <></>
+          )}
         </View>
       </ScrollView>
       <GButton

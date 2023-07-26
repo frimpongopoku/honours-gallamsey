@@ -15,7 +15,6 @@ const ErrandFeedItem = ({user, errand}) => {
 
   const locations = user?.locations;
   const preferences = user?.preferences;
-
   return (
     <View style={{marginBottom: 15}}>
       <View
@@ -26,7 +25,7 @@ const ErrandFeedItem = ({user, errand}) => {
           paddingHorizontal: 15,
           paddingVertical: 10,
         }}>
-        <ImagePro
+        <Image
           style={{
             height: 55,
             width: 55,
@@ -35,7 +34,7 @@ const ErrandFeedItem = ({user, errand}) => {
             borderColor: colors.red,
             marginRight: 15,
           }}
-          imageUrl={poster?.image}
+          source={{uri: poster?.image}}
         />
         <View>
           <Text style={{fontWeight: '600', color: 'black', fontSize: 18}}>
@@ -62,9 +61,9 @@ const ErrandFeedItem = ({user, errand}) => {
       <TouchableOpacity
         onPress={() => navigation.navigate('ViewErrand', {data: errand})}
         style={{paddingHorizontal: 15}}>
-        <ImagePro
+        <Image
           style={{borderRadius: 10, height: 250}}
-          imageUrl={(images || [])[0] || 'https://picsum.photos/600'}
+          source={{uri: (images || [])[0] || 'https://picsum.photos/600'}}
         />
         {/* <Image
           style={{borderRadius: 10, height: 250}}

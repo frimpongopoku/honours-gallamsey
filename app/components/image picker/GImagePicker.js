@@ -9,7 +9,7 @@ const GImagePicker = ({pickerOptions, render, onImageSelected}) => {
     ImagePicker.openPicker({
       multiple: true,
       mediaType: 'photo',
-      compressImageQuality: 0.5,
+      compressImageQuality: 0.3,
       ...(pickerOptions || {}),
     })
       .then(images => {

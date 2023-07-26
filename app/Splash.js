@@ -8,12 +8,14 @@ import {connect} from 'react-redux';
 import LoadingSpinner from './components/spinner/LoadingSpinner';
 import {CREATE_NEW_PROFILE, LOADING} from './pages/authentication/constants';
 import {isEmulator} from './utils';
+import ImagePro from './components/image/ImagePro';
 
-const Splash = ({navigation, fireUser, user}) => {
+const Splash = ({navigation, fireAuth, user}) => {
   useEffect(() => {
     if (user === CREATE_NEW_PROFILE)
       return navigation.navigate('CompleteProfile');
   }, [user]);
+
   return (
     <SafeAreaView>
       <View
@@ -27,12 +29,12 @@ const Splash = ({navigation, fireUser, user}) => {
         <Text style={{fontSize: 55, color: 'white', fontWeight: '700'}}>
           Gallamsey
         </Text>
-        {fireUser === LOADING && (
+        {fireAuth === LOADING && (
           <LoadingSpinner color="white" size={35} text="Authenticating..." />
         )}
         {/* <ActivityIndicator size={30} color="white" />
         <Text style={{color: 'white'}}>Loading something ...</Text> */}
-        {!fireUser && (
+        {!fireAuth && (
           <View
             style={{
               display: 'flex',
@@ -52,6 +54,46 @@ const Splash = ({navigation, fireUser, user}) => {
               variant="black"
               onPress={() => navigation.navigate('Login')}>
               TEST AUTH
+            </GButton>
+          </View>
+        )}
+
+        {user && (
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 20,
+            }}>
+            {user?.image && (
+              <ImagePro
+                imageUrl={user?.image}
+                style={{
+                  height: 90,
+                  width: 90,
+                  borderRadius: 1000,
+                  borderWidth: 3,
+                  borderColor: 'white',
+                }}
+              />
+            )}
+
+            <Text
+              style={{
+                marginVertical: 20,
+                fontSize: 22,
+                fontWeight: '900',
+                color: 'white',
+              }}>
+              Welcome back, {user?.preferredName}!
+            </Text>
+
+            <GButton
+              onPress={() => navigation.navigate('Home')}
+              style={{borderRadius: 55}}
+              variant="black">
+              CONTINUE
             </GButton>
           </View>
         )}
